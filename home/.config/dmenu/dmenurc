@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#FONT='CamingoCode:size=9'
+FONT='gohufont:size=10'
+# NORMAL_BG='#34322e'
+# NORMAL_FG='#a3a6ab'
+# SELECT_BG='#5c5955'
+# SELECT_FG='#f6f9ff'
+NORMAL_BG='#262626'
+NORMAL_FG='#A3A3AB'
+SELECT_BG='#545350'
+SELECT_FG='#F6F9FF'
+HEIGHT=20
+
+DMENU="dmenu -i -nb $NORMAL_BG -nf $NORMAL_FG -sb $SELECT_BG -sf $SELECT_FG -fn $FONT -h $HEIGHT"

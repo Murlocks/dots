@@ -1,0 +1,71 @@
+#!/bin/bash
+
+. panel_colors2
+
+PANEL_FIFO=/tmp/panel-fifo
+#PANEL_HEIGHT=26
+PANEL_HEIGHT=23
+PANEL_GAP=0
+#PANEL_FONT_FAMILY="Ubuntu:size=9"
+PANEL_FONT_FAMILY="gohufont:size=10"
+ICON_FONT="FontAwesome:size=11"
+ICON_FONT2="Source Han Sans JP Medium:size=9"
+# ICON_FONT2="icomoon:size=11"
+
+if [ $(pgrep -cx panel) -gt 1 ] ; then
+        printf "%s\n" "The panel is already running." >&2
+        exit 1
+fi
+
+trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
+
+# display function used by both info.sh and panel_bar scripts:
+declare -f block
+if [ $? = "1" ]; then
+    function block() {
+        [ ! -z $NoPadding ] && pPadding=$NoPadding
+        if [ "$blockActive" = true ] ; then
+            echo -n "%{B$pBGActiveTab}%{F$pFG}$(printf %${pPadding}s)$@$(printf %${pPadding}s)%{B$pBG} "
+        else
+            echo -n "%{B$pBGInactiveTab}%{F$pFG2}$(printf %${pPadding}s)$@$(printf %${pPadding}s)%{B$pBG} "
+        fi
+    }
+    export -f block
+fi
+
+num_mon=$(bspc query -M)
+
+
+for i in $num_mon; do
+    # remove any open panel fifo, and then create one
+    [ -e "$PANEL_FIFO$i" ] && rm "$PANEL_FIFO$i"
+    mkfifo "$PANEL_FIFO$i"
+
+    # This greps out the bspc control section of the current monitor we are on.
+    # The while loop in the middle appends 'W' to the start because the panel_bar
+    # script assumes input from a 'regular' bspc control --subscribe command
+    bspc control --subscribe |\
+        grep -oE "[Mm]$i[^TM]*[TML]" --line-buffered |\
+        while read line; do echo W$line; done \
+            > "$PANEL_FIFO$i" &
+
+    info.sh > "$PANEL_FIFO$i" &
+
+    title.sh $i > "$PANEL_FIFO$i" &
+
+    # Grep for current monitor width (will be first number regex match from bspc query command below).
+    CUR_MON_WIDTH=$(bspc query -T -m $i | grep -oE "[0-9]{2,6}" | head -n 1)
+
+    # cat "$PANEL_FIFO" | panel_bar | lemonbar -g 1600x$PANEL_HEIGHT -f "$PANEL_FONT_FAMILY" -f "$ICON_FONT" -f "$ICON_FONT2" -F "$COLOR_FOREGROUND" -B "$COLOR_BACKGROUND" -u 2 | bash &
+
+    # The nested expr statements account for gap settings and current offset.
+    # PANEL_GAP value is set in profile.
+    cat "$PANEL_FIFO$i" | panel_bar2 |\
+        lemonbar -g $(expr $CUR_MON_WIDTH - $(expr $PANEL_GAP + $PANEL_GAP))x$PANEL_HEIGHT+$(expr $CUR_X_OFFSET + $PANEL_GAP)+$PANEL_GAP -f "$PANEL_FONT_MAIN" -f "$PANEL_FONT_ICON" -f "$PANEL_FONT_ICON2" | sh &
+
+    # Increment the x offset for the next monitor.
+    CUR_X_OFFSET=$(expr $CUR_X_OFFSET + $CUR_MON_WIDTH )
+
+done
+
+wait

@@ -1,0 +1,181 @@
+"hg7226
+
+loadplugins '\.(js|penta)$'
+group user
+highlight Hint font: bold 12px "gohufont", monospace !important; margin: -.2ex; padding: 0 0 0 1px; outline: 1px solid rgba(0, 0, 0, .5); background: rgba(255, 248, 231, .8); color: black; font-size: 14px;
+set cdpath=''
+set editor=vim
+
+color ubuntu
+
+autocmd PageLoad mail.google.com js if(!getBrowser().mCurrentTab.pinned) getBrowser().pinTab(getBrowser().mCurrentTab);
+autocmd PageLoad gmail.com js if(!getBrowser().mCurrentTab.pinned) getBrowser().pinTab(getBrowser().mCurrentTab);
+
+" Allow GMail shortcuts
+set passkeys+=mail.google.com:jksacrqG#<CR>,gi,gl,gp
+" Let Hint Message from X Links 
+autocmd LocationChange mail.google.com set ht+=span.ata-asJ
+" Let Hint Expand Collapsed Conversations
+autocmd LocationChange mail.google.com set ht+=span.adx
+" Let Hint Expand Message
+autocmd LocationChange mail.google.com set ht+=td.gF
+" Let Hint Expand Delete All Spam Messages
+autocmd LocationChange mail.google.com set ht+=span.x2
+
+highlight Hint -append font-size:14px;
+highlight HintElem background-color: #E9E9E9; color: #f6e9e9;
+highlight -a Hint text-transform: uppercase
+
+set hintkeys=hjklasdfgyuiopqwertnmzxcvb
+
+command -nargs=* archwiki tabopen http://wiki.archlinux.org/?search=<args>
+
+command toggle-click-to-play -js <<EOF
+        if(Services.prefs.getBoolPref("plugins.click_to_play"))
+            Services.prefs.setBoolPref("plugins.click_to_play", false);
+        else
+            Services.prefs.setBoolPref("plugins.click_to_play", true);
+        dactyl.execute(":reload");
+EOF
+
+command tabrename -nargs=1 -literal=0 -js content.document.title = args[0];
+
+:command! -nargs=0 -description="Read now with readability" read open javascript:(%0A%28function%28%29%7Bwindow.baseUrl%3D%27//www.readability.com%27%3Bwindow.readabilityToken%3D%27%27%3Bvar%20s%3Ddocument.createElement%28%27script%27%29%3Bs.setAttribute%28%27type%27%2C%27text/javascript%27%29%3Bs.setAttribute%28%27charset%27%2C%27UTF-8%27%29%3Bs.setAttribute%28%27src%27%2CbaseUrl%2B%27/bookmarklet/read.js%27%29%3Bdocument.documentElement.appendChild%28s%29%3B%7D%29%28%29)
+
+map <S-J> gT
+map <S-K> gt
+map <C-L> <C-^>
+
+nmap -builtin : ;
+nmap -builtin ; :
+
+nmap -builtin <C-c> <C-v><C-c>
+imap -builtin <C-c> <C-v><C-c>
+nmap -builtin <C-v> <C-v><C-v>
+imap -builtin <C-v> <C-v><C-v>
+
+nmap -builtin <C-q> <C-v>
+imap -builtin <C-q> <C-v>
+
+imap jk <Esc>
+vmap jk <Esc><Esc>
+map -modes caret jk <Esc>
+
+map -builtin v iv
+
+nmap -builtin j 10j
+nmap -builtin k 10k
+nmap -builtin h 10h
+nmap -builtin l 10l
+
+"" zenburn
+" hi StatusLineNormal color: white; background: #3f3f3f;
+" hi StatusLineSecure color: white; background-color: #3f3f3f; background-image: linear-gradient(to right, #6ca0a3, #3f3f3f 60px);
+" hi StatusLineExtended color: white; background-color: #3f3f3f; background-image: linear-gradient(to right, #7f9f7f, #3f3f3f 60px);
+" hi StatusLineBroken color: white; background-color: #3f3f3f; background-image: linear-gradient(to right, #cc9393, #3f3f3f 60px);
+" darker
+hi StatusLineNormal color: white; background: #252527;
+hi StatusLineSecure color: white; background-color: #252527; background-image: linear-gradient(to right, #6ca0a3, #252527 60px);
+hi StatusLineExtended color: white; background-color: #252527; background-image: linear-gradient(to right, #7f9f7f, #252527 60px);
+hi StatusLineBroken color: white; background-color: #252527; background-image: linear-gradient(to right, #cc9393, #252527 60px);
+""" from https://github.com/remiprev/pentadactyl-files/blob/master/colors/feline.penta
+hi Hint line-height: 6px; text-shadow: 1px 1px 1px #000; padding: 5px 6px 6px; font-size: 13px; font-weight: normal; color: white; background-color: rgba(0, 0, 0, 0.6); border-radius: 1em; box-shadow: 0 0 4px rgba(0,0,0,1); text-transform: uppercase;
+hi Hint[active] background: rgba(0, 0, 0, 0.8);
+hi Hint[ambiguous] background: rgba(0, 0, 255, 0.6);
+hi HintElem ;
+hi HintActive border-radius: 6px; background-color: rgba(173, 216, 230, 0.6) !important;
+
+" override :open
+" try to guess if param of :open is a url, and add buffer to :open/tabopen complition
+js <<EOF
+overlay.overlayObject(dactyl, {
+    open: function open(urls, params, force) {
+        let isURL = function (url) {
+            if (typeof url !== "string")
+                return false;
+            if (url.startsWith("google "))
+                return false;
+            if (url.startsWith("~/"))
+                return true;
+            let m = url.match(/^(\w+)\//);
+            if (m)
+                return (m[1] === "localhost");
+            m = url.match(/^(?:[^.:\/ ]+\.)+([A-Za-z]+)($|\/)/);
+            return (!m || m[1].match(/^(?:com|net|org|name|edu|gov|au|tw|cz|cn|us|me|info|co|jp|ly|gd|gl|de|fm|io)$/));
+        };
+        if (typeof urls === "string") {
+            let matches = urls.match(/^(\d+): /);
+            if (matches) {
+                tabs.switchTo(urls, true);
+                return true;
+            }
+        }
+        if (!isURL(urls)) {
+            arguments[0] = options["defsearch"] + " " + arguments[0];
+        }
+        return open.superapply(this, arguments);
+    }
+});
+completion.addUrlCompleter("buffer", "Open Tabs", completion.buffer);
+options["complete"].splice(0, 0, "buffer");
+EOF
+
+" custom hint
+js <<EOF
+let selectors = ["a[onmousedown]", "a[target='_blank']", "a[target='_self']", "a[href^='#!topic/']", "div.links_main"];
+hints.addMode("g", "Follow specfic hint", function (elem) buffer.followLink(elem), null, selectors);
+hints.addMode("G", "Follow specfic hint in a background tab", function (elem) buffer.followLink(elem, dactyl.NEW_BACKGROUND_TAB), null, selectors);
+EOF
+group -locations www.google.com,groups.google.com,duckduckgo.com customHint
+nmap -builtin f ;G
+nmap -builtin F g;G
+group -locations groups.google.com customHintGoogleGroups
+nmap -builtin f ;g
+group user
+
+" google docs viewer
+js <<EOF
+hints.addMode("d", "Open link using google docs", function (elem) dactyl.open("https://docs.google.com/viewer?url=" + encodeURIComponent(elem.href), dactyl.NEW_TAB), null, ["a[href*='.pdf']", "a[href*='.doc']", "a[href*='.ppt']", "a[href*='.odp']"]);
+EOF
+
+" display tabgroup title on statusline
+js <<EOF
+overlay.overlayObject(statusline, {
+    updateTabCount: function updateTabCount(delayed) {
+        updateTabCount.superapply(this, arguments);
+        if (!delayed) {
+            let title = "";
+            let groups = services.sessionStore.getWindowValue(window, "tabview-groups");
+            if (groups) {
+                let active = JSON.parse(groups).activeGroupId;
+                let groupData = services.sessionStore.getWindowValue(window, "tabview-group");
+                title = JSON.parse(groupData)[active].title;
+            }
+            if (title) this.widgets.tabcount.value = "(" + title + ")" + this.widgets.tabcount.value;
+        }
+    }
+});
+EOF
+
+" change mode prompts
+js <<EOF
+overlay.overlayObject(modes, {
+    _getModeMessage: function _getModeMessage() {
+        let modeMap = {
+            "-- EX --": "❯",
+            "-- MENU --": "☰",
+            "-- INSERT --": "▐",
+            "-- CARET --": "⍲",
+            "-- VISUAL --": "▒",
+            "-- TEXT EDIT --": "█",
+            "-- FIND FORWARD --": "⚲",
+            "-- FIND BACKWARD --": "⚲"
+        };
+        let originModeMessage = _getModeMessage.superapply(this, arguments);
+        let modeMessage = modeMap[originModeMessage];
+        return modeMessage ? modeMessage : originModeMessage;
+    }
+});
+EOF
+
+" vim: set ft=vim:

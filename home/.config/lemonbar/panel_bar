@@ -1,0 +1,79 @@
+#!/bin/bash
+
+. panel_config
+
+# clickable area aliases
+AC='%{A:'           # start click area
+AB=':}'             # end click area cmd
+AE='%{A}'           # end click area
+
+# Shell commands for clickable areas
+goto='bspc desktop -f'       # go to this desktop
+cycle='bspc desktop -l next' # cycle tiled/monocle
+winfocus='bspc window -f '   # focus on a window
+
+num_mon=$(bspc query -M | wc -l)
+
+while read -r line ; do
+    case $line in
+        S*)
+            bar_info="${line#?} "
+            ;;
+        T*)
+            title="%{F#ff5a5a5a}"
+            IFS='\'
+            set -- ${line#?}
+            while [ $# -gt 0 ] ; do
+                item=$1
+                name=${item#?}
+                # form of $name will be window title // window id.
+                # split and use for clickable focus areas
+                winTitle="$(echo $name | grep -aoE ".*//" | rev | cut -c 3- | rev)"
+                winID="$(echo $name | grep -oE "//.*" | cut -c 3-)"
+                if [ ! -z $winTitle ]; then
+                    case $item in
+                        A*) blockActive=true && title="${title}$(block $winTitle)";; #active window
+                        X*) blockActive=false && title="${title}$(block ${AC}${winfocus} ${winID}${AB}${winTitle}${AE})";; #inactive window
+                    esac
+                fi
+                shift
+            done
+            title="$title%{F-}"
+            ;;
+        W*)
+            # bspwm internal state
+            wm_infos=""
+            IFS=':'
+            set -- ${line#?}
+            while [ $# -gt 0 ] ; do
+                item=$1
+                name=${item#?}
+                blockActive=false
+                case $item in
+                    O*)    # Occupied focused
+                        wm_infos=$wm_infos$(blockActive=true && block ${name})
+                        ;;
+                    F*)    # Free focused
+                        wm_infos=$wm_infos$(blockActive=true && block ${name})
+                        ;;
+                    U*)    # Urgent focused
+                        wm_infos=$wm_infos$(blockActive=true && block ${name})
+                        ;;
+                    o*)    # Occupied unfocused
+                        wm_infos=$wm_infos$(block %{F$COLOR_OCCUPIED_FG}${name}%{F-})
+                        ;;
+                    f*)    # Free unfocused
+                        wm_infos=$wm_infos$(block ${name})
+                        ;;
+                    u*)    # Urgent unfocused
+                        wm_infos=$wm_infos$(block %{F$COLOR_URGENT_FG}${name}%{F-})
+                        ;;
+                    *)     # Rest of cases: focused and unfocused monitor, M and m respectively
+                        ;;
+                esac
+                shift
+            done
+            ;;
+    esac
+    printf "%s\n" "%{l}${wm_infos}${mp}%{c}${title}%{r}${bar_info}"
+done
