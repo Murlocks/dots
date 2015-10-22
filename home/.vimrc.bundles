@@ -99,6 +99,7 @@ NeoBundle 'amix/vim-zenroom2', { 'depends:' : [ 'junegunn/goyo.vim' ] }
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'LeafCage/foldCC.vim'
 NeoBundle 'rhysd/accelerated-jk'
+NeoBundle 'FooSoft/vim-argwrap'
 NeoBundle 'takac/vim-hardtime'
 NeoBundle 'xolox/vim-easytags', { 'depends' : [ 'xolox/vim-misc' ] }
 NeoBundle 'xolox/vim-misc'
@@ -119,8 +120,10 @@ NeoBundle 'sgur/vim-textobj-parameter', { 'depends' : 'kana/vim-textobj-user' }
 
 " Operator " {{{
 NeoBundle 'kana/vim-operator-user'
+NeoBundle 'kana/vim-operator-replace', { 'depends' : 'kana/vim-operator-user' }
+" NeoBundle 'rhysd/vim-operator-surround', { 'depends' : 'kana/vim-operator-user' }
 NeoBundle 'tyru/operator-html-escape.vim', { 'depends' : 'kana/vim-operator-user' }
-NeoBundle 'osyo-manga/vim-operator-blockwise', { 'depends' : 'osyo-manga/vim-textobj-blockwise' }
+NeoBundle 'osyo-manga/vim-operator-blockwise', { 'depends' : 'kana/vim-operator-user' }
 " }}}
 
 " Local Plugins (Arch) " {{{
@@ -877,7 +880,7 @@ if neobundle#tap('syntastic') " {{{
     let g:syntastic_cpp_compiler = 'g++'
     let g:syntastic_cpp_compiler_options = ' -std=c++11'
 
-    nnoremap <Leader>s :SyntasticToggleMode<CR>
+    nnoremap <Leader>_ :SyntasticToggleMode<CR>
     " nnoremap <Leader>s :SyntasticCheck<CR>
 
 endif " }}}
@@ -1068,6 +1071,31 @@ if neobundle#tap('vim-ctrlspace') " {{{
 endif " }}}
 
 if neobundle#tap('vim-over') " {{{
+
+    nnoremap <Leader>s :OverCommandLine<CR>
+
+endif " }}}
+
+if neobundle#tap('vim-argwrap') " {{{
+
+    nnoremap <Leader>l :ArgWrap<CR>
+
+endif " }}}
+
+if neobundle#tap('vim-operator-replace') " {{{
+
+    map _ <Plug>(operator-replace)
+
+endif " }}}
+
+if neobundle#tap('vim-operator-surround') " {{{
+
+    map <silent>sa <Plug>(operator-surround-append)
+    map <silent>sd <Plug>(operator-surround-delete)
+    map <silent>sr <Plug>(operator-surround-replace)
+
+    nmap <silent>sdd <Plug>(operator-surround-delete)<Plug>(textobj-multiblock-a)
+    nmap <silent>srr <Plug>(operator-surround-replace)<Plug>(textobj-multiblock-a)
 
 endif " }}}
 
