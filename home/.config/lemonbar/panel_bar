@@ -50,15 +50,15 @@ while read -r line ; do
                 name=${item#?}
                 blockActive=false
                 case $item in
-                    O*)    # Occupied focused
+                    [OFU]*)    # Occupied focused
                         wm_infos=$wm_infos$(blockActive=true && block ${name})
                         ;;
-                    F*)    # Free focused
-                        wm_infos=$wm_infos$(blockActive=true && block ${name})
-                        ;;
-                    U*)    # Urgent focused
-                        wm_infos=$wm_infos$(blockActive=true && block ${name})
-                        ;;
+                    # F*)    # Free focused
+                    #     wm_infos=$wm_infos$(blockActive=true && block ${name})
+                    #     ;;
+                    # U*)    # Urgent focused
+                    #     wm_infos=$wm_infos$(blockActive=true && block ${name})
+                    #     ;;
                     o*)    # Occupied unfocused
                         wm_infos=$wm_infos$(block %{F$COLOR_OCCUPIED_FG}${name}%{F-})
                         ;;

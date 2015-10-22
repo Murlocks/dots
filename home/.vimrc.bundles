@@ -66,6 +66,7 @@ NeoBundle 'osyo-manga/vim-over'
 " NeoBundle 'szw/vim-ctrlspace'
 NeoBundle 'Shougo/vimshell.vim', { 'depends:' : [ 'Shougo/vimproc.vim' ] }
 NeoBundle 'airblade/vim-rooter'
+NeoBundle 'sheerun/vim-polyglot'
 NeoBundle 'mbbill/undotree'
 NeoBundle 'mhinz/vim-signify'
 NeoBundle 'scrooloose/syntastic'
