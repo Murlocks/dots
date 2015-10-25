@@ -1,3 +1,5 @@
+" vim: set ft=vim fdm=marker:
+
 set nocompatible
 
 " auto reload this very rc!
@@ -66,6 +68,55 @@ set iskeyword-=#                    " '#' is an end of word designator
 
 set tags=.tags,./tags,tags,../tags,~/.vimtags
 
+" folding
+
+set foldlevelstart=0
+
+function! MyFoldText() " {{{
+    let line = getline(v:foldstart)
+
+    let nucolwidth = &fdc + &number * &numberwidth
+    let windowwidth = winwidth(0) - nucolwidth - 3
+    let foldedlinecount = v:foldend - v:foldstart
+
+    " expand tabs into spaces
+    let onetab = strpart('          ', 0, &tabstop)
+    let line = substitute(line, '\t', onetab, 'g')
+
+    let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
+    let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
+    return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
+endfunction
+set foldtext=MyFoldText() " }}}
+
+function! s:Pulse() " {{{
+    redir => old_hi
+        silent execute 'hi CursorLine'
+    redir END
+    let old_hi = split(old_hi, '\n')[0]
+    let old_hi = substitute(old_hi, 'xxx', '', '')
+
+    let steps = 8
+    let width = 1
+    let start = width
+    let end = steps * width
+    let color = 233
+
+    for i in range(start, end, width)
+        execute "hi CursorLine ctermbg=" . (color + i)
+        redraw
+        sleep 6m
+    endfor
+    for i in range(end, start, -1 * width)
+        execute "hi CursorLine ctermbg=" . (color + i)
+        redraw
+        sleep 6m
+    endfor
+
+    execute 'hi ' . old_hi
+endfunction " }}}
+command! -nargs=0 Pulse call s:Pulse()
+
 " Instead of reverting the cursor to the last position in the buffer, we
 " set it to the first line when editing a git commit message
 au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
@@ -89,13 +140,13 @@ augroup END
 " http://vim-users.jp/2011/02/hack202/
 
 autocmd BufWritePre *
-      \ call s:mkdir_as_necessary(expand('<afile>:p:h'), v:cmdbang)
+            \ call s:mkdir_as_necessary(expand('<afile>:p:h'), v:cmdbang)
 function! s:mkdir_as_necessary(dir, force)
-  if !isdirectory(a:dir) && &l:buftype == '' &&
-        \ (a:force || input(printf('"%s" does not exist. Create? [y/N]',
-        \              a:dir)) =~? '^y\%[es]$')
-    call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
-  endif
+    if !isdirectory(a:dir) && &l:buftype == '' &&
+                \ (a:force || input(printf('"%s" does not exist. Create? [y/N]',
+                \              a:dir)) =~? '^y\%[es]$')
+        call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
+    endif
 endfunction
 
 set backup                          " Backups are nice ...
@@ -130,7 +181,7 @@ set backspace=indent,eol,start      " Backspace for dummies
 set ruler                           " Show the ruler
 set rulerformat=%50(%=\%{fugitive#statusline()}\%y\ %l,%c%V\ %P%) " A ruler on steroids
 set noshowcmd                         " Show partial commands in status line and
-                                    " Selected characters/lines in visual mode
+" Selected characters/lines in visual mode
 
 set linespace=1                     " No extra spaces between rows
 set showmatch                       " Show matching brackets/parenthesis
@@ -153,15 +204,15 @@ set nonumber
 set norelativenumber
 
 " augroup linenumbers
-"   autocmd!
-"   autocmd BufEnter *    :set relativenumber
-"   autocmd BufLeave *    :set number norelativenumber
-"   autocmd WinEnter *    :set relativenumber
-"   autocmd WinLeave *    :set number norelativenumber
-"   autocmd InsertEnter * :set number norelativenumber
-"   autocmd InsertLeave * :set relativenumber
-"   autocmd FocusLost *   :set number norelativenumber
-"   autocmd FocusGained * :set relativenumber
+"     autocmd!
+"     autocmd BufEnter *    :set relativenumber
+"     autocmd BufLeave *    :set number norelativenumber
+"     autocmd WinEnter *    :set relativenumber
+"     autocmd WinLeave *    :set number norelativenumber
+"     autocmd InsertEnter * :set number norelativenumber
+"     autocmd InsertLeave * :set relativenumber
+"     autocmd FocusLost *   :set number norelativenumber
+"     autocmd FocusGained * :set relativenumber
 " augroup END
 
 " set laststatus=1
@@ -336,7 +387,7 @@ endfunction
 function! s:LongLines()
     let threshold = (&tw ? &tw : 80)
     let spaces = repeat(" ", &ts)
-    let line_lens = map(getline(1,'$'), 'len(substitute(v:val, "\\t", spaces, "g"))')
+    let line_lens = noremap(getline(1,'$'), 'len(substitute(v:val, "\\t", spaces, "g"))')
     return filter(line_lens, 'v:val > threshold')
 endfunction
 
@@ -384,7 +435,7 @@ autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,pe
 " nnoremap ,, ,
 
 "make Y consistent with rest of vim!
-nmap Y y$
+nnoremap Y y$
 
 " Easy esc
 inoremap jk <Esc>
@@ -401,10 +452,10 @@ nnoremap : ;
 
 " Move around easier
 inoremap <C-o>   <Esc>o
-imap <C-j>       <Down>
-imap <C-k>       <Up>
-cmap <C-j>       <Down>
-cmap <C-k>       <Up>
+inoremap <C-j>       <Down>
+inoremap <C-k>       <Up>
+cnoremap <C-j>       <Down>
+cnoremap <C-k>       <Up>
 
 " Wrapped lines goes down/up to next row, rather than next line in file.
 " noremap <silent> j gj
@@ -415,24 +466,24 @@ cmap <C-k>       <Up>
 " nnoremap <silent> j :<C-u>execute 'normal!' (v:count > 1 ? "m'".v:count.'j' : 'gj')<Return>
 
 "add new lines above/below current line.
-nmap <silent> gO O<Esc>
-nmap <silent> go o<Esc>
+nnoremap <silent> gO O<Esc>
+nnoremap <silent> go o<Esc>
 
 "paste in insertmode
 " inoremap <C-v> <C-r>+
 
 " Easier moving in tabs and windows
 " The lines conflict with the default digraph mapping of <C-K>
-map <C-J> <C-W>j
-map <C-K> <C-W>k
-map <C-L> <C-W>l
-map <C-H> <C-W>h
-"nmap <BS> <C-W>h<C-W> "C-H bugged in nvim
+noremap <C-J> <C-W>j
+noremap <C-K> <C-W>k
+noremap <C-L> <C-W>l
+noremap <C-H> <C-W>h
+"nnoremap <BS> <C-W>h<C-W> "C-H bugged in nvim
 
 " Scroll the window next to the current one
 "   (especially useful for two-window split)
-nmap <silent> <leader>j <c-w>w<c-d><c-w>W
-nmap <silent> <leader>k <c-w>w<c-u><c-w>W
+nnoremap <silent> <leader>j <c-w>w<c-d><c-w>W
+nnoremap <silent> <leader>k <c-w>w<c-u><c-w>W
 
 " Go to the first and last char of the line
 nnoremap H ^
@@ -479,18 +530,37 @@ nnoremap <Leader>n :set rnu!<CR>
 "Will open files in current directory, allows you to leave the working cd in
 "the project root. You can also use %% anywhere in the command line to expand.
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
-nmap <leader>ew :e %%
-nmap <leader>es :sp %%
-nmap <leader>ev :vsp %%
-nmap <leader>et :tabe %%
+nnoremap <leader>ew :e %%
+nnoremap <leader>es :sp %%
+nnoremap <leader>ev :vsp %%
+nnoremap <leader>et :tabe %%
 
 " Change Working Directory to that of the current file
-cmap cwd lcd %:p:h
-cmap cd. lcd %:p:h
+cnoremap cwd lcd %:p:h
+cnoremap cd. lcd %:p:h
 
 " Visual shifting (does not exit Visual mode)
 vnoremap < <gv
 vnoremap > >gv
+
+" "Focus" the current line.  Basically:
+"
+" 1. Close all folds.
+" 2. Open just the folds containing the current line.
+" 3. Move the line to a little bit (15 lines) above the center of the screen.
+" 4. Pulse the cursor line.  My eyes are bad.
+"
+" This mapping wipes out the z mark, which I never use.
+"
+" I use :sus for the rare times I want to actually background Vim.
+nnoremap <c-z> mzzMzvzz15<c-e>`z:Pulse<cr>
+
+" Space to toggle folds.
+nnoremap <Space> za
+vnoremap <Space> za
+
+" Make zO recursively open whatever fold we're in, even if it's partially open.
+nnoremap zO zczO
 
 " split edit vimrc
 nnoremap <leader>ev <C-w><C-s><C-l>:e $MYVIMRC<CR>
@@ -503,14 +573,14 @@ nnoremap <leader>sw :call StripTrailingWhitespace()<CR>
 vnoremap . :normal .<CR>
 
 " Adjust viewports to the same size
-map <Leader>= <C-w>=
+noremap <Leader>= <C-w>=
 
-" Map <Leader>ff to display all lines with keyword under cursor
+" noremap <Leader>ff to display all lines with keyword under cursor
 " and ask which one to jump to
 nnoremap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
 
 " Easy formatting
-nmap <silent> <leader>q gwie
+nnoremap <silent> <leader>q gwie
 
 " Initialize directories
 function! InitializeDirectories()
@@ -579,7 +649,20 @@ command! -complete=file -nargs=+ Shell call s:RunShellCommand(<q-args>)
 " e.g. Grep current file for <search_term>: Shell grep -Hn <search_term> %
 
 command! -nargs=1 Silent
-\ | execute ':silent !'.<q-args>
-\ | execute ':redraw!'
+            \ | execute ':silent !'.<q-args>
+            \ | execute ':redraw!'
+
+let g:indentguides_state = 0
+function! IndentGuides() " {{{
+    if g:indentguides_state
+        let g:indentguides_state = 0
+        2match None
+    else
+        let g:indentguides_state = 1
+        execute '2match IndentGuides /\%(\_^\s*\)\@<=\%(\%'.(0*&sw+1).'v\|\%'.(1*&sw+1).'v\|\%'.(2*&sw+1).'v\|\%'.(3*&sw+1).'v\|\%'.(4*&sw+1).'v\|\%'.(5*&sw+1).'v\|\%'.(6*&sw+1).'v\|\%'.(7*&sw+1).'v\)\s/'
+    endif
+endfunction " }}}
+hi def IndentGuides guibg=#303030 ctermbg=236
+nnoremap <leader>I :call IndentGuides()<cr>
 
 " }}}

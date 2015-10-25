@@ -1,3 +1,5 @@
+" vim: set ft=vim fdm=marker:
+
 set runtimepath+=~/.vim/bundle/neobundle.vim/
 
 call neobundle#begin(expand('~/.vim/bundle'))
@@ -57,10 +59,10 @@ NeoBundle 'junegunn/seoul256.vim'
 NeoBundle 'jonathanfilip/lucius'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'chriskempson/base16-vim'
-"NeoBundle 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
+" NeoBundle 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
 NeoBundle 'bling/vim-airline'
 NeoBundle 'bling/vim-bufferline'
-NeoBundle 'nathanaelkane/vim-indent-guides'
+" NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'hynek/vim-python-pep8-indent'
 " NeoBundle 'myusuf3/numbers.vim'
 NeoBundle 'osyo-manga/vim-over'
@@ -159,26 +161,26 @@ if neobundle#tap('vim-airline') " {{{
     let g:airline#extensions#whitespace#enabled = 0
 
     let g:airline_mode_map = {
-                            \ '__' : '-',
-                            \ 'n'    : 'N',
-                            \ 'i'    : 'I',
-                            \ 'R'    : 'R',
-                            \ 'v'    : 'V',
-                            \ 'V'    : 'V-L',
-                            \ 'c'    : 'C',
-                            \ 's'    : 'S',
-                            \ 'S'    : 'S-L',
-                            \ }
+                \ '__' : '-',
+                \ 'n'    : 'N',
+                \ 'i'    : 'I',
+                \ 'R'    : 'R',
+                \ 'v'    : 'V',
+                \ 'V'    : 'V-L',
+                \ 'c'    : 'C',
+                \ 's'    : 'S',
+                \ 'S'    : 'S-L',
+                \ }
 
 endif " }}}
 
 if neobundle#tap('vim-bufferline') " {{{
 
-  " let g:bufferline_echo = 0
-  " autocmd VimEnter *
-  "   \ let &statusline='%{bufferline#refresh_status()}'
-  "     \ .bufferline#get_status_string()
-  " let g:bufferline_rotate = 2
+    " let g:bufferline_echo = 0
+    " autocmd VimEnter *
+    "   \ let &statusline='%{bufferline#refresh_status()}'
+    "     \ .bufferline#get_status_string()
+    " let g:bufferline_rotate = 2
 
 endif " }}}
 
@@ -347,25 +349,25 @@ if neobundle#tap('neocomplete') " {{{
         endif
     endfunction
     inoremap <expr> <TAB>
-        \ pumvisible() ? "\<C-n>" :
-        \ "<C-R>=ExpandSnippetOrJumpForwardOrReturnTab()<CR>"
+                \ pumvisible() ? "\<C-n>" :
+                \ "<C-R>=ExpandSnippetOrJumpForwardOrReturnTab()<CR>"
     " jump to next placeholder otherwise do nothing
     snoremap <buffer> <silent> <TAB>
-        \ <ESC>:call UltiSnips#JumpForwards()<CR>
+                \ <ESC>:call UltiSnips#JumpForwards()<CR>
     " snoremap <buffer> <silent> <C-l>
     "     \ <ESC>:call UltiSnips#JumpForwards()<CR>
     inoremap <expr><silent><C-l>
-        \ pumvisible() ? neocomplete#complete_common_string() : "\<C-y>"
+                \ pumvisible() ? neocomplete#complete_common_string() : "\<C-y>"
 
     " previous menu item, jump to previous placeholder or do nothing
     let g:UltiSnipsJumpBackwordTrigger = "<NOP>"
     inoremap <expr> <S-TAB>
-        \ pumvisible() ? "\<C-p>" :
-        \ "<C-R>=UltiSnips#JumpBackwards()<CR>"
+                \ pumvisible() ? "\<C-p>" :
+                \ "<C-R>=UltiSnips#JumpBackwards()<CR>"
 
     " jump to previous placeholder otherwise do nothing
     snoremap <buffer> <silent> <S-TAB>
-        \ <ESC>:call UltiSnips#JumpBackwards()<CR>
+                \ <ESC>:call UltiSnips#JumpBackwards()<CR>
 
     " expand snippet, close menu or insert newline
     " let g:UltiSnipsExpandTrigger = "<NOP>"
@@ -418,21 +420,21 @@ if neobundle#tap('neocomplete') " {{{
     autocmd CmdwinEnter * call s:init_cmdwin()
 
     function! s:init_cmdwin()
-      let b:neocomplete_sources = ['vim']
+        let b:neocomplete_sources = ['vim']
 
-      nnoremap <buffer><silent> q :<C-u>quit<CR>
-      nnoremap <buffer><silent> <TAB> :<C-u>quit<CR>
-      inoremap <buffer><expr><CR> neocomplete#close_popup()."\<CR>"
-      inoremap <buffer><expr><C-h> col('.') == 1 ?
-            \ "\<ESC>:quit\<CR>" : neocomplete#cancel_popup()."\<C-h>"
-      inoremap <buffer><expr><BS> col('.') == 1 ?
-            \ "\<ESC>:quit\<CR>" : neocomplete#cancel_popup()."\<C-h>"
+        nnoremap <buffer><silent> q :<C-u>quit<CR>
+        nnoremap <buffer><silent> <TAB> :<C-u>quit<CR>
+        inoremap <buffer><expr><CR> neocomplete#close_popup()."\<CR>"
+        inoremap <buffer><expr><C-h> col('.') == 1 ?
+                    \ "\<ESC>:quit\<CR>" : neocomplete#cancel_popup()."\<C-h>"
+        inoremap <buffer><expr><BS> col('.') == 1 ?
+                    \ "\<ESC>:quit\<CR>" : neocomplete#cancel_popup()."\<C-h>"
 
-      " Completion.
-      inoremap <buffer><expr><TAB>  pumvisible() ?
-            \ "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : neocomplete#start_manual_complete()
+        " Completion.
+        inoremap <buffer><expr><TAB>  pumvisible() ?
+                    \ "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : neocomplete#start_manual_complete()
 
-      startinsert!
+        startinsert!
     endfunction
 
     call neobundle#untap()
@@ -1227,13 +1229,13 @@ if neobundle#tap('incsearch.vim') " {{{
     map zg/ <Plug>(incsearch-easymotion-stay)
 
     function! s:config_easyfuzzymotion(...) abort
-      return extend(copy({
-      \   'converters': [incsearch#config#fuzzy#converter()],
-      \   'modules': [incsearch#config#easymotion#module()],
-      \   'keymap': {"\<CR>": '<Over>(easymotion)'},
-      \   'is_expr': 0,
-      \   'is_stay': 1
-      \ }), get(a:, 1, {}))
+        return extend(copy({
+                    \   'converters': [incsearch#config#fuzzy#converter()],
+                    \   'modules': [incsearch#config#easymotion#module()],
+                    \   'keymap': {"\<CR>": '<Over>(easymotion)'},
+                    \   'is_expr': 0,
+                    \   'is_stay': 1
+                    \ }), get(a:, 1, {}))
     endfunction
 
     noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
