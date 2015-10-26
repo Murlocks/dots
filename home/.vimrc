@@ -245,6 +245,7 @@ set statusline+=%*
 set statusline+=%#identifier#
 set statusline+=%h      "help file flag
 set statusline+=%y      "filetype
+set statusline+=%*
 
 "read only flag
 set statusline+=%#identifier#
@@ -267,9 +268,11 @@ set statusline+=%*
 
 set statusline+=%#identifier#
 set statusline+=%{StatuslineTrailingSpaceWarning()}
+set statusline+=%*
 
 set statusline+=%#identifier#
 set statusline+=%{StatuslineLongLineWarning()}
+set statusline+=%*
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -281,13 +284,13 @@ set statusline+=%#warningmsg#
 " set statusline+=%*
 
 set statusline+=%=      "left/right separator
-" set statusline+=%#warningmsg#
+set statusline+=%#warningmsg#
 set statusline+=%{&paste?'[paste]':''}
 set statusline+=%{StatuslineCurrentHighlight()}\ \ "current highlight
 set statusline+=%c,     "cursor column
 set statusline+=%l/%L   "cursor line/total lines
 set statusline+=\ %P    "percent through file
-" set statusline+=%*
+set statusline+=%*
 set laststatus=2
 
 "recalculate the trailing whitespace warning when idle, and after saving
@@ -387,7 +390,7 @@ endfunction
 function! s:LongLines()
     let threshold = (&tw ? &tw : 80)
     let spaces = repeat(" ", &ts)
-    let line_lens = noremap(getline(1,'$'), 'len(substitute(v:val, "\\t", spaces, "g"))')
+    let line_lens = map(getline(1,'$'), 'len(substitute(v:val, "\\t", spaces, "g"))')
     return filter(line_lens, 'v:val > threshold')
 endfunction
 
@@ -553,11 +556,11 @@ vnoremap > >gv
 " This mapping wipes out the z mark, which I never use.
 "
 " I use :sus for the rare times I want to actually background Vim.
-nnoremap <c-z> mzzMzvzz15<c-e>`z:Pulse<cr>
+nnoremap <Space>z mzzMzvzz15<c-e>`z:Pulse<cr>
 
 " Space to toggle folds.
-nnoremap <Space> za
-vnoremap <Space> za
+nnoremap <Space><Space> za
+vnoremap <Space><Space> za
 
 " Make zO recursively open whatever fold we're in, even if it's partially open.
 nnoremap zO zczO

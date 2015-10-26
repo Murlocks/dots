@@ -86,6 +86,7 @@ NeoBundle 'jiangmiao/auto-pairs' " Doesn't play well with unite's preview window
 " NeoBundle 'cohama/vim-smartinput-endwise', { 'depends' : [ 'kana/vim-smartinput' ] }
 " NeoBundle 'cohama/lexima.vim'
 NeoBundle 'matchit.zip'
+NeoBundle 'mileszs/ack.vim'
 NeoBundle 'haya14busa/incsearch.vim'
 NeoBundle 'haya14busa/incsearch-easymotion.vim', { 'depends:' : [ 'haya14busa/incsearch.vim' ] }
 NeoBundle 'osyo-manga/vim-over'
@@ -95,6 +96,7 @@ NeoBundle 'tpope/vim-unimpaired'
 " NeoBundle 'kana/vim-repeat'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
+NeoBundle 'duff/vim-bufonly'
 NeoBundle 'godlygeek/tabular'
 NeoBundle 'plasticboy/vim-markdown', { 'depends:' : [ 'godlygeek/tabular' ] }
 NeoBundle 'vim-pandoc/vim-pandoc'
@@ -370,26 +372,21 @@ if neobundle#tap('neocomplete') " {{{
                 \ <ESC>:call UltiSnips#JumpBackwards()<CR>
 
     " expand snippet, close menu or insert newline
-    " let g:UltiSnipsExpandTrigger = "<NOP>"
-    " let g:ulti_expand_or_jump_res = 0
-    " inoremap <silent> <C-l> <C-r>=<SID>ExpandSnippetOrReturnEmptyString()<CR>
-    " vnoremap <silent> <C-l> <C-r>=<SID>ExpandSnippetOrReturnEmptyString()<CR>
-    " function! s:ExpandSnippetOrReturnEmptyString()
-    "     if pumvisible()
-    "         let snippet = UltiSnips#ExpandSnippetOrJump()
-    "         if g:ulti_expand_or_jump_res > 0
-    "             return snippet
-    "         else
-    "             return "\<C-y>\<CR>"
-    "         endif
-    "     else
-    "         let snippet = UltiSnips#JumpForwards()
-    "         return "\<ESC>" . snippet
-    "     endif
-    " endfunction
-
     let g:UltiSnipsExpandTrigger = "<NOP>"
     let g:ulti_expand_or_jump_res = 0
+    inoremap <silent> <C-l> <C-r>=<SID>ExpandSnippetOrChoose()<CR>
+    vnoremap <silent> <C-l> <C-r>=<SID>ExpandSnippetOrChoose()<CR>
+    function! s:ExpandSnippetOrChoose()
+        if pumvisible()
+            let snippet = UltiSnips#ExpandSnippetOrJump()
+            if g:ulti_expand_or_jump_res > 0
+                return snippet
+            else
+                return "\<C-y>"
+            endif
+        endif
+    endfunction
+
     inoremap <silent> <CR> <C-r>=<SID>ExpandSnippetOrReturnEmptyString()<CR>
     function! s:ExpandSnippetOrReturnEmptyString()
         if pumvisible()
@@ -400,8 +397,8 @@ if neobundle#tap('neocomplete') " {{{
                 return "\<C-y>\<CR>"
             endif
         else
-            " return AutoPairsReturn() . "\<CR>"
-            return "\<CR>"
+            return AutoPairsReturn() . "\<CR>"
+            " return "\<CR>"
         endif
     endfunction
 
@@ -1066,7 +1063,8 @@ if neobundle#tap('goyo.vim') " {{{
         set noshowcmd
         set nocursorline
         set fdm=manual
-        exec NumbersToggle()
+        " exec NumbersToggle()
+        exec GitGutterDisable()
         set nonumber, norelativenumber
         set scrolloff=999
         let g:neocomplete#disable_auto_complete = 1
@@ -1079,14 +1077,18 @@ if neobundle#tap('goyo.vim') " {{{
             autocmd!
         augroup END
         set showmode
-        set showcmd
+        " set showcmd
         set cursorline
         set scrolloff=10
         set fdm=marker
+        exec GitGutterEnable()
         " set number
         let g:neocomplete#disable_auto_complete = 0
         highlight clear SignColumn
         highlight clear LineNr
+        highlight clear GitGutterChangeDefault
+        highlight clear GitGutterAddDefault
+        highlight clear GitGutterDeleteDefault
         " Quit Vim if this is the only remaining buffer
         if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
             if b:quitting_bang
@@ -1159,7 +1161,7 @@ endif " }}}
 
 if neobundle#tap('lexima.vim') " {{{
 
-    let g:lexima_enable_endwise_rules = 1
+    " let g:lexima_enable_endwise_rules = 1
 
 endif " }}}
 
@@ -1207,6 +1209,14 @@ if neobundle#tap('numbers.vim') " {{{
     " exec ":NumbersOnOff<CR>"
     " exec ":NumbersToggle<CR>"
     nnoremap <Leader>n :NumbersOnOff<CR>:NumbersToggle<CR>
+
+endif " }}}
+
+if neobundle#tap('ack.vim') " {{{
+
+    if executable('ag')
+        let g:ackprg = 'ag --vimgrep'
+    endif
 
 endif " }}}
 
