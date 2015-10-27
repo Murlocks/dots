@@ -93,6 +93,8 @@ NeoBundle 'osyo-manga/vim-over'
 " NeoBundle 'wellle/targets.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-unimpaired'
+NeoBundle 'tpope/vim-dispatch'
+NeoBundle 'james9909/stackanswers.vim'
 " NeoBundle 'kana/vim-repeat'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
@@ -161,17 +163,20 @@ if neobundle#tap('vim-airline') " {{{
     let g:airline#extensions#bufferline#enabled = 0
     " let g:airline#extensions#tabline#enabled = 1
     let g:airline#extensions#whitespace#enabled = 0
+    let g:airline_section_y = {}
 
     let g:airline_mode_map = {
                 \ '__' : '-',
-                \ 'n'    : 'N',
-                \ 'i'    : 'I',
-                \ 'R'    : 'R',
-                \ 'v'    : 'V',
-                \ 'V'    : 'V-L',
-                \ 'c'    : 'C',
-                \ 's'    : 'S',
-                \ 'S'    : 'S-L',
+                \ 'n'  : 'N',
+                \ 'i'  : 'I',
+                \ 'R'  : 'R',
+                \ 'c'  : 'C',
+                \ 'v'  : 'V',
+                \ 'V'  : 'V',
+                \ '' : 'V',
+                \ 's'  : 'S',
+                \ 'S'  : 'S',
+                \ '' : 'S',
                 \ }
 
 endif " }}}
@@ -210,69 +215,74 @@ endif " }}}
 
 if neobundle#tap('neocomplete') " {{{
 
-    let g:neocomplete#enable_at_startup = 1
+    function! neobundle#tapped.hooks.on_source(bundle)
 
-    let g:neocomplete#enable_auto_delimiter = 1
-    let g:neocomplete#max_list = 15
-    let g:neocomplete#force_overwrite_completefunc = 1
-    let g:neocomplete#disable_auto_complete = 0
-    " let g:neocomplete#enable_auto_close_preview = 1
+        let g:neocomplete#enable_at_startup = 1
 
-    " Use smartcase.
-    let g:neocomplete#enable_smart_case = 1
-    let g:neocomplete#enable_camel_case = 1
+        let g:neocomplete#enable_auto_delimiter = 1
+        let g:neocomplete#max_list = 15
+        let g:neocomplete#force_overwrite_completefunc = 1
+        let g:neocomplete#disable_auto_complete = 0
+        " let g:neocomplete#enable_auto_close_preview = 1
 
-    " Use fuzzy completion.
-    let g:neocomplete#enable_fuzzy_completion = 1
+        " Use smartcase.
+        let g:neocomplete#enable_smart_case = 1
+        let g:neocomplete#enable_camel_case = 1
 
-    " autocmd CompleteDone * pclose
+        " Use fuzzy completion.
+        let g:neocomplete#enable_fuzzy_completion = 1
 
-    " Set auto completion length.
-    let g:neocomplete#auto_completion_start_length = 3
-    " Set manual completion length.
-    let g:neocomplete#manual_completion_start_length = 3
-    " Set minimum keyword length.
-    let g:neocomplete#min_keyword_length = 3
+        " autocmd CompleteDone * pclose
 
-    " let g:neocomplete#enable_auto_select = 1
+        " Set auto completion length.
+        let g:neocomplete#auto_completion_start_length = 3
+        " Set manual completion length.
+        let g:neocomplete#manual_completion_start_length = 3
+        " Set minimum keyword length.
+        let g:neocomplete#min_keyword_length = 3
 
-    " Define keyword.
-    if !exists('g:neocomplete#keyword_patterns')
-        let g:neocomplete#keyword_patterns = {}
-    endif
-    if !exists('g:neocomplete#sources#omni#input_patterns')
-        let g:neocomplete#sources#omni#input_patterns = {}
-    endif
-    if !exists('g:neocomplete#sources#omni#functions')
-        let g:neocomplete#sources#omni#functions = {}
-    endif
-    if !exists('g:neocomplete#force_omni_input_patterns')
-        let g:neocomplete#force_omni_input_patterns = {}
-    endif
+        " let g:neocomplete#enable_auto_select = 1
 
-    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+        " Define keyword.
+        if !exists('g:neocomplete#keyword_patterns')
+            let g:neocomplete#keyword_patterns = {}
+        endif
+        if !exists('g:neocomplete#sources#omni#input_patterns')
+            let g:neocomplete#sources#omni#input_patterns = {}
+        endif
+        if !exists('g:neocomplete#sources#omni#functions')
+            let g:neocomplete#sources#omni#functions = {}
+        endif
+        if !exists('g:neocomplete#force_omni_input_patterns')
+            let g:neocomplete#force_omni_input_patterns = {}
+        endif
 
+        let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
-    " Python Completions for neocomplete
-    autocmd FileType python setlocal omnifunc=jedi#completions
-    let g:jedi#completions_enabled = 0
-    let g:jedi#auto_vim_configuration = 0
-    let g:neocomplete#force_omni_input_patterns.python =
-                \ '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+        " Python Completions for neocomplete
+        autocmd FileType python setlocal omnifunc=jedi#completions
+        let g:jedi#completions_enabled = 0
+        let g:jedi#auto_vim_configuration = 0
+        let g:neocomplete#force_omni_input_patterns.python =
+                    \ '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
 
-    " Use eclim for java
-    if !exists('g:neocomplete#force_omni_input_patterns')
-        let g:neocomplete#force_omni_input_patterns = {}
-    endif
-    let g:neocomplete#force_omni_input_patterns.java =
-                \ '\%(\h\w*\|)\)\.\w*'
+        " Use eclim for java
+        if !exists('g:neocomplete#force_omni_input_patterns')
+            let g:neocomplete#force_omni_input_patterns = {}
+        endif
+        let g:neocomplete#force_omni_input_patterns.java =
+                    \ '\%(\h\w*\|)\)\.\w*'
 
-    " Use vim-marching for C++
-    let g:neocomplete#force_omni_input_patterns.cpp =
-                \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+        " Use vim-marching for C++
+        let g:neocomplete#force_omni_input_patterns.cpp =
+                    \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
 
-    " Change file ranking
-    " call neocomplete#custom#source('file', 'rank', 10)
+        " Change file ranking
+        call neocomplete#custom#source('file', 'rank', 10)
+
+        call neocomplete#initialize()
+
+    endfunction
 
     " imap <silent><expr><C-l> neosnippet#expandable() ?
     "                         \ "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ?

@@ -21,6 +21,9 @@ endif
 set term=xterm-256color
 set t_Co=256
 
+" let g:netrw_browsex_viewer = "xdg-open"
+let g:netrw_browsex_viewer = "firefox"
+
 " Less lag
 set lazyredraw
 set ttyfast
