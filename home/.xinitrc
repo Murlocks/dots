@@ -5,6 +5,8 @@ usermodmap=$HOME/.Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
 sysmodmap=/etc/X11/xinit/.Xmodmap
 
+# setxkbmap -layout jp, us
+
 # merge in defaults and keymaps
 
 if [ -f $sysresources ]; then
@@ -54,7 +56,7 @@ compton --mark-ovredir-focused &
 mopidy &
 urxvtd -q -f -o &
 xsetroot -cursor_name left_ptr &
-/usr/bin/dropbox &
+dropbox &
 clipbored &
 sxhkd &
 exec bspwm

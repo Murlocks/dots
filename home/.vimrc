@@ -13,6 +13,11 @@ set nocompatible
 let mapleader = ','
 let localleader = '_'
 
+" Clear vimrc augroup
+augroup vimrc
+    autocmd!
+augroup END
+
 " load bundles
 if filereadable(expand("~/.vimrc.bundles"))
     source ~/.vimrc.bundles
@@ -57,7 +62,7 @@ scriptencoding utf-8
 
 set foldmethod=marker               " use foldmarkers
 let &fmr = ' {{{, }}}'              " Put spaces between comment and marker
-autocmd BufNewFile,BufRead * :let &cms = ' ' . &cms
+autocmd vimrc BufNewFile,BufRead * :let &cms = ' ' . &cms
 set shortmess+=filmnrxoOtT          " Abbrev. of messages (avoids 'hit enter')
 set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
 set virtualedit=onemore             " Allow for cursor beyond last character
@@ -142,7 +147,7 @@ augroup END
 " --------------------------------------
 " http://vim-users.jp/2011/02/hack202/
 
-autocmd BufWritePre *
+autocmd vimrc BufWritePre *
             \ call s:mkdir_as_necessary(expand('<afile>:p:h'), v:cmdbang)
 function! s:mkdir_as_necessary(dir, force)
     if !isdirectory(a:dir) && &l:buftype == '' &&
@@ -297,7 +302,7 @@ set statusline+=%*
 set laststatus=2
 
 "recalculate the trailing whitespace warning when idle, and after saving
-autocmd cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
+autocmd vimrc cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
 
 "return '[\s]' if trailing white space is detected
 "return '' otherwise
@@ -330,7 +335,7 @@ function! StatuslineCurrentHighlight()
 endfunction
 
 "recalculate the tab warning flag when idle and after writing
-autocmd cursorhold,bufwritepost * unlet! b:statusline_tab_warning
+autocmd vimrc cursorhold,bufwritepost * unlet! b:statusline_tab_warning
 
 "return '[&et]' if &et is set wrong
 "return '[mixed-indenting]' if spaces and tabs are used to indent
@@ -358,7 +363,7 @@ function! StatuslineTabWarning()
 endfunction
 
 "recalculate the long line warning when idle and after saving
-autocmd cursorhold,bufwritepost * unlet! b:statusline_long_line_warning
+autocmd vimrc cursorhold,bufwritepost * unlet! b:statusline_long_line_warning
 
 "return a warning for "long lines" where "long" is either &textwidth or 80 (if
 "no &textwidth is set)
@@ -429,11 +434,11 @@ set splitbelow                      " Puts new split windows to the bottom of th
 set pastetoggle=<F12>               " pastetoggle (sane indentation on pastes)
 
 " don't auto continue line comments
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+autocmd vimrc FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Remove trailing whitespaces and ^M chars
-autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
-autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql autocmd InsertLeave <buffer> call StripTrailingWhitespace()
+autocmd vimrc FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
+autocmd vimrc FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql autocmd InsertLeave <buffer> call StripTrailingWhitespace()
 
 " }}}
 

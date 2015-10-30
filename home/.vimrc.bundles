@@ -94,6 +94,7 @@ NeoBundle 'osyo-manga/vim-over'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'tpope/vim-dispatch'
+NeoBundle 'tpope/vim-eunuch'
 NeoBundle 'james9909/stackanswers.vim'
 " NeoBundle 'kana/vim-repeat'
 NeoBundle 'tpope/vim-repeat'
@@ -154,7 +155,7 @@ let g:neobundle#install_process_timeout = 1500
 
 set rtp+=~/.fzf
 
-if neobundle#tap('vim-airline') " {{{
+if g:neobundle#tap('vim-airline') " {{{
 
     " let g:airline_theme='behelit'
     let g:airline_theme='bubblegum'
@@ -181,7 +182,7 @@ if neobundle#tap('vim-airline') " {{{
 
 endif " }}}
 
-if neobundle#tap('vim-bufferline') " {{{
+if g:neobundle#tap('vim-bufferline') " {{{
 
     " let g:bufferline_echo = 0
     " autocmd VimEnter *
@@ -191,9 +192,9 @@ if neobundle#tap('vim-bufferline') " {{{
 
 endif " }}}
 
-if neobundle#tap('vital.vim') " {{{
+if g:neobundle#tap('vital.vim') " {{{
 
-    function! neobundle#tapped.hooks.on_source(bundle)
+    function! g:neobundle#tapped.hooks.on_source(bundle)
         let g:V = vital#of('vital')
         let g:S = g:V.import("Web.HTTP")
         let g:L = g:V.import("Data.List")
@@ -213,14 +214,14 @@ if neobundle#tap('vital.vim') " {{{
 
 endif " }}}
 
-if neobundle#tap('neocomplete') " {{{
+if g:neobundle#tap('neocomplete') " {{{
 
-    function! neobundle#tapped.hooks.on_source(bundle)
+    function! g:neobundle#tapped.hooks.on_source(bundle)
 
         let g:neocomplete#enable_at_startup = 1
 
         let g:neocomplete#enable_auto_delimiter = 1
-        let g:neocomplete#max_list = 15
+        " let g:neocomplete#max_list = 15
         let g:neocomplete#force_overwrite_completefunc = 1
         let g:neocomplete#disable_auto_complete = 0
         " let g:neocomplete#enable_auto_close_preview = 1
@@ -320,7 +321,6 @@ if neobundle#tap('neocomplete') " {{{
     " inoremap <expr> <CR> CleverCr()
     " " <C-h>, <BS>: close popup and delete backword char.
     inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-    inoremap <expr><C-h> neocomplete#smart_close_popup()
 
     "
     function! s:check_back_space() "{{{
@@ -412,8 +412,7 @@ if neobundle#tap('neocomplete') " {{{
         endif
     endfunction
 
-    inoremap <expr><C-h> neocomplete#smart_close_popup()
-
+    inoremap <expr><C-h> pumvisible() ? neocomplete#smart_close_popup() : "\<C-h>"
     inoremap <expr><BS>  neocomplete#smart_close_popup()."\<C-h>"
 
     " Command line buffer.
@@ -421,8 +420,8 @@ if neobundle#tap('neocomplete') " {{{
     xnoremap <SID>(command-line-enter) q:
     nnoremap <SID>(command-line-norange) q:<C-u>
 
-    nmap ;;  <SID>(command-line-enter)
-    xmap ;;  <SID>(command-line-enter)
+    " nmap ;;  <SID>(command-line-enter)
+    " xmap ;;  <SID>(command-line-enter)
 
     autocmd CmdwinEnter * call s:init_cmdwin()
 
@@ -448,7 +447,7 @@ if neobundle#tap('neocomplete') " {{{
 
 endif " }}}
 
-if neobundle#tap('neosnippet') " {{{
+if g:neobundle#tap('neosnippet') " {{{
 
     call neobundle#config({
                 \     'autoload' : {
@@ -477,7 +476,7 @@ if neobundle#tap('neosnippet') " {{{
 
 endif " }}}
 
-if neobundle#tap('YouCompleteMe') " {{{
+if g:neobundle#tap('YouCompleteMe') " {{{
 
     let g:ycm_confirm_extra_conf        = 0
     let g:ycm_global_ycm_extra_conf = '~/.vim/ycm.py'
@@ -486,7 +485,7 @@ if neobundle#tap('YouCompleteMe') " {{{
 
 endif " }}}
 
-if neobundle#tap('ultisnips') " {{{
+if g:neobundle#tap('ultisnips') " {{{
 
     " let g:UltiSnipsExpandTrigger="<C-l>"
     let g:UltiSnipsJumpForwardTrigger = "<c-j>"
@@ -494,7 +493,7 @@ if neobundle#tap('ultisnips') " {{{
 
 endif " }}}
 
-if neobundle#tap('unite.vim') " {{{
+if g:neobundle#tap('unite.vim') " {{{
 
     call neobundle#config({
                 \     'autoload' : {
@@ -551,7 +550,7 @@ if neobundle#tap('unite.vim') " {{{
         endif
     endfunction
 
-    function! neobundle#tapped.hooks.on_source(bundle)
+    function! g:neobundle#tapped.hooks.on_source(bundle)
 
         " General
         let g:unite_source_history_yank_enable = 1
@@ -715,7 +714,7 @@ if neobundle#tap('unite.vim') " {{{
 
 endif " }}}
 
-if neobundle#tap('vim-textobj-multiblock') " {{{
+if g:neobundle#tap('vim-textobj-multiblock') " {{{
 
     let g:textobj_multiblock_blocks = [
                 \     ['(', ')', 1],
@@ -731,13 +730,13 @@ if neobundle#tap('vim-textobj-multiblock') " {{{
 
 endif " }}}
 
-if neobundle#tap('vim-textobj-blockwise') " {{{
+if g:neobundle#tap('vim-textobj-blockwise') " {{{
 
     vmap <expr> iw mode() == "\<C-v>" ? textobj#blockwise#mapexpr('iw') : 'iw'
 
 endif " }}}
 
-if neobundle#tap('vim-operator-blockwise') " {{{
+if g:neobundle#tap('vim-operator-blockwise') " {{{
 
     nmap YY <Plug>(operator-blockwise-yank)
     nmap DD <Plug>(operator-blockwise-delete)
@@ -746,7 +745,7 @@ if neobundle#tap('vim-operator-blockwise') " {{{
 
 endif " }}}
 
-if neobundle#tap('vim-textobj-multiblock') " {{{
+if g:neobundle#tap('vim-textobj-multiblock') " {{{
 
     omap ab <Plug>(textobj-multiblock-a)
     omap ib <Plug>(textobj-multiblock-i)
@@ -755,9 +754,9 @@ if neobundle#tap('vim-textobj-multiblock') " {{{
 
 endif " }}}
 
-if neobundle#tap('vim-submode') " {{{
+if g:neobundle#tap('vim-submode') " {{{
 
-    function! neobundle#tapped.hooks.on_source(bundle)
+    function! g:neobundle#tapped.hooks.on_source(bundle)
         let g:submode_keep_leaving_key = 1
         " tab moving
         call submode#enter_with('changetab', 'n', '', 'gt', 'gt')
@@ -792,7 +791,7 @@ if neobundle#tap('vim-submode') " {{{
 
 endif " }}}
 
-if neobundle#tap('vimux') " {{{
+if g:neobundle#tap('vimux') " {{{
 
     nmap <Leader>rb :call VimuxRunCommand("clear; rspec " . bufname("%"))<CR>
     nmap <Leader>vp :VimuxPromptCommand<CR>
@@ -805,7 +804,7 @@ if neobundle#tap('vimux') " {{{
 
 endif " }}}
 
-if neobundle#tap('emmet-vim') " {{{
+if g:neobundle#tap('emmet-vim') " {{{
 
     function! s:zen_html_tab()
         let line = getline('.')
@@ -820,7 +819,7 @@ if neobundle#tap('emmet-vim') " {{{
 
 endif " }}}
 
-if neobundle#tap('vim-easymotion') " {{{
+if g:neobundle#tap('vim-easymotion') " {{{
 
     " hi link EasyMotionTarget ErrorMsg
     " hi link EasyMotionShade    Comment
@@ -840,7 +839,7 @@ if neobundle#tap('vim-easymotion') " {{{
 
 endif " }}}
 
-if neobundle#tap('vim-sneak') " {{{
+if g:neobundle#tap('vim-sneak') " {{{
 
     hi link SneakPluginTarget ErrorMsg
     hi link SneakPluginScope Comment
@@ -873,21 +872,21 @@ if neobundle#tap('vim-sneak') " {{{
 
 endif " }}}
 
-if neobundle#tap('accelerated-jk') " {{{
+if g:neobundle#tap('accelerated-jk') " {{{
 
     nmap j <Plug>(accelerated_jk_gj)
     nmap k <Plug>(accelerated_jk_gk)
 
 endif " }}}
 
-if neobundle#tap('undotree') " {{{
+if g:neobundle#tap('undotree') " {{{
 
     let g:undotree_WindowLayout = 2
     nnoremap <Leader>u :UndotreeToggle<CR>
 
 endif " }}}
 
-if neobundle#tap('vim-smartinput') " {{{
+if g:neobundle#tap('vim-smartinput') " {{{
 
     call neobundle#config({
                 \     'autoload' : {
@@ -895,12 +894,12 @@ if neobundle#tap('vim-smartinput') " {{{
                 \     }
                 \ })
 
-    function! neobundle#tapped.hooks.on_source(bundle)
+    function! g:neobundle#tapped.hooks.on_source(bundle)
         call smartinput#clear_rules()
         call smartinput#define_default_rules()
     endfunction
 
-    function! neobundle#tapped.hooks.on_post_source(bundle)
+    function! g:neobundle#tapped.hooks.on_post_source(bundle)
         call smartinput_endwise#define_default_rules()
     endfunction
 
@@ -908,9 +907,9 @@ if neobundle#tap('vim-smartinput') " {{{
 
 endif " }}}
 
-if neobundle#tap('vim-smartinput-endwise') " {{{
+if g:neobundle#tap('vim-smartinput-endwise') " {{{
 
-    function! neobundle#tapped.hooks.on_post_source(bundle)
+    function! g:neobundle#tapped.hooks.on_post_source(bundle)
         " neosnippet and neocomplete compatible
         call smartinput#map_to_trigger('i', '<Plug>(my_cr)', '<Enter>', '<Enter>')
     endfunction
@@ -919,9 +918,9 @@ if neobundle#tap('vim-smartinput-endwise') " {{{
 
 endif " }}}
 
-if neobundle#tap('vim-textobj-multitextobj') " {{{
+if g:neobundle#tap('vim-textobj-multitextobj') " {{{
 
-    function! neobundle#tapped.hooks.on_post_source(bundle)
+    function! g:neobundle#tapped.hooks.on_post_source(bundle)
         let g:textobj_multitextobj_textobjects_i = [
                     \     "i(",
                     \     "i[",
@@ -939,7 +938,7 @@ if neobundle#tap('vim-textobj-multitextobj') " {{{
 
 endif " }}}
 
-if neobundle#tap('vim-easytags') " {{{
+if g:neobundle#tap('vim-easytags') " {{{
 
     let g:easytags_dynamic_files = 1
     let g:easytags_include_members = 1
@@ -948,13 +947,13 @@ if neobundle#tap('vim-easytags') " {{{
 
 endif " }}}
 
-if neobundle#tap('vim-marching') " {{{
+if g:neobundle#tap('vim-marching') " {{{
 
     let g:marching_enable_neocomplete = 1
 
 endif " }}}
 
-if neobundle#tap('syntastic') " {{{
+if g:neobundle#tap('syntastic') " {{{
 
     " let g:syntastic_python_python_exec = '/bin/python2.7'
     let g:syntastic_python_flake8_args='--ignore=E501'
@@ -973,7 +972,7 @@ if neobundle#tap('syntastic') " {{{
 
 endif " }}}
 
-if neobundle#tap('vim-rooter') " {{{
+if g:neobundle#tap('vim-rooter') " {{{
 
     let g:rooter_disable_map = 1
     " let g:rooter_manual_only = 1
@@ -982,7 +981,7 @@ if neobundle#tap('vim-rooter') " {{{
 
 endif " }}}
 
-if neobundle#tap('vim-unimpaired') " {{{
+if g:neobundle#tap('vim-unimpaired') " {{{
 
     " currently bugged: :move command closes tabs when set to foldmarker
     " Bubble single lines - uses unimpaired plugin actions
@@ -994,7 +993,7 @@ if neobundle#tap('vim-unimpaired') " {{{
 
 endif " }}}
 
-if neobundle#tap('tabular') " {{{
+if g:neobundle#tap('tabular') " {{{
 
     nmap <Leader>a& :Tabularize /&<CR>
     vmap <Leader>a& :Tabularize /&<CR>
@@ -1015,7 +1014,7 @@ if neobundle#tap('tabular') " {{{
 
 endif " }}}
 
-if neobundle#tap('vim-editvar') " {{{
+if g:neobundle#tap('vim-editvar') " {{{
 
     call neobundle#config({
                 \     'autoload' : {
@@ -1026,7 +1025,7 @@ if neobundle#tap('vim-editvar') " {{{
 
 endif " }}}
 
-if neobundle#tap('unite-tag') " {{{
+if g:neobundle#tap('unite-tag') " {{{
 
     call neobundle#config({
                 \     'autoload' : {
@@ -1036,7 +1035,7 @@ if neobundle#tap('unite-tag') " {{{
 
 endif " }}}
 
-if neobundle#tap('unite-help') " {{{
+if g:neobundle#tap('unite-help') " {{{
 
     call neobundle#config({
                 \     'autoload' : {
@@ -1046,7 +1045,7 @@ if neobundle#tap('unite-help') " {{{
 
 endif " }}}
 
-if neobundle#tap('foldCC') " {{{
+if g:neobundle#tap('foldCC') " {{{
 
     set foldmethod=marker
     set foldtext=FoldCCtext()
@@ -1055,13 +1054,13 @@ if neobundle#tap('foldCC') " {{{
 
 endif " }}}
 
-if neobundle#tap('numbers.vim') " {{{
+if g:neobundle#tap('numbers.vim') " {{{
 
     let g:numbers_exclude = ['unite', 'goyo', 'undotree', 'vimshell']
 
 endif " }}}
 
-if neobundle#tap('goyo.vim') " {{{
+if g:neobundle#tap('goyo.vim') " {{{
 
     function! s:goyo_enter()
         augroup linenumbers
@@ -1142,16 +1141,16 @@ if neobundle#tap('goyo.vim') " {{{
 
 endif " }}}
 
-if neobundle#tap('caw.vim') " {{{
+if g:neobundle#tap('caw.vim') " {{{
 
     nmap <Leader>c gcc
     vmap <Leader>c gcc
 
 endif " }}}
 
-if neobundle#tap('vim-ctrlspace') " {{{
+if g:neobundle#tap('vim-ctrlspace') " {{{
 
-    function! neobundle#tapped.hooks.on_source(bundle)
+    function! g:neobundle#tapped.hooks.on_source(bundle)
 
         if executable("ag")
             let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
@@ -1163,19 +1162,19 @@ if neobundle#tap('vim-ctrlspace') " {{{
 
 endif " }}}
 
-if neobundle#tap('vim-over') " {{{
+if g:neobundle#tap('vim-over') " {{{
 
     nnoremap <Leader>s :OverCommandLine<CR>
 
 endif " }}}
 
-if neobundle#tap('lexima.vim') " {{{
+if g:neobundle#tap('lexima.vim') " {{{
 
     " let g:lexima_enable_endwise_rules = 1
 
 endif " }}}
 
-if neobundle#tap('auto-pairs') " {{{
+if g:neobundle#tap('auto-pairs') " {{{
 
     " let g:AutoPairsFlyMode = 1
     let g:AutoPairsMapBS = 0
@@ -1183,19 +1182,19 @@ if neobundle#tap('auto-pairs') " {{{
 
 endif " }}}
 
-if neobundle#tap('vim-argwrap') " {{{
+if g:neobundle#tap('vim-argwrap') " {{{
 
     nnoremap <Leader>l :ArgWrap<CR>
 
 endif " }}}
 
-if neobundle#tap('vim-operator-replace') " {{{
+if g:neobundle#tap('vim-operator-replace') " {{{
 
     map _ <Plug>(operator-replace)
 
 endif " }}}
 
-if neobundle#tap('vim-operator-surround') " {{{
+if g:neobundle#tap('vim-operator-surround') " {{{
 
     map <silent>sa <Plug>(operator-surround-append)
     map <silent>sd <Plug>(operator-surround-delete)
@@ -1206,7 +1205,7 @@ if neobundle#tap('vim-operator-surround') " {{{
 
 endif " }}}
 
-if neobundle#tap('vim-textobj-between') " {{{
+if g:neobundle#tap('vim-textobj-between') " {{{
 
     let g:textobj_between_no_default_key_mappings = 1
     map ix <Plug>(textobj-between-i)
@@ -1214,7 +1213,7 @@ if neobundle#tap('vim-textobj-between') " {{{
 
 endif " }}}
 
-if neobundle#tap('numbers.vim') " {{{
+if g:neobundle#tap('numbers.vim') " {{{
 
     " exec ":NumbersOnOff<CR>"
     " exec ":NumbersToggle<CR>"
@@ -1222,7 +1221,7 @@ if neobundle#tap('numbers.vim') " {{{
 
 endif " }}}
 
-if neobundle#tap('ack.vim') " {{{
+if g:neobundle#tap('ack.vim') " {{{
 
     if executable('ag')
         let g:ackprg = 'ag --vimgrep'
@@ -1230,7 +1229,7 @@ if neobundle#tap('ack.vim') " {{{
 
 endif " }}}
 
-if neobundle#tap('incsearch.vim') " {{{
+if g:neobundle#tap('incsearch.vim') " {{{
 
     set hlsearch
     let g:incsearch#auto_nohlsearch = 1
@@ -1262,7 +1261,7 @@ if neobundle#tap('incsearch.vim') " {{{
 
 endif " }}}
 
-if neobundle#tap('haya14busa/vim-asterisk') " {{{
+if g:neobundle#tap('haya14busa/vim-asterisk') " {{{
 
     map *   <Plug>(asterisk-*)
     map #   <Plug>(asterisk-#)
@@ -1277,7 +1276,13 @@ if neobundle#tap('haya14busa/vim-asterisk') " {{{
 
 endif " }}}
 
-if neobundle#tap('vim-signify') " {{{
+if g:neobundle#tap('vim-eunuch') " {{{
+
+    " command -nargs=1 w!! exec SudoWrite
+
+endif " }}}
+
+if g:neobundle#tap('vim-signify') " {{{
 
     let g:signify_sign_weight = 'none'
 
@@ -1295,9 +1300,9 @@ if neobundle#tap('vim-signify') " {{{
 
 endif " }}}
 
-if neobundle#tap('fzf.vim') " {{{
+if g:neobundle#tap('fzf.vim') " {{{
 
-    function! neobundle#tapped.hooks.on_source(bundle)
+    function! g:neobundle#tapped.hooks.on_source(bundle)
 
         function! s:tags_sink(line)
             let parts = split(a:line, '\t\zs')
