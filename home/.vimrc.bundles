@@ -845,8 +845,8 @@ if g:neobundle#tap('vim-sneak') " {{{
     hi link SneakPluginScope Comment
 
     "default is ,
-    nmap <C-,> <Plug>SneakPrevious
-    nmap <C-.> <Plug>SneakNext
+    nmap : <Plug>SneakPrevious
+    nmap ,, <Plug>SneakNext
 
     "fix S
     nmap S <Plug>Sneak_S
@@ -1273,6 +1273,13 @@ if g:neobundle#tap('haya14busa/vim-asterisk') " {{{
     map gz# <Plug>(asterisk-gz#)
 
     let g:asterisk#keeppos = 1
+
+endif " }}}
+
+if g:neobundle#tap('vim-surround') " {{{
+
+  xmap s   <Plug>VSurround
+  xmap gs  <Plug>VgSurround
 
 endif " }}}
 

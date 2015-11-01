@@ -3,7 +3,7 @@
 set nocompatible
 
 " auto reload this very rc!
-" augroup myvimrc
+" augroup vimrc
 "     au!
 "     au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 " augroup END
@@ -16,6 +16,10 @@ let localleader = '_'
 " Clear vimrc augroup
 augroup vimrc
     autocmd!
+    au FileType asciidoc setlocal spell
+    au FileType gitcommit setlocal spell
+    au FileType markdown setlocal spell
+    au FileType svn setlocal spell
 augroup END
 
 " load bundles
@@ -95,7 +99,7 @@ function! MyFoldText() " {{{
     let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
     return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
 endfunction
-set foldtext=MyFoldText() " }}}
+set foldtext=MyFoldText() " }}
 
 function! s:Pulse() " {{{
     redir => old_hi
@@ -178,6 +182,8 @@ color bubblegum-256-dark
 
 " Keep my background
 hi Normal ctermfg=249 ctermbg=235 cterm=none guifg=#B2B2B2 guibg=#262626 gui=none
+" Hide split marker
+hi vertsplit ctermbg=235 ctermfg=235
 
 set showmode                        " Display the current mode
 set cursorline                      " highlight current line
@@ -434,7 +440,8 @@ set splitbelow                      " Puts new split windows to the bottom of th
 set pastetoggle=<F12>               " pastetoggle (sane indentation on pastes)
 
 " don't auto continue line comments
-autocmd vimrc FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+" autocmd vimrc FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+set formatoptions=qrn1j
 
 " Remove trailing whitespaces and ^M chars
 autocmd vimrc FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
@@ -515,13 +522,18 @@ nnoremap <silent> <leader>/ :set invhlsearch<CR>
 " Find merge conflict markers
 nnoremap <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
 
+map Oa <C-Up>
+map Ob <C-Down>
+map Od <C-Left>
+map Oc <C-Right>
+
 "Duplicate lines above and below
-inoremap <C-A-down> <esc>Ypk
-nnoremap <C-A-down> Ypk
-xnoremap <C-A-down> y`>pgv
-inoremap <C-A-up> <esc>YPj
-nnoremap <C-A-up> YPj
-xnoremap <C-A-up> y`<Pgv
+inoremap <C-down> <esc>Ypk
+nnoremap <C-down> yypk
+xnoremap <C-down> y`>pgv
+inoremap <C-up> <esc>yyPj
+nnoremap <C-up> yyPj
+xnoremap <C-up> y`<Pgv
 
 " swap word under the cursor with previous word on the left
 nnoremap <M-l>  "_yiw?\w\+\_W\+\%#<CR>:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR><C-o><C-l>
