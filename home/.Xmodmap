@@ -8,6 +8,10 @@
 ! add Lock = Caps_Lock
 ! add Control = Control_L
 
+  ! for emacs
+  ! 7151  xmodmap -e "keysym Super_L = Meta_L"
+  ! 7161  xmodmap -e "keycode 102 = Super_L"
+
   ! keycode 115 = Super_L
   ! keycode 116 = Super_R
   ! ! Super_L is already mod4 on my system, but Super_R is not

@@ -99,7 +99,7 @@ function! MyFoldText() " {{{
     let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
     return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
 endfunction
-set foldtext=MyFoldText() " }}
+" set foldtext=MyFoldText() " }}}
 
 function! s:Pulse() " {{{
     redir => old_hi
@@ -183,7 +183,7 @@ color bubblegum-256-dark
 " Keep my background
 hi Normal ctermfg=249 ctermbg=235 cterm=none guifg=#B2B2B2 guibg=#262626 gui=none
 " Hide split marker
-hi vertsplit ctermbg=235 ctermfg=235
+hi vertsplit ctermbg=235
 
 set showmode                        " Display the current mode
 set cursorline                      " highlight current line
@@ -547,8 +547,8 @@ nnoremap <M-j> ddp
 nnoremap <Leader>n :set rnu!<CR>
 
 "Jump back to last edited buffer
-" nnoremap <C-b> <C-^>
-" inoremap <C-b> <esc><C-^>
+nnoremap <C-b> <C-^>
+inoremap <C-b> <esc><C-^>
 
 "Will open files in current directory, allows you to leave the working cd in
 "the project root. You can also use %% anywhere in the command line to expand.
