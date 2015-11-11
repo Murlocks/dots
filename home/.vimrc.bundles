@@ -18,6 +18,7 @@ NeoBundle 'Shougo/vimproc.vim', {
             \        },
             \ }
 NeoBundle 'vim-jp/vital.vim'
+NeoBundle 'xolox/vim-misc'
 " }}}
 
 " Unite " {{{
@@ -26,6 +27,7 @@ NeoBundle 'Shougo/neomru.vim', { 'depends' : [ 'Shougo/unite.vim' ] }
 NeoBundle 'Shougo/tabpagebuffer.vim', { 'depends' : [ 'Shougo/unite.vim' ] }
 NeoBundle 'Shougo/unite-outline', { 'depends:' : [ 'Shougo/unite.vim' ] }
 NeoBundle 'Shougo/unite-help', { 'depends' : [ 'Shougo/unite.vim' ] }
+NeoBundle 'Shougo/neoyank.vim', { 'depends' : [ 'Shougo/unite.vim' ] }
 NeoBundle 'tsukkee/unite-tag', { 'depends' : [ 'Shougo/unite.vim' ] }
 NeoBundle 'osyo-manga/unite-quickfix', { 'depends' : [ 'Shougo/unite.vim' ] }
 NeoBundle 'Murlocks/unite-everything', { 'depends:' : [ 'Shougo/unite.vim' ] }
@@ -56,6 +58,7 @@ NeoBundle 'tomasr/molokai'
 NeoBundle 'chriskempson/base16-vim'
 NeoBundle 'baskerville/bubblegum'
 NeoBundle 'junegunn/seoul256.vim'
+NeoBundle 'w0ng/vim-hybrid'
 NeoBundle 'jonathanfilip/lucius'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'chriskempson/base16-vim'
@@ -76,26 +79,27 @@ NeoBundle 'airblade/vim-gitgutter'
 " General " {{{
 " NeoBundle 'szw/vim-ctrlspace'
 NeoBundle 'Shougo/vimshell.vim', { 'depends:' : [ 'Shougo/vimproc.vim' ] }
+NeoBundle 'matchit.zip'
+NeoBundle 'mbbill/undotree'
+NeoBundle 'mhinz/vim-sayonara'
+NeoBundle 'osyo-manga/vim-anzu'
 NeoBundle 'airblade/vim-rooter'
+NeoBundle 'scrooloose/syntastic'
 NeoBundle 'tommcdo/vim-exchange'
 NeoBundle 'sheerun/vim-polyglot'
-NeoBundle 'mbbill/undotree'
-NeoBundle 'scrooloose/syntastic'
 NeoBundle 'jiangmiao/auto-pairs' " Doesn't play well with unite's preview window - fixed??
 " NeoBundle 'kana/vim-smartinput'
 " NeoBundle 'cohama/vim-smartinput-endwise', { 'depends' : [ 'kana/vim-smartinput' ] }
 " NeoBundle 'cohama/lexima.vim'
-NeoBundle 'matchit.zip'
-NeoBundle 'mileszs/ack.vim'
 NeoBundle 'haya14busa/incsearch.vim'
 NeoBundle 'haya14busa/incsearch-easymotion.vim', { 'depends:' : [ 'haya14busa/incsearch.vim' ] }
 NeoBundle 'osyo-manga/vim-over'
+NeoBundle 'mileszs/ack.vim'
 " NeoBundle 'wellle/targets.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'tpope/vim-dispatch'
 NeoBundle 'tpope/vim-eunuch'
-NeoBundle 'james9909/stackanswers.vim'
 " NeoBundle 'kana/vim-repeat'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
@@ -104,10 +108,11 @@ NeoBundle 'godlygeek/tabular'
 NeoBundle 'plasticboy/vim-markdown', { 'depends:' : [ 'godlygeek/tabular' ] }
 NeoBundle 'vim-pandoc/vim-pandoc'
 NeoBundle 'haya14busa/vim-asterisk'
+NeoBundle 'yonchu/accelerated-smooth-scroll'
 " NeoBundle 'tpope/vim-commentary'
 NeoBundle 'tyru/caw.vim'
-" NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'kristijanhusak/vim-multiple-cursors'
+" NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'kana/vim-submode'
 NeoBundle 'Murlocks/vimux'
@@ -120,7 +125,6 @@ NeoBundle 'rhysd/accelerated-jk'
 NeoBundle 'FooSoft/vim-argwrap'
 NeoBundle 'takac/vim-hardtime'
 NeoBundle 'xolox/vim-easytags', { 'depends' : [ 'xolox/vim-misc' ] }
-NeoBundle 'xolox/vim-misc'
 " }}}
 
 " Text object " {{{
@@ -285,132 +289,134 @@ if g:neobundle#tap('neocomplete') " {{{
 
     endfunction
 
-    " imap <silent><expr><C-l> neosnippet#expandable() ?
-    "                         \ "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ?
-    "                         \ "\<C-e>" : "\<Plug>(neosnippet_expand_or_jump)")
-
-    " imap <expr><silent><C-l>         neocomplete#mappings#close_popup() .
-    "             \ "\<Plug>(neosnippet_jump_or_expand)"
-    " smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-    "             \ neocomplete#mappings#close_popup() . "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-    " " smap <TAB> <Right><Plug>(neosnippet_jump_or_expand)
-    " smap <C-l> <Right><Plug>(neosnippet_jump_or_expand)
-    " xmap <C-l> <Right><Plug>(neosnippet_jump_or_expand)
-    "
-    " inoremap <expr><C-g> neocomplete#undo_completion()
-    " inoremap <expr><C-e> neocomplete#complete_common_string()
-    "
-    " " <CR>: close popup
-    " " <s-CR>: close popup and save indent.
-    " inoremap <expr><s-CR> pumvisible() ? neocomplete#smart_close_popup()."\<CR>" : "\<CR>"
-    "
-    " function! CleverCr()
-    "     if pumvisible()
-    "         if neosnippet#expandable()
-    "             let exp = "\<Plug>(neosnippet_expand_or_jump)"
-    "             return exp
-    "         else
-    "             return neocomplete#smart_close_popup()
-    "         endif
-    "     else
-    "         return "\<CR>"
-    "     endif
-    " endfunction
-    "
-    " " <CR> close popup and save indent or expand snippet
-    " inoremap <expr> <CR> CleverCr()
-    " " <C-h>, <BS>: close popup and delete backword char.
-    inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-
-    "
     function! s:check_back_space() "{{{
         let col = col('.') - 1
         return !col || getline('.')[col - 1]    =~ '\s'
     endfunction"}}}
-    "
-    " imap <expr> <Tab> CleverTab()
-    " function! CleverTab()
-    "     if <SID>check_back_space()
-    "         " nothing to match on empty string
-    "         return "\<Tab>"
-    "     else
-    "         " existing text matching
-    "         if neosnippet#jumpable()
-    "             return neocomplete#mappings#close_popup() . "\<Plug>(neosnippet_expand_or_jump)"
-    "         elseif pumvisible()
-    "             return "\<C-n>"
-    "         else
-    "             return neocomplete#start_manual_complete()
-    "         endif
-    "     endif
-    " endfunction
 
-    " Next menu item, expand snippet, jump to next placeholder or insert literal tab
-    let g:UltiSnipsJumpForwardTrigger="<NOP>"
-    let g:ulti_expand_or_jump_res = 0
-    function! ExpandSnippetOrJumpForwardOrReturnTab()
-        let snippet = UltiSnips#ExpandSnippetOrJump()
-        if <SID>check_back_space()
-            return "\<TAB>"
-        else
-            if g:ulti_expand_or_jump_res > 1
-                return snippet
+    if neobundle#is_sourced('neosnippet')
+
+        imap <silent><expr><C-l> neosnippet#expandable() ?
+                                \ "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ?
+                                \ "\<C-e>" : "\<Plug>(neosnippet_expand_or_jump)")
+        imap <expr><silent><C-l> neocomplete#mappings#close_popup() .
+                                \ "\<Plug>(neosnippet_jump_or_expand)"
+        smap <C-l> <Right><Plug>(neosnippet_jump_or_expand)
+        xmap <C-l> <Right><Plug>(neosnippet_jump_or_expand)
+
+        inoremap <expr><C-g> neocomplete#undo_completion()
+        inoremap <expr><C-e> neocomplete#complete_common_string()
+
+        " <CR>: close popup
+        " <s-CR>: close popup and save indent.
+        inoremap <expr><s-CR> pumvisible() ? neocomplete#smart_close_popup()."\<CR>" : "\<CR>"
+
+        inoremap <expr> <CR> CleverCr()
+        function! CleverCr()
+            if pumvisible()
+                if neosnippet#expandable()
+                    let exp = "\<Plug>(neosnippet_expand_or_jump)"
+                    return exp
+                else
+                    return neocomplete#smart_close_popup()
+                endif
             else
-                return neocomplete#start_manual_complete()
+                return "\<CR>"
             endif
-        endif
-    endfunction
-    inoremap <expr> <TAB>
-                \ pumvisible() ? "\<C-n>" :
-                \ "<C-R>=ExpandSnippetOrJumpForwardOrReturnTab()<CR>"
-    " jump to next placeholder otherwise do nothing
-    snoremap <buffer> <silent> <TAB>
-                \ <ESC>:call UltiSnips#JumpForwards()<CR>
-    " snoremap <buffer> <silent> <C-l>
-    "     \ <ESC>:call UltiSnips#JumpForwards()<CR>
-    inoremap <expr><silent><C-l>
-                \ pumvisible() ? neocomplete#complete_common_string() : "\<C-y>"
+        endfunction
 
-    " previous menu item, jump to previous placeholder or do nothing
-    let g:UltiSnipsJumpBackwordTrigger = "<NOP>"
-    inoremap <expr> <S-TAB>
-                \ pumvisible() ? "\<C-p>" :
-                \ "<C-R>=UltiSnips#JumpBackwards()<CR>"
+        smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+                    \ neocomplete#mappings#close_popup() .
+                    \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+        " smap <TAB> <Right><Plug>(neosnippet_jump_or_expand)
 
-    " jump to previous placeholder otherwise do nothing
-    snoremap <buffer> <silent> <S-TAB>
-                \ <ESC>:call UltiSnips#JumpBackwards()<CR>
+        imap <expr> <Tab> CleverTab()
+        function! CleverTab()
+            if <SID>check_back_space()
+                " nothing to match on empty string
+                return "\<Tab>"
+            else
+                " existing text matching
+                if neosnippet#jumpable()
+                    return neocomplete#mappings#close_popup() . "\<Plug>(neosnippet_expand_or_jump)"
+                elseif pumvisible()
+                    return "\<C-n>"
+                else
+                    return neocomplete#start_manual_complete()
+                endif
+            endif
+        endfunction
 
-    " expand snippet, close menu or insert newline
-    let g:UltiSnipsExpandTrigger = "<NOP>"
-    let g:ulti_expand_or_jump_res = 0
-    inoremap <silent> <C-l> <C-r>=<SID>ExpandSnippetOrChoose()<CR>
-    vnoremap <silent> <C-l> <C-r>=<SID>ExpandSnippetOrChoose()<CR>
-    function! s:ExpandSnippetOrChoose()
-        if pumvisible()
+    elseif neobundle#is_sourced('ultisnips')
+
+        " Next menu item, expand snippet, jump to next placeholder or insert literal tab
+        let g:UltiSnipsJumpForwardTrigger="<NOP>"
+        let g:ulti_expand_or_jump_res = 0
+        function! ExpandSnippetOrJumpForwardOrReturnTab()
             let snippet = UltiSnips#ExpandSnippetOrJump()
-            if g:ulti_expand_or_jump_res > 0
-                return snippet
+            if <SID>check_back_space()
+                return "\<TAB>"
             else
-                return "\<C-y>"
+                if g:ulti_expand_or_jump_res > 1
+                    return snippet
+                else
+                    return neocomplete#start_manual_complete()
+                endif
             endif
-        endif
-    endfunction
+        endfunction
+        inoremap <expr> <TAB>
+                    \ pumvisible() ? "\<C-n>" :
+                    \ "<C-R>=ExpandSnippetOrJumpForwardOrReturnTab()<CR>"
+        " jump to next placeholder otherwise do nothing
+        snoremap <buffer> <silent> <TAB>
+                    \ <ESC>:call UltiSnips#JumpForwards()<CR>
+        " snoremap <buffer> <silent> <C-l>
+        "     \ <ESC>:call UltiSnips#JumpForwards()<CR>
+        inoremap <expr><silent><C-l>
+                    \ pumvisible() ? neocomplete#complete_common_string() : "\<C-y>"
 
-    inoremap <silent> <CR> <C-r>=<SID>ExpandSnippetOrReturnEmptyString()<CR>
-    function! s:ExpandSnippetOrReturnEmptyString()
-        if pumvisible()
-            let snippet = UltiSnips#ExpandSnippetOrJump()
-            if g:ulti_expand_or_jump_res > 0
-                return snippet
-            else
-                return "\<C-y>\<CR>"
+        " previous menu item, jump to previous placeholder or do nothing
+        let g:UltiSnipsJumpBackwordTrigger = "<NOP>"
+        inoremap <expr> <S-TAB>
+                    \ pumvisible() ? "\<C-p>" :
+                    \ "<C-R>=UltiSnips#JumpBackwards()<CR>"
+
+        " jump to previous placeholder otherwise do nothing
+        snoremap <buffer> <silent> <S-TAB>
+                    \ <ESC>:call UltiSnips#JumpBackwards()<CR>
+
+        " expand snippet, close menu or insert newline
+        let g:UltiSnipsExpandTrigger = "<NOP>"
+        let g:ulti_expand_or_jump_res = 0
+        inoremap <silent> <C-l> <C-r>=<SID>ExpandSnippetOrChoose()<CR>
+        vnoremap <silent> <C-l> <C-r>=<SID>ExpandSnippetOrChoose()<CR>
+        function! s:ExpandSnippetOrChoose()
+            if pumvisible()
+                let snippet = UltiSnips#ExpandSnippetOrJump()
+                if g:ulti_expand_or_jump_res > 0
+                    return snippet
+                else
+                    return "\<C-y>"
+                endif
             endif
-        else
-            return AutoPairsReturn() . "\<CR>"
-            " return "\<CR>"
-        endif
-    endfunction
+        endfunction
+
+        inoremap <silent> <CR> <C-r>=<SID>ExpandSnippetOrReturnEmptyString()<CR>
+        function! s:ExpandSnippetOrReturnEmptyString()
+            if pumvisible()
+                let snippet = UltiSnips#ExpandSnippetOrJump()
+                if g:ulti_expand_or_jump_res > 0
+                    return snippet
+                else
+                    return "\<C-y>\<CR>"
+                endif
+            else
+                " return AutoPairsReturn() . "\<CR>"
+                return "\<CR>"
+            endif
+        endfunction
+
+    endif
 
     inoremap <expr><C-h> pumvisible() ? neocomplete#smart_close_popup() : "\<C-h>"
     inoremap <expr><BS>  neocomplete#smart_close_popup()."\<C-h>"
@@ -591,7 +597,9 @@ if g:neobundle#tap('unite.vim') " {{{
         let g:unite_source_menu_menus.global.candidates = [
                     \     [ 'vimrc' , $MYVIMRC ],
                     \     [ 'vimrc.bundles' , '~/.vimrc.bundles' ],
-                    \     [ 'vimfiler' ,    ':VimFiler' ],
+                    \     [ 'vimfiler' ,    ':VimFiler -no-safe' ],
+                    \     [ 'vimshell' ,    ':VimShell' ],
+                    \     [ 'git' ,    ':Unite -start-insert -buffer-name=menu menu:git' ],
                     \     [ 'other', ":call Unite_filetype_menu('-start-insert')" ],
                     \ ]
         let g:unite_source_menu_menus.unite.candidates = []
@@ -612,6 +620,39 @@ if g:neobundle#tap('unite.vim') " {{{
                     \     [ 'theme', ':Unite -auto-preview colorscheme'],
                     \     [ 'resume grep', ':UniteResume unite_grep'],
                     \ ]
+        let g:unite_source_menu_menus.git = {
+            \ 'description' : 'git menu',
+            \}
+        let g:unite_source_menu_menus.git.command_candidates = [
+            \['▷ tig                                                        ⌘ ,gt',
+                \'normal ,gt'],
+            \['▷ git status       (Fugitive)                                ⌘ ,gs',
+                \'Gstatus'],
+            \['▷ git diff         (Fugitive)                                ⌘ ,gd',
+                \'Gdiff'],
+            \['▷ git commit       (Fugitive)                                ⌘ ,gc',
+                \'Gcommit'],
+            \['▷ git log          (Fugitive)                                ⌘ ,gl',
+                \'exe "silent Glog | Unite quickfix"'],
+            \['▷ git blame        (Fugitive)                                ⌘ ,gb',
+                \'Gblame'],
+            \['▷ git stage        (Fugitive)                                ⌘ ,gw',
+                \'Gwrite'],
+            \['▷ git checkout     (Fugitive)                                ⌘ ,go',
+                \'Gread'],
+            \['▷ git rm           (Fugitive)                                ⌘ ,gr',
+                \'Gremove'],
+            \['▷ git mv           (Fugitive)                                ⌘ ,gm',
+                \'exe "Gmove " input("destino: ")'],
+            \['▷ git push         (Fugitive)             ⌘ ,gp',
+                \'Git! push'],
+            \['▷ git pull         (Fugitive)             ⌘ ,gP',
+                \'Git! pull'],
+            \['▷ git prompt       (Fugitive)             ⌘ ,gi',
+                \'exe "Git! " input("git command: ")'],
+            \['▷ git cd           (Fugitive)',
+                \'Gcd'],
+            \]
 
         let g:unite_source_rec_max_cache_files = 0
 
@@ -622,31 +663,33 @@ if g:neobundle#tap('unite.vim') " {{{
                     \ 'file_rec,file_rec/async', 'required_pattern_length',
                     \ 1)
 
-        call unite#custom#profile('menu,outline', 'matchers', ['matcher_fuzzy'])
-        call unite#custom#profile('files', 'matchers', ['converter_relative_word', 'matcher_fuzzy'])
-        call unite#custom#profile('files', 'converters', ['converter_file_directory'])
-        call unite#custom#profile('menu,outline,files', 'filters', ['sorter_selecta'])
+        call unite#custom#source('menu,outline', 'matchers', ['matcher_fuzzy'])
+        call unite#custom#source('file,file_mru,file_rec,file_rec/async,buffer_tab', 'matchers', ['converter_relative_word', 'matcher_fuzzy'])
+        call unite#custom#source('file,file_mru,file_rec,file_rec/async', 'converters', ['converter_file_directory'])
+        call unite#custom#source('menu,outline,file,file_mru,file_rec,file_rec/async,buffer_tab', 'sorters', ['sorter_selecta'])
 
         " Like ctrlp.vim settings.
         call unite#custom#profile('default', 'context', {
-                    \     'start_insert': 1,
                     \     'winheight': 10,
                     \     'direction': 'botright',
                     \ })
 
     endfunction
 
-    nnoremap <silent> <CR>         :<C-u>Unite -start-insert menu:global<CR>
-    nnoremap <silent> <Space>b     :<C-u>Unite -start-insert -quick-match buffer<CR>
-    nnoremap <silent> <Space>d     :<C-u>Unite -start-insert file<CR>
+    nnoremap <silent> <CR>         :<C-u>Unite -start-insert -buffer-name=menu menu:global<CR>
+    nnoremap <silent> <Space>b     :<C-u>Unite -start-insert -quick-match buffer_tab<CR>
+    nnoremap <silent> <Space>a     :<C-u>Unite -start-insert -auto-preview -buffer-name=anzu anzu<CR>
     nnoremap <silent> <Space>f     :<C-u>Unite -start-insert -auto-preview -buffer-name=search line<CR>
     nnoremap <silent> <Space><C-f> :<C-u>UniteWithCursorWord -auto-preview -start-insert -buffer-name=search line<CR>
     nnoremap <silent> <Space>g     :<C-u>Unite grep -max-multi-lines=1 -truncate -default-action=tabopen -buffer-name=unite_grep<CR>
+    nnoremap <silent> <Space><C-g> :<C-u>Unite -start-insert -buffer-name=menu menu:git<CR>
     nnoremap <silent> <Space>p     :<C-u>Unite -start-insert -buffer-name=files buffer_tab file_rec/async:! file_mru<CR>
+    nnoremap <silent> <Space>d     :<C-u>UniteWithBufferDir -start-insert -buffer-name=files file<CR>
     " nnoremap <silent> <C-e>      :<C-u>Unite -start-insert -buffer-name=everything everything<CR>
     nnoremap <silent> <Space>y     :<C-u>Unite -buffer-name=yank history/yank<CR>
+    nnoremap <silent> <Space>l     :lcl<CR>:<C-u>Unite -buffer-name=locations -auto-preview location_list<CR><C-w><C-j>:lcl<CR><C-w><C-k>
 
-    nnoremap <silent> <Space>m :<C-u>call Unite_filetype_menu('-start-insert')<CR>
+    nnoremap <silent> <Space>m :<C-u>call Unite_filetype_menu('-buffer-name=menu -start-insert')<CR>
     function! Unite_filetype_menu(options)
         let filetypes = split(&ft, '\.')
         let candidate_sets = map(
@@ -680,25 +723,29 @@ if g:neobundle#tap('unite.vim') " {{{
         call unite#custom#default_action('versions/git/status', 'commit')
 
         " Overwrite settings.
-        imap <buffer> <CR>       <Plug>(unite_do_default_action)
-        imap <buffer> <C-l>      <Plug>(unite_do_default_action)
         nmap <buffer> q          <Plug>(unite_all_exit)
-        nmap <buffer> <ESC>      <Plug>(unite_exit)
-        nmap <buffer> <c-c>      <Plug>(unite_exit)
+        nmap <buffer> <ESC>      <Plug>(unite_all_exit)
+        nmap <buffer> <c-c>      <Plug>(unite_all_exit)
         imap <buffer> <BS>       <Plug>(unite_delete_backward_path)
         imap <buffer> jk         <Plug>(unite_insert_leave)
-        imap <buffer> <Tab>      <Plug>(unite_complete)
+        " imap <buffer> <Tab>      <Plug>(unite_complete)
         imap <buffer> '          <Plug>(unite_quick_match_default_action)
         nmap <buffer> '          <Plug>(unite_quick_match_default_action)
         nmap <buffer> <C-t>      <Plug>(unite_toggle_transpose_window)
         imap <buffer> <C-t>      <Plug>(unite_toggle_transpose_window)
         imap <buffer> <C-w>      <Plug>(unite_delete_backward_path)
         imap <buffer> <C-h>      <Plug>(unite_delete_backward_path)
+        nmap <buffer> <C-h>      <Plug>(unite_delete_backward_path)
         nmap <buffer> h          <Plug>(unite_delete_backward_path)
-        nmap <buffer> <C-j>      <Plug>(unite_toggle_auto_preview)
-        imap <buffer> <C-j>      <Plug>(unite_toggle_auto_preview)
+        imap <buffer> <CR>       <Plug>(unite_do_default_action)
+        imap <buffer> <C-l>      <Plug>(unite_do_default_action)
+        nmap <buffer> <C-l>      <Plug>(unite_do_default_action)
+        nmap <buffer> <C-o>      <Plug>(unite_toggle_auto_preview)
+        imap <buffer> <C-o>      <Plug>(unite_toggle_auto_preview)
+        nnoremap <buffer> <C-k>  <Up>
+        nnoremap <buffer> <C-j>  <Down>
         nnoremap <buffer> i      Gi
-        nnoremap <silent><buffer> <Tab>     <C-w>w
+        " nnoremap <silent><buffer> <Tab>     <C-w>w
         nnoremap <silent><buffer><expr> l
                     \ unite#smart_map('l', unite#do_action('default'))
         nnoremap <silent><buffer><expr> P
@@ -743,11 +790,17 @@ if g:neobundle#tap('vim-textobj-multiblock') " {{{
                 \ ]
     let g:textobj_multiblock_search_limit = 20
 
+    omap ab <Plug>(textobj-multiblock-a)
+    omap ib <Plug>(textobj-multiblock-i)
+    vmap ab <Plug>(textobj-multiblock-a)
+    vmap ib <Plug>(textobj-multiblock-i)
+
 endif " }}}
 
 if g:neobundle#tap('vim-textobj-blockwise') " {{{
 
     vmap <expr> iw mode() == "\<C-v>" ? textobj#blockwise#mapexpr('iw') : 'iw'
+    vmap <expr> iW mode() == "\<C-v>" ? textobj#blockwise#mapexpr('iW') : 'iW'
 
 endif " }}}
 
@@ -760,12 +813,48 @@ if g:neobundle#tap('vim-operator-blockwise') " {{{
 
 endif " }}}
 
-if g:neobundle#tap('vim-textobj-multiblock') " {{{
+if g:neobundle#tap('vim-textobj-multitextobj') " {{{
 
-    omap ab <Plug>(textobj-multiblock-a)
-    omap ib <Plug>(textobj-multiblock-i)
-    vmap ab <Plug>(textobj-multiblock-a)
-    vmap ib <Plug>(textobj-multiblock-i)
+    function! g:neobundle#tapped.hooks.on_post_source(bundle)
+        let g:textobj_multitextobj_textobjects_i = [
+                    \     "i(",
+                    \     "i[",
+                    \     "\<Plug>(textobj-function-i)",
+                    \     "\<Plug>(textobj-indent-i)",
+                    \]
+    endfunction
+
+    omap amt <Plug>(textobj-multitextobj-a)
+    omap imt <Plug>(textobj-multitextobj-i)
+    vmap amt <Plug>(textobj-multitextobj-a)
+    vmap imt <Plug>(textobj-multitextobj-i)
+
+    call neobundle#untap()
+
+endif " }}}
+
+if g:neobundle#tap('vim-textobj-between') " {{{
+
+    let g:textobj_between_no_default_key_mappings = 1
+    map ix <Plug>(textobj-between-i)
+    map ax <Plug>(textobj-between-a)
+
+endif " }}}
+
+if g:neobundle#tap('vim-operator-replace') " {{{
+
+    map R <Plug>(operator-replace)
+
+endif " }}}
+
+if g:neobundle#tap('vim-operator-surround') " {{{
+
+    map <silent>sa <Plug>(operator-surround-append)
+    map <silent>sd <Plug>(operator-surround-delete)
+    map <silent>sr <Plug>(operator-surround-replace)
+
+    nmap <silent>sdd <Plug>(operator-surround-delete)<Plug>(textobj-multiblock-a)
+    nmap <silent>srr <Plug>(operator-surround-replace)<Plug>(textobj-multiblock-a)
 
 endif " }}}
 
@@ -860,8 +949,8 @@ if g:neobundle#tap('vim-sneak') " {{{
     hi link SneakPluginScope Comment
 
     "default is ,
-    nmap ;; <Plug>SneakPrevious
-    nmap ,, <Plug>SneakNext
+    nmap ,, <Plug>SneakPrevious
+    nmap : <Plug>SneakNext
 
     "fix S
     nmap S <Plug>Sneak_S
@@ -884,6 +973,36 @@ if g:neobundle#tap('vim-sneak') " {{{
     xmap T <Plug>Sneak_T
     omap t <Plug>Sneak_t
     omap T <Plug>Sneak_T
+
+endif " }}}
+
+if g:neobundle#tap('vim-multiple-cursors') " {{{
+
+    let g:multi_cursor_use_default_mapping=0
+    let g:multi_cursor_next_key='<C-n>'
+    let g:multi_cursor_prev_key='<C-p>'
+    let g:multi_cursor_skip_key='<C-x>'
+
+    inoremap jk <esc>
+    let g:multi_cursor_exit_from_insert_mode=0
+    let g:multi_cursor_quit_key='q'
+    let g:multi_cursor_insert_maps={'j':1}
+
+    if neobundle#is_sourced('neocomplete')
+        " Called once right before you start selecting multiple cursors
+        function! Multiple_cursors_before()
+          if exists(':NeoCompleteLock')==2
+            exe 'NeoCompleteLock'
+          endif
+        endfunction
+
+        " Called once only when the multiple selection is canceled (default <Esc>)
+        function! Multiple_cursors_after()
+          if exists(':NeoCompleteUnlock')==2
+            exe 'NeoCompleteUnlock'
+          endif
+        endfunction
+    endif
 
 endif " }}}
 
@@ -933,26 +1052,6 @@ if g:neobundle#tap('vim-smartinput-endwise') " {{{
 
 endif " }}}
 
-if g:neobundle#tap('vim-textobj-multitextobj') " {{{
-
-    function! g:neobundle#tapped.hooks.on_post_source(bundle)
-        let g:textobj_multitextobj_textobjects_i = [
-                    \     "i(",
-                    \     "i[",
-                    \     "\<Plug>(textobj-function-i)",
-                    \     "\<Plug>(textobj-indent-i)",
-                    \]
-    endfunction
-
-    omap amt <Plug>(textobj-multitextobj-a)
-    omap imt <Plug>(textobj-multitextobj-i)
-    vmap amt <Plug>(textobj-multitextobj-a)
-    vmap imt <Plug>(textobj-multitextobj-i)
-
-    call neobundle#untap()
-
-endif " }}}
-
 if g:neobundle#tap('vim-easytags') " {{{
 
     let g:easytags_dynamic_files = 1
@@ -976,7 +1075,7 @@ if g:neobundle#tap('syntastic') " {{{
     let g:syntastic_auto_loc_list = 1
     let g:syntastic_auto_jump = 2
     " let g:syntastic_check_on_open = 1
-    let g:syntastic_check_on_wq = 0
+    let g:syntastic_check_on_wq = 1
     let g:syntastic_java_javac_config_file_enabled = 1
     let g:syntastic_cpp_check_header = 1
     let g:syntastic_cpp_compiler = 'g++'
@@ -1055,6 +1154,16 @@ if g:neobundle#tap('unite-help') " {{{
     call neobundle#config({
                 \     'autoload' : {
                 \         'unite_sources' : [ 'help' ]
+                \     }
+                \ })
+
+endif " }}}
+
+if g:neobundle#tap('neoyank.vim') " {{{
+
+    call neobundle#config({
+                \     'autoload' : {
+                \         'unite_sources' : [ 'history/yank' ]
                 \     }
                 \ })
 
@@ -1203,31 +1312,6 @@ if g:neobundle#tap('vim-argwrap') " {{{
 
 endif " }}}
 
-if g:neobundle#tap('vim-operator-replace') " {{{
-
-    map _ <Plug>(operator-replace)
-
-endif " }}}
-
-if g:neobundle#tap('vim-operator-surround') " {{{
-
-    map <silent>sa <Plug>(operator-surround-append)
-    map <silent>sd <Plug>(operator-surround-delete)
-    map <silent>sr <Plug>(operator-surround-replace)
-
-    nmap <silent>sdd <Plug>(operator-surround-delete)<Plug>(textobj-multiblock-a)
-    nmap <silent>srr <Plug>(operator-surround-replace)<Plug>(textobj-multiblock-a)
-
-endif " }}}
-
-if g:neobundle#tap('vim-textobj-between') " {{{
-
-    let g:textobj_between_no_default_key_mappings = 1
-    map ix <Plug>(textobj-between-i)
-    map ax <Plug>(textobj-between-a)
-
-endif " }}}
-
 if g:neobundle#tap('numbers.vim') " {{{
 
     " exec ":NumbersOnOff<CR>"
@@ -1276,8 +1360,9 @@ if g:neobundle#tap('incsearch.vim') " {{{
 
 endif " }}}
 
-if g:neobundle#tap('haya14busa/vim-asterisk') " {{{
+if g:neobundle#tap('vim-asterisk') " {{{
 
+    " overrides incsearch
     map *   <Plug>(asterisk-*)
     map #   <Plug>(asterisk-#)
     map g*  <Plug>(asterisk-g*)
@@ -1288,6 +1373,20 @@ if g:neobundle#tap('haya14busa/vim-asterisk') " {{{
     map gz# <Plug>(asterisk-gz#)
 
     let g:asterisk#keeppos = 1
+
+endif " }}}
+
+if g:neobundle#tap('vim-anzu') " {{{
+
+    if neobundle#is_sourced('incsearch.vim')
+        nmap  n <Plug>(incsearch-nohl)<Plug>(anzu-n-with-echo)
+        nmap  N <Plug>(incsearch-nohl)<Plug>(anzu-N-with-echo)
+    else
+        nmap n <Plug>(anzu-n-with-echo)
+        nmap N <Plug>(anzu-N-with-echo)
+    endif
+
+    nmap <Esc><Esc> <Plug>(anzu-clear-search-status)
 
 endif " }}}
 

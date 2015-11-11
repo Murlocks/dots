@@ -3,7 +3,7 @@
 # [[ -f ~/.config/bspwm/!window_gap ]] && window_gap=$(desktop_margin) || \
 #     window_gap=40 # default
 
-bspc config border_width          8
+bspc config border_width          2
 # bspc config focused_border_color  '#404E5E'
 bspc config normal_border_color  '#262626'
 bspc config active_border_color '#3a3a3a'

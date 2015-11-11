@@ -13,13 +13,14 @@ AE='%{A}'           # end click area
 padding=' '
 
 icon() {
-    # echo -n -e "%{U$COLOR_FOREGROUND}%{+u}\u$1%{-u}"
+    # echo -n -e "%{U$COLOR_FOREGROUND}%{+u} \u$1 %{-u}"
     echo -n -e "\u$1"
     # echo -n -e "%{B#ff545350} \u$1 %{B-}"
 }
 
 block() {
-    echo $@
+    # echo $@
+    echo -n -e "%{F#FFA3A3AB}$1%{F-}"
 }
 
 clock() {

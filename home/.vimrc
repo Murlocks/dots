@@ -77,6 +77,8 @@ set iskeyword-=.                    " '.' is an end of word designator
 set iskeyword-=#                    " '#' is an end of word designator
 " set iskeyword-=-                    " '-' is an end of word designator
 " set iskeyword-=_                    " '_' is an end of word designator
+"
+set listchars=tab:▸\ ,trail:⋅,eol:¬,nbsp:_,extends:»,precedes:« " invisible character
 
 set tags=.tags,./tags,tags,../tags,~/.vimtags
 
@@ -179,9 +181,17 @@ color bubblegum-256-dark
 " color triplejelly
 " let g:seoul256_background = 235
 " color seoul256
+" let g:solarized_termcolors=256
+" colorscheme solarized
+
+" color base16-chalk
+" let g:hybrid_use_Xresources = 1
+" color hybrid
+
+hi StatusLineNC ctermfg=244 ctermbg=237 cterm=none guifg=#808080 guibg=#3A3A3A gui=none
 
 " Keep my background
-hi Normal ctermfg=249 ctermbg=235 cterm=none guifg=#B2B2B2 guibg=#262626 gui=none
+" hi Normal ctermfg=249 ctermbg=235 cterm=none guifg=#B2B2B2 guibg=#262626 gui=none
 " Hide split marker
 hi vertsplit ctermbg=235
 
@@ -295,7 +305,7 @@ set statusline+=%*
 "display a warning if &paste is set
 set statusline+=%#warningmsg#
 " set statusline+=%{&paste?'[paste]':''}
-" set statusline+=%*
+set statusline+=%*
 
 set statusline+=%=      "left/right separator
 set statusline+=%#warningmsg#
@@ -456,14 +466,13 @@ autocmd vimrc FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,
 nnoremap Y y$
 
 " Easy esc
-inoremap jk <Esc>
+" inoremap jk <Esc> " mapped in multiplecursors
 cnoremap jk <Esc>
-snoremap jk <Esc>
-" inoremap kj <Esc>
 
 "easy command mode
 nnoremap ; :
-nnoremap : ;
+" nnoremap : ;
+nnoremap q; q:
 " nnoremap ;; ;
 " vnoremap ; :
 " vnoremap ;; ;
@@ -486,6 +495,12 @@ cnoremap <C-k>       <Up>
 "add new lines above/below current line.
 nnoremap <silent> gO O<Esc>
 nnoremap <silent> go o<Esc>
+
+" Curly braces don't have to be at the start of the line
+noremap [[ ?{<CR>w99[{
+noremap ][ /}<CR>b99]}
+noremap ]] j0[[%/{<CR>
+noremap [] k$][%?}<CR>
 
 "paste in insertmode
 " inoremap <C-v> <C-r>+
@@ -510,9 +525,12 @@ vnoremap H ^
 vnoremap L g_
 
 " allows incsearch highlighting for range commands
-cnoremap $t <CR>:t''<CR>
-cnoremap $m <CR>:m''<CR>
-cnoremap $d <CR>:d<CR>``
+cnoremap ;t <CR>:t''<CR>
+cnoremap ;m <CR>:m''<CR>
+cnoremap ;d <CR>:d<CR>``
+
+" Swap two lines using search
+cnoremap <silent><expr> ;s getcmdtype() =~ '/\\|?\\|^$' ? "\<CR>:\<C-u>let l=[line(\"'`\"),line('.')]\\|exe max(l)'m'min(l)\\|exe min(l)'m'max(l)\\|exe l[0]\\|unl l\<CR>" : ';s'
 
 " Make search results invisible
 nnoremap <silent> <leader>/ :set invhlsearch<CR>
@@ -534,6 +552,9 @@ xnoremap <C-down> y`>pgv
 inoremap <C-up> <esc>yyPj
 nnoremap <C-up> yyPj
 xnoremap <C-up> y`<Pgv
+
+" duplicate the selection
+vnoremap D y`]pgv
 
 " swap word under the cursor with previous word on the left
 nnoremap <M-l>  "_yiw?\w\+\_W\+\%#<CR>:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR><C-o><C-l>

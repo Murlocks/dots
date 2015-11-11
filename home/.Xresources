@@ -44,7 +44,7 @@ URxvt.scrollBar: false
 URxvt*cursorBlink: true
 URxvt*cursorUnderline: true
 
-URxvt.internalBorder: 8
+URxvt.internalBorder: 15
 
 rofi.kb-row-up: Alt+k,Up
 rofi.kb-row-down: Alt+j,Down
@@ -117,3 +117,4 @@ Xcursor.size: 16
 ! white
 *.color7:	#e1e1e1
 *.color15:	#f0f0f0
+

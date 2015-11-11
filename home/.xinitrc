@@ -41,9 +41,10 @@ fcitx
 
 xrandr --output HDMI1 --auto --mode 2560x1440 --auto --right-of eDP1 --output eDP1 --mode 1600x900 --auto
 # xrandr --output HDMI1 --auto --primary --mode 2560x1440 --auto --right-of eDP1 --output eDP1 --mode 1600x900 --auto
-syndaemon -t -k -i 2 &
+syndaemon -i 5 &
 xinput set-prop 11 286 0 0 0 0 0 0 0
 unclutter &
+xcape -e 'Control_L=Escape'
 # sleep 1 && swapcapsctrl &
 
 wmname LG3D #so intellij works
@@ -53,6 +54,7 @@ java_nonparenting.sh
 compton --mark-ovredir-focused &
 
 #[ ! -s ~/.config/mpd/pid ] && mpd
+emacs --daemon &
 mopidy &
 urxvtd -q -f -o &
 xsetroot -cursor_name left_ptr &
