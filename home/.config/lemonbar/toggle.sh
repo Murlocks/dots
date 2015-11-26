@@ -7,8 +7,8 @@ for i in $(lsw -a); do
 done
 
 [[ ! -z $(wattr m $bar && echo ismapped) ]] && \
-    bspc config top_padding 20 || \
-    bspc config top_padding 0
+    bspc config top_padding 80 || \
+    bspc config top_padding 60
 
 # for i in $(lsw -a); do
 #     [[ $(xtitle $i) = 'bar' ]] && mapw -t $i && \

@@ -3,9 +3,9 @@
 set nocompatible
 
 " auto reload this very rc!
-" augroup vimrc
+" augroup reload_vimrc
 "     au!
-"     au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+"     au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc,.vimrc.bundles so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 " augroup END
 
 " Environment " {{{
@@ -252,60 +252,61 @@ set norelativenumber
 " " set statusline+=%<%P                           " percentage of file
 
 " statusline setup
-set statusline =%#identifier#
+set statusline =%#warningmsg#
+" set statusline =%#identifier#
 set statusline+=[%t]    "tail of the filename
-set statusline+=%*
+" set statusline+=%*
 
 "display a warning if fileformat isnt unix
 set statusline+=%#warningmsg#
 set statusline+=%{&ff!='unix'?'['.&ff.']':''}
-set statusline+=%*
+" set statusline+=%*
 
 "display a warning if file encoding isnt utf-8
 set statusline+=%#warningmsg#
 set statusline+=%{(&fenc!='utf-8'&&&fenc!='')?'['.&fenc.']':''}
-set statusline+=%*
+" set statusline+=%*
 
-set statusline+=%#identifier#
+" set statusline+=%#identifier#
 set statusline+=%h      "help file flag
 set statusline+=%y      "filetype
-set statusline+=%*
+" set statusline+=%*
 
 "read only flag
-set statusline+=%#identifier#
+" set statusline+=%#identifier#
 set statusline+=%r
-set statusline+=%*
+" set statusline+=%*
 
 "modified flag
-set statusline+=%#identifier#
+" set statusline+=%#identifier#
 set statusline+=%m
-set statusline+=%*
+" set statusline+=%*
 
-set statusline+=%#identifier#
+" set statusline+=%#identifier#
 set statusline+=%{fugitive#statusline()}
-set statusline+=%*
+" set statusline+=%*
 
 " display a warning if &et is wrong, or we have mixed-indenting
-set statusline+=%#warningmsg#
+" set statusline+=%#warningmsg#
 set statusline+=%{StatuslineTabWarning()}
-set statusline+=%*
+" set statusline+=%*
 
-set statusline+=%#identifier#
+" set statusline+=%#identifier#
 set statusline+=%{StatuslineTrailingSpaceWarning()}
-set statusline+=%*
+" set statusline+=%*
 
-set statusline+=%#identifier#
+" set statusline+=%#identifier#
 set statusline+=%{StatuslineLongLineWarning()}
-set statusline+=%*
+" set statusline+=%*
 
-set statusline+=%#warningmsg#
+" set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" set statusline+=%*
 
 "display a warning if &paste is set
 set statusline+=%#warningmsg#
 " set statusline+=%{&paste?'[paste]':''}
-set statusline+=%*
+" set statusline+=%*
 
 set statusline+=%=      "left/right separator
 set statusline+=%#warningmsg#
@@ -451,6 +452,7 @@ set pastetoggle=<F12>               " pastetoggle (sane indentation on pastes)
 
 " don't auto continue line comments
 " autocmd vimrc FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
 set formatoptions=qrn1j
 
 " Remove trailing whitespaces and ^M chars
@@ -474,8 +476,13 @@ nnoremap ; :
 " nnoremap : ;
 nnoremap q; q:
 " nnoremap ;; ;
-" vnoremap ; :
+vnoremap ; :
 " vnoremap ;; ;
+
+" Always use command and search window
+" nnoremap ; q:
+" nnoremap / q/
+" nnoremap ? q?
 
 " Move around easier
 inoremap <C-o>   <Esc>o
@@ -497,10 +504,10 @@ nnoremap <silent> gO O<Esc>
 nnoremap <silent> go o<Esc>
 
 " Curly braces don't have to be at the start of the line
-noremap [[ ?{<CR>w99[{
-noremap ][ /}<CR>b99]}
-noremap ]] j0[[%/{<CR>
-noremap [] k$][%?}<CR>
+map [[ ?{<CR>
+map ][ /}<CR>
+map ]] j0[[%/{<CR>
+map [] k$][%?}<CR>
 
 "paste in insertmode
 " inoremap <C-v> <C-r>+
@@ -600,8 +607,8 @@ vnoremap > >gv
 nnoremap <Space>z mzzMzvzz15<c-e>`z:Pulse<cr>
 
 " Space to toggle folds.
-nnoremap <Space><Space> za
-vnoremap <Space><Space> za
+nnoremap <Space>v za
+vnoremap <Space>v za
 
 " Make zO recursively open whatever fold we're in, even if it's partially open.
 nnoremap zO zczO
@@ -610,18 +617,15 @@ nnoremap zO zczO
 nnoremap <leader>ev <C-w><C-s><C-l>:e $MYVIMRC<CR>
 
 " Strip whitespaces
-nnoremap <leader>sw :call StripTrailingWhitespace()<CR>
+nnoremap <leader>ws :call StripTrailingWhitespace()<CR>
 
 " Allow using the repeat operator with a visual selection (!)
 " http://stackoverflow.com/a/8064607/127816
 vnoremap . :normal .<CR>
 
-" Adjust viewports to the same size
-noremap <Leader>= <C-w>=
-
 " noremap <Leader>ff to display all lines with keyword under cursor
 " and ask which one to jump to
-nnoremap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
+" nnoremap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
 
 " Easy formatting
 nnoremap <silent> <leader>q gwie
@@ -678,7 +682,7 @@ function! s:RunShellCommand(cmdline)
     setlocal bufhidden=delete
     setlocal nobuflisted
     setlocal noswapfile
-    setlocal owrap
+    setlocal wrap
     setlocal filetype=shell
     setlocal syntax=shell
 

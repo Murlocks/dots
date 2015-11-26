@@ -62,13 +62,15 @@ NeoBundle 'w0ng/vim-hybrid'
 NeoBundle 'jonathanfilip/lucius'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'chriskempson/base16-vim'
+NeoBundle 'vim-scripts/cSyntaxAfter'
 " NeoBundle 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
 NeoBundle 'bling/vim-airline'
 NeoBundle 'bling/vim-bufferline'
 " NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'hynek/vim-python-pep8-indent'
+NeoBundle 'rhysd/committia.vim'
 " NeoBundle 'myusuf3/numbers.vim'
-NeoBundle 'osyo-manga/vim-over'
+NeoBundle 'LeafCage/foldCC.vim'
 " NeoBundle 'amix/vim-zenroom'
 NeoBundle 'junegunn/goyo.vim'
 NeoBundle 'amix/vim-zenroom2', { 'depends:' : [ 'junegunn/goyo.vim' ] }
@@ -82,47 +84,50 @@ NeoBundle 'Shougo/vimshell.vim', { 'depends:' : [ 'Shougo/vimproc.vim' ] }
 NeoBundle 'matchit.zip'
 NeoBundle 'mbbill/undotree'
 NeoBundle 'mhinz/vim-sayonara'
-NeoBundle 'osyo-manga/vim-anzu'
 NeoBundle 'airblade/vim-rooter'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'tommcdo/vim-exchange'
 NeoBundle 'sheerun/vim-polyglot'
 NeoBundle 'jiangmiao/auto-pairs' " Doesn't play well with unite's preview window - fixed??
+NeoBundle 'osyo-manga/vim-over'
+NeoBundle 'osyo-manga/vim-anzu'
+NeoBundle 'haya14busa/incsearch.vim'
+NeoBundle 'haya14busa/incsearch-easymotion.vim', { 'depends:' : [ 'haya14busa/incsearch.vim' ] }
+NeoBundle 'haya14busa/incsearch-fuzzy.vim', { 'depends:' : [ 'haya14busa/incsearch.vim' ] }
+NeoBundle 'haya14busa/vim-asterisk'
 " NeoBundle 'kana/vim-smartinput'
 " NeoBundle 'cohama/vim-smartinput-endwise', { 'depends' : [ 'kana/vim-smartinput' ] }
 " NeoBundle 'cohama/lexima.vim'
-NeoBundle 'haya14busa/incsearch.vim'
-NeoBundle 'haya14busa/incsearch-easymotion.vim', { 'depends:' : [ 'haya14busa/incsearch.vim' ] }
-NeoBundle 'osyo-manga/vim-over'
-NeoBundle 'mileszs/ack.vim'
 " NeoBundle 'wellle/targets.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'tpope/vim-dispatch'
 NeoBundle 'tpope/vim-eunuch'
+NeoBundle 'tpope/vim-endwise'
+NeoBundle 'tpope/vim-sleuth'
 " NeoBundle 'kana/vim-repeat'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
+NeoBundle 'FooSoft/vim-argwrap'
 NeoBundle 'duff/vim-bufonly'
 NeoBundle 'godlygeek/tabular'
 NeoBundle 'plasticboy/vim-markdown', { 'depends:' : [ 'godlygeek/tabular' ] }
 NeoBundle 'vim-pandoc/vim-pandoc'
-NeoBundle 'haya14busa/vim-asterisk'
-NeoBundle 'yonchu/accelerated-smooth-scroll'
+" NeoBundle 'yonchu/accelerated-smooth-scroll'
 " NeoBundle 'tpope/vim-commentary'
 NeoBundle 'tyru/caw.vim'
 NeoBundle 'kristijanhusak/vim-multiple-cursors'
 " NeoBundle 'tomtom/tcomment_vim'
-NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'kana/vim-submode'
 NeoBundle 'Murlocks/vimux'
-NeoBundle 'rhysd/committia.vim'
-NeoBundle 'justinmk/vim-sneak'
 " NeoBundle 'mattn/emmet-vim'
 NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'LeafCage/foldCC.vim'
+NeoBundle 'thinca/vim-qfreplace'
+NeoBundle 'mileszs/ack.vim'
+NeoBundle 'AndrewRadev/splitjoin.vim'
+NeoBundle 'justinmk/vim-sneak'
+NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'rhysd/accelerated-jk'
-NeoBundle 'FooSoft/vim-argwrap'
 NeoBundle 'takac/vim-hardtime'
 NeoBundle 'xolox/vim-easytags', { 'depends' : [ 'xolox/vim-misc' ] }
 " }}}
@@ -294,7 +299,7 @@ if g:neobundle#tap('neocomplete') " {{{
         return !col || getline('.')[col - 1]    =~ '\s'
     endfunction"}}}
 
-    if neobundle#is_sourced('neosnippet')
+    if neobundle#is_installed('neosnippet')
 
         imap <silent><expr><C-l> neosnippet#expandable() ?
                                 \ "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ?
@@ -347,7 +352,7 @@ if g:neobundle#tap('neocomplete') " {{{
             endif
         endfunction
 
-    elseif neobundle#is_sourced('ultisnips')
+    elseif neobundle#is_installed('ultisnips')
 
         " Next menu item, expand snippet, jump to next placeholder or insert literal tab
         let g:UltiSnipsJumpForwardTrigger="<NOP>"
@@ -624,35 +629,35 @@ if g:neobundle#tap('unite.vim') " {{{
             \ 'description' : 'git menu',
             \}
         let g:unite_source_menu_menus.git.command_candidates = [
-            \['▷ tig                                                        ⌘ ,gt',
-                \'normal ,gt'],
-            \['▷ git status       (Fugitive)                                ⌘ ,gs',
-                \'Gstatus'],
-            \['▷ git diff         (Fugitive)                                ⌘ ,gd',
-                \'Gdiff'],
-            \['▷ git commit       (Fugitive)                                ⌘ ,gc',
-                \'Gcommit'],
-            \['▷ git log          (Fugitive)                                ⌘ ,gl',
-                \'exe "silent Glog | Unite quickfix"'],
-            \['▷ git blame        (Fugitive)                                ⌘ ,gb',
-                \'Gblame'],
-            \['▷ git stage        (Fugitive)                                ⌘ ,gw',
-                \'Gwrite'],
-            \['▷ git checkout     (Fugitive)                                ⌘ ,go',
-                \'Gread'],
-            \['▷ git rm           (Fugitive)                                ⌘ ,gr',
-                \'Gremove'],
-            \['▷ git mv           (Fugitive)                                ⌘ ,gm',
-                \'exe "Gmove " input("destino: ")'],
-            \['▷ git push         (Fugitive)             ⌘ ,gp',
-                \'Git! push'],
-            \['▷ git pull         (Fugitive)             ⌘ ,gP',
-                \'Git! pull'],
-            \['▷ git prompt       (Fugitive)             ⌘ ,gi',
-                \'exe "Git! " input("git command: ")'],
-            \['▷ git cd           (Fugitive)',
-                \'Gcd'],
-            \]
+                    \['▷ tig                                                        ⌘ ,gt',
+                        \'normal ,gt'],
+                    \['▷ git status       (Fugitive)                                ⌘ ,gs',
+                        \'Gstatus'],
+                    \['▷ git diff         (Fugitive)                                ⌘ ,gd',
+                        \'Gdiff'],
+                    \['▷ git commit       (Fugitive)                                ⌘ ,gc',
+                        \'Gcommit'],
+                    \['▷ git log          (Fugitive)                                ⌘ ,gl',
+                        \'exe "silent Glog | Unite quickfix"'],
+                    \['▷ git blame        (Fugitive)                                ⌘ ,gb',
+                        \'Gblame'],
+                    \['▷ git stage        (Fugitive)                                ⌘ ,gw',
+                        \'Gwrite'],
+                    \['▷ git checkout     (Fugitive)                                ⌘ ,go',
+                        \'Gread'],
+                    \['▷ git rm           (Fugitive)                                ⌘ ,gr',
+                        \'Gremove'],
+                    \['▷ git mv           (Fugitive)                                ⌘ ,gm',
+                        \'exe "Gmove " input("destino: ")'],
+                    \['▷ git push         (Fugitive)             ⌘ ,gp',
+                        \'Git! push'],
+                    \['▷ git pull         (Fugitive)             ⌘ ,gP',
+                        \'Git! pull'],
+                    \['▷ git prompt       (Fugitive)             ⌘ ,gi',
+                        \'exe "Git! " input("git command: ")'],
+                    \['▷ git cd           (Fugitive)',
+                        \'Gcd'],
+                    \]
 
         let g:unite_source_rec_max_cache_files = 0
 
@@ -688,6 +693,7 @@ if g:neobundle#tap('unite.vim') " {{{
     " nnoremap <silent> <C-e>      :<C-u>Unite -start-insert -buffer-name=everything everything<CR>
     nnoremap <silent> <Space>y     :<C-u>Unite -buffer-name=yank history/yank<CR>
     nnoremap <silent> <Space>l     :lcl<CR>:<C-u>Unite -buffer-name=locations -auto-preview location_list<CR><C-w><C-j>:lcl<CR><C-w><C-k>
+    nnoremap <silent> <Space>r     :<C-u>Unite resume<CR>
 
     nnoremap <silent> <Space>m :<C-u>call Unite_filetype_menu('-buffer-name=menu -start-insert')<CR>
     function! Unite_filetype_menu(options)
@@ -711,10 +717,6 @@ if g:neobundle#tap('unite.vim') " {{{
         nnoremap <silent> <Space>h    :<C-u>Unite -start-insert help<CR>
     endif
 
-    au FileType unite imap <buffer> <CR>            <Plug>(unite_do_default_action)
-    au FileType unite nmap <buffer> <ESC>            <Plug>(unite_exit)
-    au FileType unite nmap <buffer> <c-c>            <Plug>(unite_exit)
-
     function! s:unite_my_settings() " {{{
         " Directory partial match.
         call unite#custom#alias('file', 'h', 'left')
@@ -726,7 +728,7 @@ if g:neobundle#tap('unite.vim') " {{{
         nmap <buffer> q          <Plug>(unite_all_exit)
         nmap <buffer> <ESC>      <Plug>(unite_all_exit)
         nmap <buffer> <c-c>      <Plug>(unite_all_exit)
-        imap <buffer> <BS>       <Plug>(unite_delete_backward_path)
+        " imap <buffer> <BS>       <Plug>(unite_delete_backward_path)
         imap <buffer> jk         <Plug>(unite_insert_leave)
         " imap <buffer> <Tab>      <Plug>(unite_complete)
         imap <buffer> '          <Plug>(unite_quick_match_default_action)
@@ -742,6 +744,7 @@ if g:neobundle#tap('unite.vim') " {{{
         nmap <buffer> <C-l>      <Plug>(unite_do_default_action)
         nmap <buffer> <C-o>      <Plug>(unite_toggle_auto_preview)
         imap <buffer> <C-o>      <Plug>(unite_toggle_auto_preview)
+        imap <buffer> <C-f>      <Plug>(unite_do_vimfiler_action)
         nnoremap <buffer> <C-k>  <Up>
         nnoremap <buffer> <C-j>  <Down>
         nnoremap <buffer> i      Gi
@@ -750,6 +753,10 @@ if g:neobundle#tap('unite.vim') " {{{
                     \ unite#smart_map('l', unite#do_action('default'))
         nnoremap <silent><buffer><expr> P
                     \ unite#smart_map('P', unite#do_action('insert'))
+        nnoremap <silent><buffer><expr> f
+                    \ unite#smart_map('f', unite#do_action('vimfiler'))
+        inoremap <silent><buffer><expr> <C-f>
+                    \ unite#smart_map('<C-f>', unite#do_action('vimfiler'))
 
         let unite = unite#get_current_unite()
         if unite.profile_name ==# '^search'
@@ -764,7 +771,7 @@ if g:neobundle#tap('unite.vim') " {{{
                     \ unite#mappings#set_current_sorters(
                     \  empty(unite#mappings#get_current_sorters()) ?
                     \   ['sorter_reverse'] : [])
-        nnoremap <buffer><expr> cof
+        nnoremap <buffer><expr> tf
                     \ unite#mappings#set_current_matchers(
                     \ empty(unite#mappings#get_current_matchers()) ?
                     \ ['matcher_fuzzy'] : [])
@@ -773,6 +780,12 @@ if g:neobundle#tap('unite.vim') " {{{
     autocmd vimrc FileType unite call s:unite_my_settings()
 
     call neobundle#untap()
+
+endif " }}}
+
+if g:neobundle#tap('vimfiler') " {{{
+
+    let g:vimfiler_as_default_explorer = 1
 
 endif " }}}
 
@@ -925,13 +938,15 @@ endif " }}}
 
 if g:neobundle#tap('vim-easymotion') " {{{
 
-    " hi link EasyMotionTarget ErrorMsg
-    " hi link EasyMotionShade    Comment
+    hi link EasyMotionTarget WarningMsg
+    hi link EasyMotionTarget2First Identifier
+    hi link EasyMotionTarget2Second Identifier
+    hi link EasyMotionShade    Comment
 
     let g:EasyMotion_skipfoldedline = 0
 
     map <Space> <Plug>(easymotion-prefix)
-    " map s <Plug>(easymotion-s)
+    map <Space><Space> <Plug>(easymotion-s)
     " map t <Plug>(easymotion-t)
     " map    / <Plug>(easymotion-sn)
     " omap / <Plug>(easymotion-tn)
@@ -1399,7 +1414,6 @@ endif " }}}
 
 if g:neobundle#tap('vim-eunuch') " {{{
 
-    " command -nargs=1 w!! exec SudoWrite
 
 endif " }}}
 
@@ -1418,6 +1432,22 @@ if g:neobundle#tap('vim-signify') " {{{
     highlight SignifySignAdd    cterm=none ctermbg=none  ctermfg=119
     highlight SignifySignDelete cterm=none ctermbg=none  ctermfg=167
     highlight SignifySignChange cterm=none ctermbg=none  ctermfg=227
+
+endif " }}}
+
+if g:neobundle#tap('vim-gitgutter') " {{{
+
+    let g:gitgutter_realtime = 0
+    let g:gitgutter_eager = 0
+
+endif " }}}
+
+if g:neobundle#tap('cSyntaxAfter') " {{{
+
+    augroup cSyntaxAfter
+        autocmd!
+        autocmd BufEnter *.cpp,*.c,*.java,*.py,*.sh call CSyntaxAfter()
+    augroup END
 
 endif " }}}
 
