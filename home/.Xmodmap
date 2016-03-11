@@ -21,11 +21,12 @@ keycode 132 = grave asciitilde
 
 keycode 97 = BackSpace
 
- ! keycode 100 = space
+ keycode 100 = space
  ! keycode 100 = Shift_L
-keycode 100 = Return
+ ! keycode 100 = Return
 
-keycode 101 = Escape
+ ! keycode 101 = Escape
+ keycode 101 = Shift_L
 
 keycode 102 = Alt_L
  ! keycode 102 = Escape

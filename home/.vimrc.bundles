@@ -42,11 +42,11 @@ NeoBundle 'Shougo/context_filetype.vim', { 'depends:' : [ 'Shougo/neocomplete' ]
 NeoBundle 'Shougo/neco-syntax', { 'depends:' : [ 'Shougo/neocomplete' ] }
 NeoBundle 'Shougo/neco-vim', { 'depends:' : [ 'Shougo/neocomplete' ] }
 NeoBundle 'osyo-manga/vim-marching'
-" NeoBundle 'Shougo/neosnippet'
-" NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'Shougo/neosnippet'
+NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'davidhalter/jedi'
-NeoBundle 'SirVer/ultisnips'
-NeoBundle 'honza/vim-snippets'
+" NeoBundle 'SirVer/ultisnips'
+" NeoBundle 'honza/vim-snippets'
 " NeoBundle 'Valloric/YouCompleteMe'
 " NeoBundle 'rdnetto/YCM-Generator'
 " }}}
@@ -58,6 +58,7 @@ NeoBundle 'tomasr/molokai'
 NeoBundle 'chriskempson/base16-vim'
 NeoBundle 'baskerville/bubblegum'
 NeoBundle 'junegunn/seoul256.vim'
+" NeoBundle 'unblevable/quick-scope'
 NeoBundle 'w0ng/vim-hybrid'
 NeoBundle 'jonathanfilip/lucius'
 NeoBundle 'altercation/vim-colors-solarized'
@@ -88,24 +89,21 @@ NeoBundle 'airblade/vim-rooter'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'tommcdo/vim-exchange'
 NeoBundle 'sheerun/vim-polyglot'
-NeoBundle 'jiangmiao/auto-pairs' " Doesn't play well with unite's preview window - fixed??
+" NeoBundle 'jiangmiao/auto-pairs' " Doesn't play well with unite's preview window - fixed??
 NeoBundle 'osyo-manga/vim-over'
 NeoBundle 'osyo-manga/vim-anzu'
 NeoBundle 'haya14busa/incsearch.vim'
 NeoBundle 'haya14busa/incsearch-easymotion.vim', { 'depends:' : [ 'haya14busa/incsearch.vim' ] }
 NeoBundle 'haya14busa/incsearch-fuzzy.vim', { 'depends:' : [ 'haya14busa/incsearch.vim' ] }
 NeoBundle 'haya14busa/vim-asterisk'
-" NeoBundle 'kana/vim-smartinput'
 " NeoBundle 'cohama/vim-smartinput-endwise', { 'depends' : [ 'kana/vim-smartinput' ] }
-" NeoBundle 'cohama/lexima.vim'
-" NeoBundle 'wellle/targets.vim'
+NeoBundle 'cohama/lexima.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'tpope/vim-dispatch'
 NeoBundle 'tpope/vim-eunuch'
-NeoBundle 'tpope/vim-endwise'
+" NeoBundle 'tpope/vim-endwise'
 NeoBundle 'tpope/vim-sleuth'
-" NeoBundle 'kana/vim-repeat'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'FooSoft/vim-argwrap'
@@ -116,23 +114,28 @@ NeoBundle 'vim-pandoc/vim-pandoc'
 " NeoBundle 'yonchu/accelerated-smooth-scroll'
 " NeoBundle 'tpope/vim-commentary'
 NeoBundle 'tyru/caw.vim'
-NeoBundle 'kristijanhusak/vim-multiple-cursors'
+" NeoBundle 'kristijanhusak/vim-multiple-cursors'
 " NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'kana/vim-submode'
-NeoBundle 'Murlocks/vimux'
+" NeoBundle 'kana/vim-repeat'
+" NeoBundle 'kana/vim-smartinput'
+" NeoBundle 'Murlocks/vimux'
+" NeoBundle 'jpalardy/vim-slime'
 " NeoBundle 'mattn/emmet-vim'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-qfreplace'
 NeoBundle 'mileszs/ack.vim'
-NeoBundle 'AndrewRadev/splitjoin.vim'
+" NeoBundle 'AndrewRadev/splitjoin.vim'
 NeoBundle 'justinmk/vim-sneak'
 NeoBundle 'Lokaltog/vim-easymotion'
-NeoBundle 'rhysd/accelerated-jk'
-NeoBundle 'takac/vim-hardtime'
+" NeoBundle 'rhysd/accelerated-jk'
+" NeoBundle 'takac/vim-hardtime'
+" NeoBundle 'chrisbra/NrrwRgn'
 NeoBundle 'xolox/vim-easytags', { 'depends' : [ 'xolox/vim-misc' ] }
 " }}}
 
 " Text object " {{{
+NeoBundle 'wellle/targets.vim'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'kana/vim-textobj-entire', { 'depends' : 'kana/vim-textobj-user' }
 NeoBundle 'kana/vim-textobj-function', { 'depends' : 'kana/vim-textobj-user' }
@@ -142,8 +145,8 @@ NeoBundle 'osyo-manga/vim-textobj-multiblock', { 'depends' : 'kana/vim-textobj-u
 NeoBundle 'osyo-manga/vim-textobj-multitextobj', { 'depends' : 'kana/vim-textobj-user' }
 NeoBundle 'osyo-manga/vim-textobj-blockwise', { 'depends' : 'kana/vim-textobj-user' }
 NeoBundle 'Julian/vim-textobj-variable-segment', { 'depends' : 'kana/vim-textobj-user' }
-NeoBundle 'sgur/vim-textobj-parameter', { 'depends' : 'kana/vim-textobj-user' }
-NeoBundle 'thinca/vim-textobj-between', { 'depends' : 'kana/vim-textobj-user' }
+" NeoBundle 'sgur/vim-textobj-parameter', { 'depends' : 'kana/vim-textobj-user' }
+" NeoBundle 'thinca/vim-textobj-between', { 'depends' : 'kana/vim-textobj-user' }
 " }}}
 
 " Operator " {{{
@@ -242,7 +245,8 @@ if g:neobundle#tap('neocomplete') " {{{
         " Use fuzzy completion.
         let g:neocomplete#enable_fuzzy_completion = 1
 
-        " autocmd CompleteDone * pclose
+        autocmd CursorMovedI *  if pumvisible() == 0|silent! pclose|endif
+        autocmd InsertLeave * if pumvisible() == 0|silent! pclose|endif
 
         " Set auto completion length.
         let g:neocomplete#auto_completion_start_length = 3
@@ -316,17 +320,13 @@ if g:neobundle#tap('neocomplete') " {{{
         " <s-CR>: close popup and save indent.
         inoremap <expr><s-CR> pumvisible() ? neocomplete#smart_close_popup()."\<CR>" : "\<CR>"
 
-        inoremap <expr> <CR> CleverCr()
+        "inoremap <expr> <CR> someCondition() ? yourMapping() : lexima#expand('<LT>CR>', 'i')
+        imap <expr> <CR> pumvisible() ? CleverCr() : "\<CR>"
         function! CleverCr()
-            if pumvisible()
-                if neosnippet#expandable()
-                    let exp = "\<Plug>(neosnippet_expand_or_jump)"
-                    return exp
-                else
-                    return neocomplete#smart_close_popup()
-                endif
+            if neosnippet#expandable()
+                return "\<Plug>(neosnippet_expand_or_jump)"
             else
-                return "\<CR>"
+                return "\<C-y>"
             endif
         endfunction
 
@@ -668,10 +668,10 @@ if g:neobundle#tap('unite.vim') " {{{
                     \ 'file_rec,file_rec/async', 'required_pattern_length',
                     \ 1)
 
-        call unite#custom#source('menu,outline', 'matchers', ['matcher_fuzzy'])
+        call unite#custom#source('menu,outline,variable', 'matchers', ['matcher_fuzzy'])
         call unite#custom#source('file,file_mru,file_rec,file_rec/async,buffer_tab', 'matchers', ['converter_relative_word', 'matcher_fuzzy'])
         call unite#custom#source('file,file_mru,file_rec,file_rec/async', 'converters', ['converter_file_directory'])
-        call unite#custom#source('menu,outline,file,file_mru,file_rec,file_rec/async,buffer_tab', 'sorters', ['sorter_selecta'])
+        call unite#custom#source('menu,outline,variable,file,file_mru,file_rec,file_rec/async,buffer_tab', 'sorters', ['sorter_selecta'])
 
         " Like ctrlp.vim settings.
         call unite#custom#profile('default', 'context', {
@@ -682,14 +682,14 @@ if g:neobundle#tap('unite.vim') " {{{
     endfunction
 
     nnoremap <silent> <CR>         :<C-u>Unite -start-insert -buffer-name=menu menu:global<CR>
-    nnoremap <silent> <Space>b     :<C-u>Unite -start-insert -quick-match buffer_tab<CR>
+    " nnoremap <silent> <Space>b     :<C-u>Unite -start-insert -quick-match buffer_tab<CR>
     nnoremap <silent> <Space>a     :<C-u>Unite -start-insert -auto-preview -buffer-name=anzu anzu<CR>
     nnoremap <silent> <Space>f     :<C-u>Unite -start-insert -auto-preview -buffer-name=search line<CR>
     nnoremap <silent> <Space><C-f> :<C-u>UniteWithCursorWord -auto-preview -start-insert -buffer-name=search line<CR>
     nnoremap <silent> <Space>g     :<C-u>Unite grep -max-multi-lines=1 -truncate -default-action=tabopen -buffer-name=unite_grep<CR>
     nnoremap <silent> <Space><C-g> :<C-u>Unite -start-insert -buffer-name=menu menu:git<CR>
     nnoremap <silent> <Space>p     :<C-u>Unite -start-insert -buffer-name=files buffer_tab file_rec/async:! file_mru<CR>
-    nnoremap <silent> <Space>d     :<C-u>UniteWithBufferDir -start-insert -buffer-name=files file<CR>
+    nnoremap <silent> <Space>d     :<C-u>UniteWithBufferDir -start-insert -buffer-name=files file file/new directory/new<CR>
     " nnoremap <silent> <C-e>      :<C-u>Unite -start-insert -buffer-name=everything everything<CR>
     nnoremap <silent> <Space>y     :<C-u>Unite -buffer-name=yank history/yank<CR>
     nnoremap <silent> <Space>l     :lcl<CR>:<C-u>Unite -buffer-name=locations -auto-preview location_list<CR><C-w><C-j>:lcl<CR><C-w><C-k>
@@ -945,10 +945,14 @@ if g:neobundle#tap('vim-easymotion') " {{{
 
     let g:EasyMotion_skipfoldedline = 0
 
+    " keep cursor column when JK motion
+    let g:EasyMotion_startofline = 0
+
     map <Space> <Plug>(easymotion-prefix)
     map <Space><Space> <Plug>(easymotion-s)
+    map <Space>/ <Plug>(easymotion-sn)
+    omap <Space>/ <Plug>(easymotion-tn)
     " map t <Plug>(easymotion-t)
-    " map    / <Plug>(easymotion-sn)
     " omap / <Plug>(easymotion-tn)
     "map    n <Plug>(easymotion-next)
     "map    N <Plug>(easymotion-prev)
@@ -1085,7 +1089,7 @@ endif " }}}
 if g:neobundle#tap('syntastic') " {{{
 
     " let g:syntastic_python_python_exec = '/bin/python2.7'
-    let g:syntastic_python_flake8_args='--ignore=E501'
+    let g:syntastic_python_flake8_args='--ignore=E501,E221'
     let g:syntastic_always_populate_loc_list = 1
     let g:syntastic_auto_loc_list = 1
     let g:syntastic_auto_jump = 2
@@ -1309,7 +1313,11 @@ endif " }}}
 
 if g:neobundle#tap('lexima.vim') " {{{
 
-    " let g:lexima_enable_endwise_rules = 1
+    let g:lexima_enable_endwise_rules = 1
+    let g:lexima_map_escape = 'jk'
+    function! g:neobundle#tapped.hooks.on_post_source(bundle)
+        imap <expr> <cr> pumvisible() ? CleverCr() : lexima#expand('<lt>CR>', 'i')
+    endfunction
 
 endif " }}}
 

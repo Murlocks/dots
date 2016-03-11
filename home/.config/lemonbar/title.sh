@@ -29,10 +29,10 @@ update() {
     CUR_MON_DESK=$( bspc query --monitor $CUR_MON -T | grep " - \*" | awk -F " " '{print $1}');
 
     # If current window is not in this desktop, no need to update.
-    [[ -z "$(bspc query -W -d "$CUR_MON_DESK" | grep "$win_source" )" ]] && return
+    [[ -z "$(bspc query -N -d "$CUR_MON_DESK" | grep "$win_source" )" ]] && return
 
     if [[ "$always_tab" = true ]]; then
-        for i in $(bspc query -W -d "$CUR_MON_DESK"); do
+        for i in $(bspc query -N -d "$CUR_MON_DESK"); do
             [[ "$i" = "$win_source" ]] && status="A" || status="X";
             winName $i $status;
         done
@@ -40,11 +40,11 @@ update() {
         if [[ ! -z `bspc query -d $CUR_MON_DESK -T | grep "T - \*"` ]]; then
             winName $win_source X;
         else
-            FLOAT_STATUS=$(bspc query -W -w focused.floating);
+            FLOAT_STATUS=$(bspc query -N -w focused.floating);
             if [[ ! -z $FLOAT_STATUS ]]; then
                 winName $win_source A;
             else
-                for i in $(bspc query -W -d $CUR_MON_DESK); do
+                for i in $(bspc query -N -d $CUR_MON_DESK); do
                    [[ "$i" = "$win_source" ]] && status="A" || status="X";
                    winName $i $status;
                 done

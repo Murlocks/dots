@@ -469,6 +469,7 @@ nnoremap Y y$
 
 " Easy esc
 " inoremap jk <Esc> " mapped in multiplecursors
+inoremap jk <Esc>
 cnoremap jk <Esc>
 
 "easy command mode
@@ -504,10 +505,10 @@ nnoremap <silent> gO O<Esc>
 nnoremap <silent> go o<Esc>
 
 " Curly braces don't have to be at the start of the line
-map [[ ?{<CR>
-map ][ /}<CR>
-map ]] j0[[%/{<CR>
-map [] k$][%?}<CR>
+map <silent> [[ ?{<CR>
+map <silent> ]] /}<CR>
+" map ][ j0[[%/{<CR>
+" map [] k$][%?}<CR>
 
 "paste in insertmode
 " inoremap <C-v> <C-r>+
@@ -524,6 +525,10 @@ noremap <C-H> <C-W>h
 "   (especially useful for two-window split)
 nnoremap <silent> <leader>j <c-w>w<c-d><c-w>W
 nnoremap <silent> <leader>k <c-w>w<c-u><c-w>W
+
+" Sane N and n
+noremap <expr> n 'Nn'[v:searchforward]
+noremap <expr> N 'nN'[v:searchforward]
 
 " Go to the first and last char of the line
 nnoremap H ^
@@ -571,9 +576,6 @@ nnoremap <M-h> "_yiw:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR><C-o>/\w\+\_W\+<C
 nnoremap <M-k> ddkP
 nnoremap <M-j> ddp
 
-" toggle rel num
-nnoremap <Leader>n :set rnu!<CR>
-
 "Jump back to last edited buffer
 nnoremap <C-b> <C-^>
 inoremap <C-b> <esc><C-^>
@@ -594,6 +596,9 @@ cnoremap cd. lcd %:p:h
 vnoremap < <gv
 vnoremap > >gv
 
+nnoremap <space>; *``cgn
+nnoremap <space>, #``cgN
+
 " "Focus" the current line.  Basically:
 "
 " 1. Close all folds.
@@ -603,12 +608,15 @@ vnoremap > >gv
 "
 " This mapping wipes out the z mark, which I never use.
 "
-" I use :sus for the rare times I want to actually background Vim.
 nnoremap <Space>z mzzMzvzz15<c-e>`z:Pulse<cr>
 
 " Space to toggle folds.
 nnoremap <Space>v za
 vnoremap <Space>v za
+
+" super quick search and replace
+nnoremap <Space>x :'{,'}s/\<<C-r>=expand("<cword>")<CR>\>/
+nnoremap <Space>%       :%s/\<<C-r>=expand("<cword>")<CR>\>/
 
 " Make zO recursively open whatever fold we're in, even if it's partially open.
 nnoremap zO zczO
@@ -617,7 +625,7 @@ nnoremap zO zczO
 nnoremap <leader>ev <C-w><C-s><C-l>:e $MYVIMRC<CR>
 
 " Strip whitespaces
-nnoremap <leader>ws :call StripTrailingWhitespace()<CR>
+nnoremap <silent> <leader>ws :call StripTrailingWhitespace()<CR>
 
 " Allow using the repeat operator with a visual selection (!)
 " http://stackoverflow.com/a/8064607/127816

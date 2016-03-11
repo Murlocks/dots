@@ -2,9 +2,9 @@
 
 . panel_config
 
-if [ $(pgrep -cx panel) -gt 1 ] ; then
-        printf "%s\n" "The panel is already running." >&2
-        exit 1
+if xdo id -a "panel" > /dev/null ; then
+    printf "%s\n" "The panel is already running." >&2
+    exit 1
 fi
 
 trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
@@ -35,7 +35,7 @@ for i in $num_mon; do
     # This greps out the bspc control section of the current monitor we are on.
     # The while loop in the middle appends 'W' to the start because the panel_bar
     # script assumes input from a 'regular' bspc control --subscribe command
-    bspc control --subscribe |\
+    bspc subscribe report |\
         grep -oE "[Mm]$i[^TM]*[TML]" --line-buffered |\
         while read line; do echo W$line; done \
             > "$PANEL_FIFO$i" &
@@ -48,17 +48,27 @@ for i in $num_mon; do
         info.sh $(eval echo \$'barInfo'$i) > "$PANEL_FIFO$i" &
     fi
 
-    title.sh $i > "$PANEL_FIFO$i" &
+    # title.sh $i > "$PANEL_FIFO$i" &
 
     # Grep for current monitor width (will be first number regex match from bspc query command below).
-    CUR_MON_WIDTH=$(bspc query -T -m $i | grep -oE "[0-9]{2,6}" | head -n 1)
+    CUR_MON_WIDTH=$(bspc query -T -m $i | grep -Po "(?<=\"width\":)[0-9]*" | head -1)
+
 
     # cat "$PANEL_FIFO" | panel_bar | lemonbar -g 1600x$PANEL_HEIGHT -f "$PANEL_FONT_FAMILY" -f "$ICON_FONT" -f "$ICON_FONT2" -F "$COLOR_FOREGROUND" -B "$COLOR_BACKGROUND" -u 2 | bash &
 
     # The nested expr statements account for gap settings and current offset.
     # PANEL_GAP value is set in profile.
     cat "$PANEL_FIFO$i" | panel_bar |\
-        lemonbar -g $(expr $CUR_MON_WIDTH - $(expr $PANEL_GAP + $PANEL_GAP))x$PANEL_HEIGHT+$(expr $CUR_X_OFFSET + $PANEL_GAP)+$PANEL_GAP -f "$PANEL_FONT_FAMILY" -f "$ICON_FONT" -f "$ICON_FONT2" -F "$COLOR_FOCUSED_OCCUPIED_FG" -B "$COLOR_BACKGROUND" -u 2 | sh &
+        lemonbar -n "panel" -g $(expr $CUR_MON_WIDTH - $(expr $PANEL_GAP + $PANEL_GAP))x$PANEL_HEIGHT+$(expr $CUR_X_OFFSET + $PANEL_GAP)+$PANEL_GAP -f "$PANEL_FONT_FAMILY" -f "$ICON_FONT" -f "$ICON_FONT2" -F "$COLOR_FOCUSED_OCCUPIED_FG" -B "$COLOR_BACKGROUND" -u 2 | sh &
+
+    wid=$(xdo id -a "panel")
+    tries_left=20
+    while [ -z "$wid" -a "$tries_left" -gt 0 ] ; do
+        sleep 0.05
+        wid=$(xdo id -a "panel")
+        tries_left=$((tries_left - 1))
+    done
+    [ -n "$wid" ] && xdo above -t "$(xdo id -N Bspwm -n root | sort | head -n 1)" "$wid"
 
     # Increment the x offset for the next monitor.
     CUR_X_OFFSET=$(expr $CUR_X_OFFSET + $CUR_MON_WIDTH )
