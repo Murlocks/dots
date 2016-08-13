@@ -6,6 +6,7 @@ URxvt.geometry: 80x22
 URxvt.font:                -*-gohufont-medium-*-*-*-*100-*-*-*-*-iso10646-*,xft:Terminess Powerline,xft:Source Code Pro,xft:Noto sans,xft:unifont:style=Medium:antialias=false
 URxvt.boldFont:                -*-gohufont-medium-*-*-*-*100-*-*-*-*-iso10646-*,xft:Terminess Powerline,xft:Source Code Pro,xft:Noto sans,xft:unifont:style=Medium:antialias=false
 !URxvt.boldFont:            xft:Ubuntu mono:pixelsize=17:style=Bold
+rofi.font:                     gohufont 10
 URxvt*termName: urxvt
 ! URxvt.letterSpace: true
 ! URxvt*letterSpace: -2
@@ -92,3 +93,19 @@ Xcursor.size: 16
 *.color7:	#e1e1e1
 *.color15:	#f0f0f0
 
+! ------------------------------------------------------------------------------
+! ROFI Color theme
+! ------------------------------------------------------------------------------
+
+! Use extended color scheme
+rofi.color-enabled:                  true
+! Color scheme for normal row
+rofi.color-normal:                   argb:00000000, #1aa, argb:11FFFFFF, #1aa,#333
+! Color scheme for urgent row
+rofi.color-urgent:                   argb:00000000, #f99, argb:11FFFFFF, #f99,#333
+! Color scheme for active row
+rofi.color-active:                   argb:00000000, #aa1, argb:11FFFFFF, #aa1,#333
+! Color scheme window
+rofi.color-window:                   argb:ee333333, #1aa,#1aa
+! Separator style (none, dash, solid)
+rofi.separator-style:                solid

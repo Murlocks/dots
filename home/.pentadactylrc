@@ -57,6 +57,34 @@ imap -builtin <C-v> <C-v><C-v>
 nmap -builtin <C-q> <C-v>
 imap -builtin <C-q> <C-v>
 
+" mpv commands
+command! omniplay -nargs=? -count -js <<EOF
+let omniplay = function(url) {
+    io.run('omniplay', [url]);
+};
+let url = args.length ? args[0] : buffer.URL.spec;
+omniplay(url);
+EOF
+map -builtin -ex ge <count>omniplay
+
+" use mpv to play video
+command! mpv -nargs=? -count -js <<EOF
+let url = args.length ? args[0] : buffer.URL.spec;
+let format = '--ytdl-format=';
+if (count) {
+    format += ['', 'mp4', 'webm', 'worst'][count];
+} else {
+    format += 'best';
+}
+io.run('mpv', ['--profile=pseudo-gui', '--cache=no', '--fs', format, url]);
+EOF
+js <<EOF
+hints.addMode("m", "Open link using mpv", function (elem) {
+    io.run('mpv', ['--profile=pseudo-gui', '--cache=no', '--fs', elem.href]);
+});
+EOF
+map -builtin -ex ,m <count>mpv
+
 " imap jk <Esc>
 vmap jk <Esc><Esc>
 map -modes caret jk <Esc>

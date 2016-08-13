@@ -1,7 +1,5 @@
 " vim: set ft=vim fdm=marker:
 
-set nocompatible
-
 " auto reload this very rc!
 " augroup reload_vimrc
 "     au!
@@ -12,6 +10,9 @@ set nocompatible
 
 let mapleader = ','
 let localleader = '_'
+
+set term=xterm-256color
+set t_Co=256
 
 " Clear vimrc augroup
 augroup vimrc
@@ -27,57 +28,38 @@ if filereadable(expand("~/.vimrc.bundles"))
     source ~/.vimrc.bundles
 endif
 
-set term=xterm-256color
-set t_Co=256
-
-" let g:netrw_browsex_viewer = "xdg-open"
 let g:netrw_browsex_viewer = "firefox"
 
 " Less lag
 set lazyredraw
 set ttyfast
 
-
-" Allow to trigger background
-function! ToggleBG()
-    let s:tbg = &background
-    " Inversion
-    if s:tbg == "dark"
-        set background=light
-    else
-        set background=dark
-    endif
-endfunction
-noremap <leader>bg :call ToggleBG()<CR>
-
 if has('clipboard')
-    if has('unnamedplus')  " When possible use + register for copy-paste
+    if has('unnamedplus')
         set clipboard=unnamed,unnamedplus
-    else         " On mac and Windows, use * register for copy-paste
+    else
         set clipboard=unnamed
     endif
 endif
 
-filetype plugin indent on           " Automatically detect file types.
-syntax on                           " Syntax highlighting
-set mouse=a                         " Automatically enable mouse usage
-set mousehide                       " Hide the mouse cursor while typing
+filetype plugin indent on
+syntax on
+set mousehide
 scriptencoding utf-8
 
-set foldmethod=marker               " use foldmarkers
-let &fmr = ' {{{, }}}'              " Put spaces between comment and marker
-autocmd vimrc BufNewFile,BufRead * :let &cms = ' ' . &cms
-set shortmess+=filmnrxoOtT          " Abbrev. of messages (avoids 'hit enter')
-set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
-set virtualedit=onemore             " Allow for cursor beyond last character
-set history=1000                    " Store a ton of history (default is 20)
-set nospell                         " Spell checking off
-set hidden                          " Allow buffer switching without saving
-set iskeyword-=.                    " '.' is an end of word designator
-set iskeyword-=#                    " '#' is an end of word designator
-" set iskeyword-=-                    " '-' is an end of word designator
-" set iskeyword-=_                    " '_' is an end of word designator
-"
+" autocmd vimrc BufNewFile,BufRead * :let &cms = ' ' . &cms
+set shortmess+=filmnrxoOtT
+set viewoptions=folds,options,cursor,unix,slash
+set virtualedit=onemore
+set history=1000
+set nospell
+set hidden
+set iskeyword-=.
+set iskeyword-=#
+" set iskeyword-=-
+" set iskeyword-=_
+
+set list
 set listchars=tab:▸\ ,trail:⋅,eol:¬,nbsp:_,extends:»,precedes:« " invisible character
 
 set tags=.tags,./tags,tags,../tags,~/.vimtags
@@ -85,6 +67,8 @@ set tags=.tags,./tags,tags,../tags,~/.vimtags
 " folding
 
 set foldlevelstart=0
+set foldmethod=marker
+" let &fmr = ' {{{, }}}'              " Put spaces between comment and marker
 
 function! MyFoldText() " {{{
     let line = getline(v:foldstart)
@@ -126,7 +110,6 @@ function! s:Pulse() " {{{
         redraw
         sleep 6m
     endfor
-
     execute 'hi ' . old_hi
 endfunction " }}}
 command! -nargs=0 Pulse call s:Pulse()
@@ -152,7 +135,6 @@ augroup END
 " Make directory automatically.
 " --------------------------------------
 " http://vim-users.jp/2011/02/hack202/
-
 autocmd vimrc BufWritePre *
             \ call s:mkdir_as_necessary(expand('<afile>:p:h'), v:cmdbang)
 function! s:mkdir_as_necessary(dir, force)
@@ -163,20 +145,20 @@ function! s:mkdir_as_necessary(dir, force)
     endif
 endfunction
 
-set backup                          " Backups are nice ...
-set undofile                        " So is persistent undo ...
-set undolevels=1000                 " Maximum number of changes that can be undone
-set undoreload=10000                " Maximum number lines to save for undo on a buffer reload
+set backup
+set undofile
+set undolevels=1000
+set undoreload=10000
 
 " }}}
 
 " UI " {{{
 
-set background=dark                 " Assume a dark background
+set background=dark
+color bubblegum-256-dark
 
 " color monokai
 " color behelit
-color bubblegum-256-dark
 " color base16-bright
 " color triplejelly
 " let g:seoul256_background = 235
@@ -188,45 +170,45 @@ color bubblegum-256-dark
 " let g:hybrid_use_Xresources = 1
 " color hybrid
 
+" color fixes to match overall os theme
 hi StatusLineNC ctermfg=244 ctermbg=237 cterm=none guifg=#808080 guibg=#3A3A3A gui=none
-
-" Keep my background
-" hi Normal ctermfg=249 ctermbg=235 cterm=none guifg=#B2B2B2 guibg=#262626 gui=none
-" Hide split marker
 hi vertsplit ctermbg=235
-
-set showmode                        " Display the current mode
-set cursorline                      " highlight current line
 
 highlight clear SignColumn          " SignColumn should match background
 highlight clear LineNr              " Make line number match background
 
-set backspace=indent,eol,start      " Backspace for dummies
-set ruler                           " Show the ruler
-set rulerformat=%50(%=\%{fugitive#statusline()}\%y\ %l,%c%V\ %P%) " A ruler on steroids
-set noshowcmd                         " Show partial commands in status line and
-" Selected characters/lines in visual mode
+set backspace=indent,eol,start      " make backpace normal
+set ruler
+set rulerformat=%50(%=\%{fugitive#statusline()}\%y\ %l,%c%V\ %P%)
+set showcmd
+set linespace=1
+set showmode
+set cursorline
+set showmatch
+set incsearch 
+set nohlsearch
+set ignorecase
+set smartcase
+set wildmenu
+set wildmode=list:longest,full
+set whichwrap=b,s,h,l,<,>,[,]
+set scrolljump=20
+set scrolloff=10
 
-set linespace=1                     " No extra spaces between rows
-set showmatch                       " Show matching brackets/parenthesis
-set incsearch                       " Find as you type search
-set nohlsearch                      " Dont highlight search terms
-set winminheight=0                  " Windows can be 0 line high
-set ignorecase                      " Case insensitive search
-set smartcase                       " Case sensitive when uc present
-set wildmenu                        " Show list instead of just completing
-set wildmode=list:longest,full      " Command <Tab> completion, list matches, then longest common part, then all.
-set whichwrap=b,s,h,l,<,>,[,]       " Backspace and cursor keys wrap too
-set scrolljump=20                   " Lines to scroll when cursor leaves screen
-set scrolloff=10                    " Minimum lines to keep above and below cursor
-set list
-set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
-" hi Search ctermbg=161
+" Formatting
+set autoindent                      " Indent at the same level of the previous line
+set shiftwidth=4                    " Use indents of 4 spaces
+set expandtab                       " Tabs are spaces, not tabs
+set tabstop=4                       " An indentation every four columns
+set softtabstop=4                   " Let backspace delete indent
+set nojoinspaces                    " Prevents inserting two spaces after punctuation on a join (J)
+set splitright                      " Puts new vsplit windows to the right of the current
+set splitbelow                      " Puts new split windows to the bottom of the current
+set pastetoggle=<F12>               " pastetoggle (sane indentation on pastes)
 
 " Smart numbering
 set nonumber
 set norelativenumber
-
 " augroup linenumbers
 "     autocmd!
 "     autocmd BufEnter *    :set relativenumber
@@ -238,6 +220,8 @@ set norelativenumber
 "     autocmd FocusLost *   :set number norelativenumber
 "     autocmd FocusGained * :set relativenumber
 " augroup END
+
+" Statusline funs " {{{
 
 " set laststatus=1
 " " set statusline=%{expand('%:p')}
@@ -439,23 +423,13 @@ endfunction
 " set statusline+=\ [%{getcwd()}]          " Current dir
 " set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
 
-" Formatting
-set autoindent                      " Indent at the same level of the previous line
-set shiftwidth=4                    " Use indents of 4 spaces
-set expandtab                       " Tabs are spaces, not tabs
-set tabstop=4                       " An indentation every four columns
-set softtabstop=4                   " Let backspace delete indent
-set nojoinspaces                    " Prevents inserting two spaces after punctuation on a join (J)
-set splitright                      " Puts new vsplit windows to the right of the current
-set splitbelow                      " Puts new split windows to the bottom of the current
-set pastetoggle=<F12>               " pastetoggle (sane indentation on pastes)
+" }}}
 
 " don't auto continue line comments
 " autocmd vimrc FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 set formatoptions=qrn1j
 
-" Remove trailing whitespaces and ^M chars
 autocmd vimrc FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
 autocmd vimrc FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql autocmd InsertLeave <buffer> call StripTrailingWhitespace()
 
@@ -475,7 +449,6 @@ cnoremap jk <Esc>
 "easy command mode
 nnoremap ; :
 " nnoremap : ;
-nnoremap q; q:
 " nnoremap ;; ;
 vnoremap ; :
 " vnoremap ;; ;
@@ -580,9 +553,12 @@ nnoremap <M-j> ddp
 nnoremap <C-b> <C-^>
 inoremap <C-b> <esc><C-^>
 
+"toggle line numbers
+nnoremap <leader>n :set number!<CR>
+
 "Will open files in current directory, allows you to leave the working cd in
 "the project root. You can also use %% anywhere in the command line to expand.
-cnoremap %% <C-R>=expand('%:h').'/'<cr>
+cnoremap %% <C-R>=expand('%:h').'/'<CR>
 nnoremap <leader>ew :e %%
 nnoremap <leader>es :sp %%
 nnoremap <leader>ev :vsp %%
@@ -596,6 +572,7 @@ cnoremap cd. lcd %:p:h
 vnoremap < <gv
 vnoremap > >gv
 
+" better dot-repeatability
 nnoremap <space>; *``cgn
 nnoremap <space>, #``cgN
 

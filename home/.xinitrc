@@ -44,7 +44,7 @@ fcitx
 # syndaemon -i 2 -d
 xinput set-prop 11 286 0 0 0 0 0 0 0
 unclutter &
-xcape -e 'Control_L=Escape'
+# xcape -e 'Control_L=Escape'
 
 wmname LG3D #so intellij works
 java_nonparenting.sh

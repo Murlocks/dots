@@ -52,17 +52,19 @@ NeoBundle 'davidhalter/jedi'
 " }}}
 
 " Looks " {{{
+" Colors
 NeoBundle 'atweiden/vim-colors-behelit'
 NeoBundle 'crusoexia/vim-monokai'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'chriskempson/base16-vim'
 NeoBundle 'baskerville/bubblegum'
-NeoBundle 'junegunn/seoul256.vim'
-" NeoBundle 'unblevable/quick-scope'
-NeoBundle 'w0ng/vim-hybrid'
-NeoBundle 'jonathanfilip/lucius'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'chriskempson/base16-vim'
+NeoBundle 'jonathanfilip/lucius'
+NeoBundle 'junegunn/seoul256.vim'
+NeoBundle 'w0ng/vim-hybrid'
+" Interface
+" NeoBundle 'unblevable/quick-scope'
 NeoBundle 'vim-scripts/cSyntaxAfter'
 " NeoBundle 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
 NeoBundle 'bling/vim-airline'
@@ -87,10 +89,13 @@ NeoBundle 'mbbill/undotree'
 NeoBundle 'mhinz/vim-sayonara'
 NeoBundle 'airblade/vim-rooter'
 NeoBundle 'scrooloose/syntastic'
+NeoBundle 'Valloric/MatchTagAlways'
 NeoBundle 'tommcdo/vim-exchange'
 NeoBundle 'sheerun/vim-polyglot'
+NeoBundle 'janko-m/vim-test'
 " NeoBundle 'jiangmiao/auto-pairs' " Doesn't play well with unite's preview window - fixed??
 NeoBundle 'osyo-manga/vim-over'
+NeoBundle 'junegunn/fzf.vim'
 NeoBundle 'osyo-manga/vim-anzu'
 NeoBundle 'haya14busa/incsearch.vim'
 NeoBundle 'haya14busa/incsearch-easymotion.vim', { 'depends:' : [ 'haya14busa/incsearch.vim' ] }
@@ -99,6 +104,7 @@ NeoBundle 'haya14busa/vim-asterisk'
 " NeoBundle 'cohama/vim-smartinput-endwise', { 'depends' : [ 'kana/vim-smartinput' ] }
 NeoBundle 'cohama/lexima.vim'
 NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-abolish'
 NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'tpope/vim-dispatch'
 NeoBundle 'tpope/vim-eunuch'
@@ -120,7 +126,7 @@ NeoBundle 'kana/vim-submode'
 " NeoBundle 'kana/vim-repeat'
 " NeoBundle 'kana/vim-smartinput'
 " NeoBundle 'Murlocks/vimux'
-" NeoBundle 'jpalardy/vim-slime'
+NeoBundle 'jpalardy/vim-slime'
 " NeoBundle 'mattn/emmet-vim'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-qfreplace'
@@ -158,14 +164,12 @@ NeoBundle 'osyo-manga/vim-operator-blockwise', { 'depends' : 'kana/vim-operator-
 " }}}
 
 " Local Plugins (Arch) " {{{
-NeoBundleLocal /usr/share/vim/vimfiles/plugin
-NeoBundle 'fzf.vim'
+" NeoBundleLocal /usr/share/vim/vimfiles/plugin
+" NeoBundle 'fzf.vim'
 " }}}
 
 " Plugin Config " {{{
 let g:neobundle#install_process_timeout = 1500
-
-set rtp+=~/.fzf
 
 if g:neobundle#tap('vim-airline') " {{{
 
@@ -521,17 +525,17 @@ if g:neobundle#tap('unite.vim') " {{{
 
     " Use The Silver/Platinum Searcher
     if executable('pt')
-        let g:unite_source_rec_async_command = 'pt --follow --nocolor --nogroup --hidden ' .
-                    \ '--ignore ''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'' ' .
-                    \ '--ignore ''**/*.pyc'' -g ""'
+        let g:unite_source_rec_async_command = ['pt', '--follow', '--nocolor', '--nogroup', '--hidden',
+                    \'--ignore', '.hg', '--ignore', '.svn', '--ignore', '.git', '--ignore', '.bzr',
+                    \'--ignore', '**/*.pyc', '-g', '']
         let g:unite_source_grep_command = 'pt'
         let g:unite_source_grep_default_opts = '--nogroup --nocolor'
         let g:unite_source_grep_recursive_opt = ''
         let g:unite_source_grep_encoding = 'utf-8'
     elseif executable('ag')
-        let g:unite_source_rec_async_command = 'ag --follow --nocolor --nogroup --hidden ' .
-                    \ '--ignore ''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'' ' .
-                    \ '--ignore ''**/*.pyc'' -g ""'
+        let g:unite_source_rec_async_command = ['ag', '--follow', '--nocolor', '--nogroup', '--hidden',
+                    \'--ignore', '.hg', '--ignore', '.svn', '--ignore', '.git', '--ignore', '.bzr',
+                    \'--ignore', '**/*.pyc', '-g', '']
         let g:unite_source_grep_command = 'ag'
         let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
         let g:unite_source_grep_recursive_opt = ''
@@ -730,7 +734,7 @@ if g:neobundle#tap('unite.vim') " {{{
         nmap <buffer> <c-c>      <Plug>(unite_all_exit)
         " imap <buffer> <BS>       <Plug>(unite_delete_backward_path)
         imap <buffer> jk         <Plug>(unite_insert_leave)
-        " imap <buffer> <Tab>      <Plug>(unite_complete)
+        imap <buffer> <Tab>      <Plug>(unite_complete)
         imap <buffer> '          <Plug>(unite_quick_match_default_action)
         nmap <buffer> '          <Plug>(unite_quick_match_default_action)
         nmap <buffer> <C-t>      <Plug>(unite_toggle_transpose_window)
@@ -938,9 +942,9 @@ endif " }}}
 
 if g:neobundle#tap('vim-easymotion') " {{{
 
-    hi link EasyMotionTarget WarningMsg
-    hi link EasyMotionTarget2First Identifier
-    hi link EasyMotionTarget2Second Identifier
+    hi link EasyMotionTarget FoldColumn
+    hi link EasyMotionTarget2First FoldColumn
+    hi link EasyMotionTarget2Second FoldColumn
     hi link EasyMotionShade    Comment
 
     let g:EasyMotion_skipfoldedline = 0
@@ -1459,6 +1463,23 @@ if g:neobundle#tap('cSyntaxAfter') " {{{
 
 endif " }}}
 
+if g:neobundle#tap('vim-slime') " {{{
+
+    let g:slime_target = "tmux"
+    let g:slime_default_config = {"socket_name": "default", "target_pane": "1"}
+    let g:slime_dont_ask_default = 1
+    " let g:slime_python_ipython = 1
+    map <C-x> mzvae<C-C><C-C>`z
+
+endif " }}}
+
+if g:neobundle#tap('vim-test') " {{{
+
+    let test#strategy = "dispatch"
+    nnoremap <silent> <leader>T  :TestLast<CR>
+
+endif " }}}
+
 if g:neobundle#tap('fzf.vim') " {{{
 
     function! g:neobundle#tapped.hooks.on_source(bundle)
@@ -1497,7 +1518,14 @@ if g:neobundle#tap('fzf.vim') " {{{
 
 endif " }}}
 
+" ('pyclewn') " {{{
+
+    let g:pyclewn_args = "-w bottom"
+
+" }}}
+
 " }}}
 
 call neobundle#end()
 NeoBundleCheck
+

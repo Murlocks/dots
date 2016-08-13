@@ -161,11 +161,17 @@ alt + o
 # alt + e
 #     pcmanfm
 
+super + Return
+    urxvt -hold -e zsh -i ~/bin/tsm
+
 alt + Return
     urxvt
 
 alt + space
     dmenu_run_custom
+
+# alt + space
+#     rofi_run
 
 super + v
     dmenuclip_wrapper
