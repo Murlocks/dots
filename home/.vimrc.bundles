@@ -93,6 +93,7 @@ NeoBundle 'Valloric/MatchTagAlways'
 NeoBundle 'tommcdo/vim-exchange'
 NeoBundle 'sheerun/vim-polyglot'
 NeoBundle 'janko-m/vim-test'
+NeoBundle 'metakirby5/codi.vim'
 " NeoBundle 'jiangmiao/auto-pairs' " Doesn't play well with unite's preview window - fixed??
 NeoBundle 'osyo-manga/vim-over'
 NeoBundle 'junegunn/fzf.vim'
@@ -123,7 +124,7 @@ NeoBundle 'tyru/caw.vim'
 " NeoBundle 'kristijanhusak/vim-multiple-cursors'
 " NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'kana/vim-submode'
-" NeoBundle 'kana/vim-repeat'
+NeoBundle 'kana/vim-repeat'
 " NeoBundle 'kana/vim-smartinput'
 " NeoBundle 'Murlocks/vimux'
 NeoBundle 'jpalardy/vim-slime'
@@ -607,7 +608,7 @@ if g:neobundle#tap('unite.vim') " {{{
                     \     [ 'vimrc' , $MYVIMRC ],
                     \     [ 'vimrc.bundles' , '~/.vimrc.bundles' ],
                     \     [ 'vimfiler' ,    ':VimFiler -no-safe' ],
-                    \     [ 'vimshell' ,    ':VimShell' ],
+                    \     [ 'vimshell' ,    ':VimShellCurrentDir' ],
                     \     [ 'git' ,    ':Unite -start-insert -buffer-name=menu menu:git' ],
                     \     [ 'other', ":call Unite_filetype_menu('-start-insert')" ],
                     \ ]
@@ -688,8 +689,8 @@ if g:neobundle#tap('unite.vim') " {{{
     nnoremap <silent> <CR>         :<C-u>Unite -start-insert -buffer-name=menu menu:global<CR>
     " nnoremap <silent> <Space>b     :<C-u>Unite -start-insert -quick-match buffer_tab<CR>
     nnoremap <silent> <Space>a     :<C-u>Unite -start-insert -auto-preview -buffer-name=anzu anzu<CR>
-    nnoremap <silent> <Space>f     :<C-u>Unite -start-insert -auto-preview -buffer-name=search line<CR>
-    nnoremap <silent> <Space><C-f> :<C-u>UniteWithCursorWord -auto-preview -start-insert -buffer-name=search line<CR>
+    nnoremap <silent> <Space>s     :<C-u>Unite -start-insert -auto-preview -buffer-name=search line<CR>
+    nnoremap <silent> <Space>f :<C-u>UniteWithCursorWord -auto-preview -start-insert -buffer-name=search line<CR>
     nnoremap <silent> <Space>g     :<C-u>Unite grep -max-multi-lines=1 -truncate -default-action=tabopen -buffer-name=unite_grep<CR>
     nnoremap <silent> <Space><C-g> :<C-u>Unite -start-insert -buffer-name=menu menu:git<CR>
     nnoremap <silent> <Space>p     :<C-u>Unite -start-insert -buffer-name=files buffer_tab file_rec/async:! file_mru<CR>
@@ -942,10 +943,12 @@ endif " }}}
 
 if g:neobundle#tap('vim-easymotion') " {{{
 
-    hi link EasyMotionTarget FoldColumn
-    hi link EasyMotionTarget2First FoldColumn
-    hi link EasyMotionTarget2Second FoldColumn
-    hi link EasyMotionShade    Comment
+    function! g:neobundle#tapped.hooks.on_post_source(bundle)
+        hi EasyMotionTarget ctermfg=79 ctermbg=235
+        hi EasyMotionTarget2First ctermfg=79 ctermbg=235
+        hi EasyMotionTarget2Second ctermfg=79 ctermbg=235
+        hi link EasyMotionShade    Comment
+    endfunction
 
     let g:EasyMotion_skipfoldedline = 0
 
@@ -1290,6 +1293,7 @@ endif " }}}
 
 if g:neobundle#tap('caw.vim') " {{{
 
+    let g:caw_operator_keymappings = 1
     nmap <Leader>c gcc
     vmap <Leader>c gcc
 

@@ -25,14 +25,18 @@ values."
      ;; ----------------------------------------------------------------
      auto-completion
      better-defaults
+     ranger
+     fasd
      evil-snipe
      unimpaired
      themes-megapack
+     evil-commentary
      colors
      emacs-lisp
      git
      markdown
      org
+     semantic
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
@@ -242,6 +246,8 @@ layers configuration. You are free to put any user code."
   (define-key evil-motion-state-map (kbd "L")'evil-last-non-blank)
   (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
   (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
+  (setq powerline-default-separator 'wave)
+  (spaceline-compile)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -339,11 +345,10 @@ static char *gnus-pointer[] = {
  '(hl-paren-background-colors (quote (nil)))
  '(hl-paren-colors (quote ("brightgreen" "cyan" "magenta" "red")))
  '(hl-sexp-background-color "#121212")
- '(linum-format " %7i ")
+ '(linum-format " %7i " t)
  '(magit-diff-use-overlays nil)
  '(main-line-color1 "#1E1E1E")
  '(main-line-color2 "#111111")
- '(main-line-separator-style (quote chamfer))
  '(nrepl-message-colors
    (quote
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))

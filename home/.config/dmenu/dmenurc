@@ -13,3 +13,10 @@ SELECT_FG='#F6F9FF'
 HEIGHT=20
 
 DMENU="dmenu -i -nb $NORMAL_BG -nf $NORMAL_FG -sb $SELECT_BG -sf $SELECT_FG -fn $FONT -h $HEIGHT"
+
+# opts+=(
+#     -i
+#     -fn "$FONT"
+#     -sf "$SELECT_FG" -sb "$SELECT_BG"
+#     -nf "$NORMAL_FG" -nb "$NORMAL_BG"
+# )
