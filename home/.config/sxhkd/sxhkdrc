@@ -56,10 +56,11 @@ alt + shift + {h,j,k,l}
         bspc monitor -f ${dir}.!focused; \
     else \
         new_mon=$(bspc query -M -m); \
+        new_win=$(bspc query -N -n); \
         if [ $new_mon -eq $cur_mon ]; then \
             bspc node -s $cur_win; \
         else \
-            bspc node $cur_win -m ^$new_mon; \
+            bspc node $cur_win -n $new_win; \
         fi; \
         bspc node -f $cur_win; \
     fi; \

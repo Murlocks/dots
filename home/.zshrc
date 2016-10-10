@@ -11,18 +11,6 @@ source ~/bin/funcs.zsh
 
 # eval $(thefuck --alias)
 
-export PATH=$PATH:~/bin:~/.config/lemonbar:~/.config/bspwm
-export PATH=$PATH:~/programming/go/bin
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-export GOPATH=~/programming/go
-export TERM=xterm-256color
-export BROWSER=firefox
-export XDG_CONFIG_HOME=~/.config
-export XDG_DATA_HOME=$HOME
-export TERMINFO="$HOME/.terminfo"
-# export TERM='rxvt-unicode'
-# export COLORTERM='rxvt-unicode-256color'
-
 setopt autopushd
 
 bindkey -v
@@ -108,7 +96,7 @@ alias -g NF="*(.om[1])"
 # bindkey "^S" "insert-selecta-path-in-command-line"
 
 # load fzf
-if [ -e /etc/profile.d/fzf.zsh ]; then
+if [ -e /usr/share/fzf/key-bindings.zsh ]; then
   source /usr/share/fzf/completion.zsh
   source /usr/share/fzf/key-bindings.zsh
 fi

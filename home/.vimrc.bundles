@@ -783,6 +783,10 @@ if g:neobundle#tap('unite.vim') " {{{
     endfunction " }}}
 
     autocmd vimrc FileType unite call s:unite_my_settings()
+    augroup commandlinewindow
+      autocmd!
+      autocmd CmdwinEnter * nnoremap <buffer> <CR> <CR>
+    augroup END
 
     call neobundle#untap()
 

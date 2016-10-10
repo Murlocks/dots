@@ -40,7 +40,20 @@ typeset -gU cdpath fpath mailpath path
 path=(
   /usr/local/{bin,sbin}
   $path
+  ~/bin
+  ~/.config/{lemonbar,bspwm}
+  ~/programming/go/bin
+  ~/.rvm/bin
 )
+
+export GOPATH=~/programming/go
+export TERM=xterm-256color
+export BROWSER=firefox
+export XDG_CONFIG_HOME=~/.config
+export XDG_DATA_HOME=$HOME
+export TERMINFO="$HOME/.terminfo"
+# export TERM='rxvt-unicode'
+# export COLORTERM='rxvt-unicode-256color'
 
 #
 # Less

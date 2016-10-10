@@ -58,8 +58,8 @@ Xcursor.size: 16
 
 ! special
 *.background: #262626
-*.foreground:   #e1e1e1
-*.cursorColor:  #e1e1e1
+*.foreground:   #b2b2b2
+*.cursorColor:  #b2b2b2
 
 ! black
 *.color0:       #5a5a5a
