@@ -104,7 +104,7 @@ NeoBundle 'haya14busa/incsearch-fuzzy.vim', { 'depends:' : [ 'haya14busa/incsear
 NeoBundle 'haya14busa/vim-asterisk'
 " NeoBundle 'cohama/vim-smartinput-endwise', { 'depends' : [ 'kana/vim-smartinput' ] }
 NeoBundle 'cohama/lexima.vim'
-NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-fugitive', { 'depends:' : [ 'Shougo/unite.vim' ] }
 NeoBundle 'tpope/vim-abolish'
 NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'tpope/vim-dispatch'
@@ -654,11 +654,11 @@ if g:neobundle#tap('unite.vim') " {{{
                         \'Gremove'],
                     \['▷ git mv           (Fugitive)                                ⌘ ,gm',
                         \'exe "Gmove " input("destino: ")'],
-                    \['▷ git push         (Fugitive)             ⌘ ,gp',
+                    \['▷ git push         (Fugitive)                                ⌘ ,gp',
                         \'Git! push'],
-                    \['▷ git pull         (Fugitive)             ⌘ ,gP',
+                    \['▷ git pull         (Fugitive)                                ⌘ ,gP',
                         \'Git! pull'],
-                    \['▷ git prompt       (Fugitive)             ⌘ ,gi',
+                    \['▷ git prompt       (Fugitive)                                ⌘ ,gi',
                         \'exe "Git! " input("git command: ")'],
                     \['▷ git cd           (Fugitive)',
                         \'Gcd'],
@@ -750,6 +750,7 @@ if g:neobundle#tap('unite.vim') " {{{
         nmap <buffer> <C-o>      <Plug>(unite_toggle_auto_preview)
         imap <buffer> <C-o>      <Plug>(unite_toggle_auto_preview)
         imap <buffer> <C-f>      <Plug>(unite_do_vimfiler_action)
+        nmap <buffer> o          <Plug>(unite_insert_enter)
         nnoremap <buffer> <C-k>  <Up>
         nnoremap <buffer> <C-j>  <Down>
         nnoremap <buffer> i      Gi
@@ -1392,6 +1393,23 @@ if g:neobundle#tap('incsearch.vim') " {{{
     endfunction
 
     noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
+
+endif " }}}
+
+if g:neobundle#tap('vim-fugitive') " {{{
+
+    nnoremap <silent> <leader>gs :Gstatus<CR>
+    nnoremap <silent> <leader>gd :Gdiff<CR>
+    nnoremap <silent> <leader>gc :Gcommit<CR>
+    nnoremap <silent> <leader>gl :Glog \| Unite quickfix<CR><CR>
+    nnoremap <silent> <leader>gb :Gblame<CR>
+    nnoremap <silent> <leader>gw :Gwrite<CR>
+    nnoremap <silent> <leader>go :Gread<CR>
+    nnoremap <silent> <leader>gr :Gremove<CR>
+    nnoremap <silent> <leader>gm :exe "Gmove " input("destination: ")<CR>
+    nnoremap <silent> <leader>gp :Git! push<CR>
+    nnoremap <silent> <leader>gP :Git! pull<CR>
+    nnoremap <silent> <leader>gi :exe "Git! " input("git command: ")<CR>
 
 endif " }}}
 
