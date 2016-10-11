@@ -1228,8 +1228,9 @@ if g:neobundle#tap('goyo.vim') " {{{
         set nocursorline
         set fdm=manual
         " exec NumbersToggle()
-        exec GitGutterDisable()
-        set nonumber, norelativenumber
+        " exec GitGutterDisable()
+        set nonumber
+        set norelativenumber
         set scrolloff=999
         let g:neocomplete#disable_auto_complete = 1
         autocmd QuitPre <buffer> let b:quitting = 1
@@ -1245,7 +1246,7 @@ if g:neobundle#tap('goyo.vim') " {{{
         set cursorline
         set scrolloff=10
         set fdm=marker
-        exec GitGutterEnable()
+        " exec GitGutterEnable()
         " set number
         let g:neocomplete#disable_auto_complete = 0
         highlight clear SignColumn

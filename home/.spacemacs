@@ -37,6 +37,7 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
+     ;; ivy
      auto-completion
      better-defaults
      emacs-lisp
@@ -57,11 +58,10 @@ values."
      colors
      emacs-lisp
      semantic
-     ;; ycmd
      python
+     ycmd
      (c-c++ :variables
-            c-c++-default-mode-for-headers 'c++-mode
-            c-c++-enable-clang-support t)
+            c-c++-default-mode-for-headers 'c++-mode)
      java
      (scala :variables
             scala-use-unicode-arrows t
@@ -109,7 +109,7 @@ values."
    ;; when the current branch is not `develop'. Note that checking for
    ;; new versions works via git commands, thus it calls GitHub services
    ;; whenever you start Emacs. (default nil)
-   dotspacemacs-check-for-update nil
+   dotspacemacs-check-for-update t
    ;; If non-nil, a form that evaluates to a package directory. For example, to
    ;; use different package directories for different Emacs versions, set this
    ;; to `emacs-version'.
@@ -170,7 +170,7 @@ values."
    dotspacemacs-major-mode-emacs-leader-key "C-M-m"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
    ;; (default "SPC")
-   dotspacemacs-emacs-command-key "SPC"
+   dotspacemacs-emacs-command-key ","
    ;; These variables control whether separate commands are bound in the GUI to
    ;; the key pairs C-i, TAB and C-m, RET.
    ;; Setting it to a non-nil value, allows for separate commands under <C-i>
@@ -338,6 +338,11 @@ layers configuration. You are free to put any user code."
 
   (setq ensime-startup-snapshot-notification 'nil)
 
+  (setq ycmd-server-command '("python" "/home/murlocks/repos/ycmd/ycmd"))
+  (setq ycmd-force-semantic-completion t)
+
+  (setq scroll-margin '20)
+
   (setq powerline-default-separator 'utf-8)
   (spaceline-compile)
 
@@ -354,20 +359,24 @@ layers configuration. You are free to put any user code."
   (define-key evil-normal-state-map (kbd ";") 'evil-ex)
   (define-key evil-normal-state-map (kbd ":") 'evil-repeat-find-char)
 
-  ;; (define-key helm-map (kbd "C-h") 'helm-ff-delete-char-backward)
-  ;; (define-key helm-find-files-map (kbd "C-h") 'helm-ff-delete-char-backward)
   (with-eval-after-load 'company
     (define-key company-active-map (kbd "C-w") 'evil-delete-backward-word))
   (with-eval-after-load 'helm
     (define-key helm-map (kbd "C-w") 'evil-delete-backward-word)
+    (define-key helm-buffer-map (kbd "C-w") 'evil-delete-backward-word)
+    (define-key helm-generic-files-map (kbd "C-w") 'evil-delete-backward-word)
     (define-key helm-find-files-map (kbd "C-w") 'evil-delete-backward-word))
+
+  (with-eval-after-load 'helm-swoop
+    (define-key helm-swoop-edit-map (kbd "C-w") 'evil-delete-backward-word)
+    (define-key helm-swoop-map (kbd "C-w") 'evil-delete-backward-word))
 
   (with-eval-after-load 'org
     (define-key org-mode-map (kbd "M->") 'org-shiftmetaright)
     (define-key org-mode-map (kbd "M-<") 'org-shiftmetaleft))
-  (setq ycmd-server-command '("python" "/home/murlocks/repos/ycmd/ycmd"))
-  (setq ycmd-force-semantic-completion t)
-)
+
+  (evil-leader/set-key "SPC" 'evil-avy-goto-char)
+  )
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -377,9 +386,7 @@ layers configuration. You are free to put any user code."
  '(org-catch-invisible-edits (quote smart))
  '(org-startup-indented t)
  '(org-support-shift-select t)
- '(package-selected-packages
-   (quote
-    (flycheck-ycmd company-ycmd ycmd request-deferred deferred web-mode tagedit slim-mode scss-mode sass-mode less-css-mode jade-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data powerline spinner org hydra parent-mode flx iedit anzu evil goto-chg undo-tree highlight diminish pkg-info epl bind-map bind-key async dash s avy popup package-build wgrep smex ivy-hydra flyspell-correct-ivy counsel-projectile counsel swiper ivy yapfify uuidgen py-isort org-projectile org-download mwim livid-mode skewer-mode simple-httpd live-py-mode link-hint git-link flyspell-correct-helm flyspell-correct eyebrowse evil-visual-mark-mode evil-unimpaired evil-ediff eshell-z dumb-jump darkokai-theme company-emacs-eclim column-enforce-mode color-identifiers-mode alert log4e gntp markdown-mode json-snatcher json-reformat multiple-cursors request gitignore-mode fringe-helper git-gutter+ git-gutter grizzl magit-popup git-commit with-editor sbt-mode scala-mode dash-functional tern pos-tip company yasnippet packed anaconda-mode pythonic f auto-complete evil-nerd-commenter pdf-tools tablist smartparens flycheck projectile helm helm-core js2-mode magit zonokai-theme zenburn-theme zen-and-art-theme xterm-color ws-butler window-numbering which-key web-beautify volatile-highlights vi-tilde-fringe use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme stickyfunc-enhance stekene-theme srefactor spacemacs-theme spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scrolling smeargle shell-pop seti-theme reverse-theme restart-emacs ranger rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme quelpa pyvenv pytest pyenv-mode py-yapf purple-haze-theme professional-theme popwin planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el pastels-on-dark-theme paradox page-break-lines orgit organic-green-theme org-repo-todo org-present org-pomodoro org-plus-contrib org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noflet noctilux-theme niflheim-theme neotree naquadah-theme mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow macrostep lush-theme lorem-ipsum linum-relative light-soap-theme leuven-theme json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme info+ indent-guide ido-vertical-mode hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flyspell helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme flycheck-pos-tip flx-ido flatui-theme flatland-theme firebelly-theme fill-column-indicator fasd farmhouse-theme fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-surround evil-snipe evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-commentary evil-args evil-anzu eval-sexp-fu espresso-theme eshell-prompt-extras esh-help ensime elisp-slime-nav eclim dracula-theme django-theme disaster diff-hl define-word darktooth-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme company-tern company-statistics company-quickhelp company-c-headers company-anaconda colorsarenice-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode cmake-mode clues-theme clean-aindent-mode clang-format cherry-blossom-theme busybee-theme buffer-move bubbleberry-theme bracketed-paste birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+ '(scroll-margin 20)
  '(vc-follow-symlinks (quote nil)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -414,4 +421,4 @@ layers configuration. You are free to put any user code."
  '(semantic-highlight-edits-face ((t (:background "gray90" :foreground "#2b2b2b"))))
  '(spacemacs-insert-face ((t (:background "#db79bf" :foreground "#121212" :box nil :inherit (quote mode-line)))))
  '(spacemacs-micro-state-header-face ((t (:background "red" :foreground "#262626" :box (:line-width -1 :color (plist-get (face-attribute (quote mode-line) :box) :color)) :weight bold))))
- '(spacemacs-normal-face ((t (:background "#94daa9" :foreground "#121212" :box nil :inherit (quote mode-line))))))
+'(spacemacs-normal-face ((t (:background "#94daa9" :foreground "#121212" :box nil :inherit (quote mode-line))))))

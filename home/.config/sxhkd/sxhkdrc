@@ -162,6 +162,9 @@ alt + o
 # alt + e
 #     pcmanfm
 
+alt + e
+  urxvt -e zsh -c "emacsclient -nw -c --alternate-editor vim; zsh"
+
 super + Return
     urxvt -hold -e zsh -i ~/bin/tsm
 

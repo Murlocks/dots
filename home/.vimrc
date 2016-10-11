@@ -698,4 +698,107 @@ endfunction " }}}
 hi def IndentGuides guibg=#303030 ctermbg=236
 nnoremap <leader>I :call IndentGuides()<cr>
 
+function! StartNewParaDown()
+  if getline(line(".")) =~ '\v^' . strpart(&commentstring,0,1) . '?$'
+    if getline(line(".")-1) =~ '\v^' . strpart(&commentstring,0,1) . '?$'
+      if getline(line(".")+1) =~ '\v^' . strpart(&commentstring,0,1) . '?$'
+      " case 000
+        if strlen(getline(line("."))) == 0
+          return "a"
+        else
+          return "a\<Space>"
+        endif
+      else
+      " case 001
+        if strlen(getline(line("."))) == 0
+          return "O"
+        else
+          return "O\<Space>"
+        endif
+      endif
+    else
+      if getline(line(".")+1) =~ '\v^' . strpart(&commentstring,0,1) . '?$'
+      " case 100
+        if strlen(getline(line("."))) == 0
+          return "o"
+        else
+          return "o\<Space>"
+        endif
+      else
+      " case 101
+        if strlen(getline(line("."))) == 0
+          return "O\<CR>"
+        else
+          return "O\<CR>\<Space>"
+        endif
+      endif
+    endif
+  else
+    if getline(line(".")+1) =~ '\v^' . strpart(&commentstring,0,1) . '?$'
+    " case x10
+      return "o\<CR>"
+    else
+    " case x11
+      return "o\<Esc>ko\<CR>"
+    endif
+  endif
+endfunction
+
+function! StartNewParaUp()
+  if getline(line(".")) =~ '\v^' . strpart(&commentstring,0,1) . '?$'
+    if getline(line(".")-1) =~ '\v^' . strpart(&commentstring,0,1) . '?$'
+      if getline(line(".")+1) =~ '\v^' . strpart(&commentstring,0,1) . '?$'
+      " case 000
+        if strlen(getline(line("."))) == 0
+          return "a"
+        else
+          return "a\<Space>"
+        endif
+      else
+      " case 001
+        if strlen(getline(line("."))) == 0
+          return "O"
+        else
+          return "O\<Space>"
+        endif
+      endif
+    else
+      if getline(line(".")+1) =~ '\v^' . strpart(&commentstring,0,1) . '?$'
+      " case 100
+        if strlen(getline(line("."))) == 0
+          return "o"
+        else
+          return "o\<Space>"
+        endif
+      else
+      " case 101
+        if strlen(getline(line("."))) == 0
+          return "O\<CR>"
+        else
+          return "O\<CR>\<Space>"
+        endif
+      endif
+    endif
+  else
+    if getline(line(".")-1) =~ '\v^' . strpart(&commentstring,0,1) . '?$'
+    " case 01x
+      if getline(line(".")) !~ '\v^\s*' . strpart(&commentstring,0,1) . '.*$'
+        return "O\<Esc>O"
+      else
+        return "O\<Esc>O\<Space>"
+      endif
+    else
+    " case 11x
+      if getline(line(".")) !~ '\v^\s*' . strpart(&commentstring,0,1) . '.*$'
+        return "O\<Esc>O\<CR>"
+      else
+        return "O\<Esc>O\<CR>\<Space>"
+      endif
+    endif
+  endif
+endfunction
+
+nnoremap <expr> <Leader>o StartNewParaDown()
+nnoremap <expr> <Leader>O StartNewParaUp()
+
 " }}}
