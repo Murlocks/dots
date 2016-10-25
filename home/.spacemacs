@@ -47,6 +47,7 @@ values."
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
+     shell-scripts
      spell-checking
      syntax-checking
      version-control
@@ -55,6 +56,7 @@ values."
      themes-megapack
      evil-snipe
      evil-commentary
+     evil-cleverparens
      colors
      emacs-lisp
      semantic
@@ -64,7 +66,6 @@ values."
             c-c++-default-mode-for-headers 'c++-mode)
      java
      (scala :variables
-            scala-use-unicode-arrows t
             scala-auto-start-ensime t)
      javascript
      html
@@ -153,7 +154,7 @@ values."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("terminus"
-                               :size 13
+                               :size 15
                                :weight normal
                                :width normal
                                :powerline-scale 1.2)
@@ -329,6 +330,9 @@ user code."
         `(("." . ,(concat spacemacs-cache-directory "undo"))))
   (unless (file-exists-p (concat spacemacs-cache-directory "undo"))
     (make-directory (concat spacemacs-cache-directory "undo")))
+
+  (setq ycmd-server-command '("python" "/home/murlocks/repos/YouCompleteMe/third_party/ycmd/ycmd"))
+  (setq ycmd-force-semantic-completion t)
   )
 
 (defun dotspacemacs/user-config ()
@@ -337,9 +341,6 @@ user code."
 layers configuration. You are free to put any user code."
 
   (setq ensime-startup-snapshot-notification 'nil)
-
-  (setq ycmd-server-command '("python" "/home/murlocks/repos/ycmd/ycmd"))
-  (setq ycmd-force-semantic-completion t)
 
   (setq scroll-margin '20)
 
@@ -398,7 +399,7 @@ layers configuration. You are free to put any user code."
  '(avy-lead-face-0 ((t (:background "#262626" :foreground "#e52b50"))))
  '(avy-lead-face-1 ((t (:background "#262626" :foreground "#e52b50"))))
  '(avy-lead-face-2 ((t (:background "#262626" :foreground "#e52b50"))))
- '(evil-search-highlight-persist-highlight-face ((t (:inherit lazy-highlight :background "color-16"))))
+ '(evil-search-highlight-persist-highlight-face ((t (:inherit lazy-highlight :background "pink"))))
  '(highlight ((t (:background "#3a3a3a" :foreground "#b2b2b2"))))
  '(hl-line ((t (:background "#3a3a3a" :underline nil))))
  '(hydra-face-blue ((t (:foreground "blue" :weight bold))))
@@ -414,11 +415,11 @@ layers configuration. You are free to put any user code."
  '(info-syntax-class-item ((t (:background "#0a0a0a" :foreground "green"))))
  '(info-user-option-ref-item ((t (:background "#0a0a0a" :foreground "brightwhite"))))
  '(info-variable-ref-item ((t (:background "#0a0a0a" :foreground "color-105"))))
- '(lazy-highlight ((t (:foreground "brightwhite" :inverse-video t :underline nil :slant normal :weight normal))))
+ '(lazy-highlight ((t (:background "color-200" :foreground "#2a2a2a" :inverse-video t :underline nil :slant normal :weight normal))))
  '(magit-section-highlight ((t (:background "#3a3a3a"))))
  '(org-document-title ((t (:foreground "brightcyan" :weight bold))))
  '(region ((t (:background "#b2b2b2" :foreground "#5f5f5f" :inverse-video t :underline nil :slant normal :weight normal))))
  '(semantic-highlight-edits-face ((t (:background "gray90" :foreground "#2b2b2b"))))
  '(spacemacs-insert-face ((t (:background "#db79bf" :foreground "#121212" :box nil :inherit (quote mode-line)))))
  '(spacemacs-micro-state-header-face ((t (:background "red" :foreground "#262626" :box (:line-width -1 :color (plist-get (face-attribute (quote mode-line) :box) :color)) :weight bold))))
-'(spacemacs-normal-face ((t (:background "#94daa9" :foreground "#121212" :box nil :inherit (quote mode-line))))))
+ '(spacemacs-normal-face ((t (:background "#94daa9" :foreground "#121212" :box nil :inherit (quote mode-line))))))
