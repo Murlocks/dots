@@ -54,11 +54,11 @@ compton --mark-ovredir-focused &
 # compton &
 
 #[ ! -s ~/.config/mpd/pid ] && mpd
-emacs --daemon &
+# emacs --daemon &
 mopidy &
 # urxvtd -q -f -o &
 xsetroot -cursor_name left_ptr &
-dropbox &
+# dropbox &
 clipbored &
 sxhkd &
 exec bspwm

@@ -124,7 +124,7 @@ NeoBundle 'tyru/caw.vim'
 " NeoBundle 'kristijanhusak/vim-multiple-cursors'
 " NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'kana/vim-submode'
-NeoBundle 'kana/vim-repeat'
+" NeoBundle 'kana/vim-repeat'
 " NeoBundle 'kana/vim-smartinput'
 " NeoBundle 'Murlocks/vimux'
 NeoBundle 'jpalardy/vim-slime'
@@ -250,8 +250,8 @@ if g:neobundle#tap('neocomplete') " {{{
         " Use fuzzy completion.
         let g:neocomplete#enable_fuzzy_completion = 1
 
-        autocmd CursorMovedI *  if pumvisible() == 0|silent! pclose|endif
-        autocmd InsertLeave * if pumvisible() == 0|silent! pclose|endif
+        autocmd vimrc CursorMovedI *.py  if pumvisible() == 0|silent! pclose|endif
+        autocmd vimrc InsertLeave *.py if pumvisible() == 0|silent! pclose|endif
 
         " Set auto completion length.
         let g:neocomplete#auto_completion_start_length = 3
@@ -312,9 +312,10 @@ if g:neobundle#tap('neocomplete') " {{{
 
         imap <silent><expr><C-l> neosnippet#expandable() ?
                                 \ "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ?
-                                \ "\<C-e>" : "\<Plug>(neosnippet_expand_or_jump)")
-        imap <expr><silent><C-l> neocomplete#mappings#close_popup() .
-                                \ "\<Plug>(neosnippet_jump_or_expand)"
+                                \ neocomplete#mappings#close_popup() : "\<Plug>(neosnippet_expand_or_jump)")
+        " imap <expr><silent><C-l> neocomplete#mappings#close_popup() .
+        "                         \ "\<Plug>(neosnippet_jump_or_expand)"
+
         smap <C-l> <Right><Plug>(neosnippet_jump_or_expand)
         xmap <C-l> <Right><Plug>(neosnippet_jump_or_expand)
 
@@ -511,19 +512,19 @@ endif " }}}
 
 if g:neobundle#tap('unite.vim') " {{{
 
-    call neobundle#config({
-                \     'autoload' : {
-                \         'commands' : [
-                \             {
-                \                 'name' : 'Unite',
-                \                 'complete' : 'customlist,unite#complete_source'
-                \             },
-                \             'UniteWithCursorWord',
-                \             'UniteWithInput'
-                \         ]
-                \     }
-                \ })
-
+    " call neobundle#config({
+    "             \     'autoload' : {
+    "             \         'commands' : [
+    "             \             {
+    "             \                 'name' : 'Unite',
+    "             \                 'complete' : 'customlist,unite#complete_source'
+    "             \             },
+    "             \             'UniteWithCursorWord',
+    "             \             'UniteWithInput'
+    "             \         ]
+    "             \     }
+    "             \ })
+    "
     " Use The Silver/Platinum Searcher
     if executable('pt')
         let g:unite_source_rec_async_command = ['pt', '--follow', '--nocolor', '--nogroup', '--hidden',
@@ -688,16 +689,16 @@ if g:neobundle#tap('unite.vim') " {{{
 
     nnoremap <silent> <CR>         :<C-u>Unite -start-insert -buffer-name=menu menu:global<CR>
     " nnoremap <silent> <Space>b     :<C-u>Unite -start-insert -quick-match buffer_tab<CR>
-    nnoremap <silent> <Space>a     :<C-u>Unite -start-insert -auto-preview -buffer-name=anzu anzu<CR>
-    nnoremap <silent> <Space>s     :<C-u>Unite -start-insert -auto-preview -buffer-name=search line<CR>
-    nnoremap <silent> <Space>f :<C-u>UniteWithCursorWord -auto-preview -start-insert -buffer-name=search line<CR>
+    nnoremap <silent> <Space>a     :<C-u>Unite -start-insert  -auto-preview -previewheight=20 -no-split -buffer-name=anzu anzu<CR>
+    nnoremap <silent> <Space>s     :<C-u>Unite -start-insert  -auto-preview -previewheight=20 -no-split -buffer-name=search line<CR>
+    nnoremap <silent> <Space>f :<C-u>UniteWithCursorWord  -auto-preview -previewheight=20 -no-split -start-insert -buffer-name=search line<CR>
     nnoremap <silent> <Space>g     :<C-u>Unite grep -max-multi-lines=1 -truncate -default-action=tabopen -buffer-name=unite_grep<CR>
     nnoremap <silent> <Space><C-g> :<C-u>Unite -start-insert -buffer-name=menu menu:git<CR>
     nnoremap <silent> <Space>p     :<C-u>Unite -start-insert -buffer-name=files buffer_tab file_rec/async:! file_mru<CR>
-    nnoremap <silent> <Space>d     :<C-u>UniteWithBufferDir -start-insert -buffer-name=files file file/new directory/new<CR>
+    nnoremap <silent> <Space>d     :<C-u>UniteWithBufferDir -wipe -start-insert -buffer-name=files file file/new directory/new<CR>
     " nnoremap <silent> <C-e>      :<C-u>Unite -start-insert -buffer-name=everything everything<CR>
     nnoremap <silent> <Space>y     :<C-u>Unite -buffer-name=yank history/yank<CR>
-    nnoremap <silent> <Space>l     :lcl<CR>:<C-u>Unite -buffer-name=locations -auto-preview location_list<CR><C-w><C-j>:lcl<CR><C-w><C-k>
+    nnoremap <silent> <Space>l     :lcl<CR>:<C-u>Unite -buffer-name=locations -auto-preview -previewheight=20 -no-split location_list<CR>
     nnoremap <silent> <Space>r     :<C-u>Unite resume<CR>
 
     nnoremap <silent> <Space>m :<C-u>call Unite_filetype_menu('-buffer-name=menu -start-insert')<CR>
@@ -713,7 +714,7 @@ if g:neobundle#tap('unite.vim') " {{{
     endfunction
 
     if neobundle#is_installed('unite-quickfix')
-        nnoremap <silent> <Space>q    :<C-u>Unite -no-quit -auto-preview -no-split quickfix<CR>
+        nnoremap <silent> <Space>q    :<C-u>Unite  -auto-preview -previewheight=20 -no-split quickfix<CR>
     endif
     if neobundle#is_installed('unite-outline')
         nnoremap <silent> <Space>o   :<C-u>Unite -start-insert -buffer-name=outline outline<CR>
@@ -735,7 +736,7 @@ if g:neobundle#tap('unite.vim') " {{{
         nmap <buffer> <c-c>      <Plug>(unite_all_exit)
         " imap <buffer> <BS>       <Plug>(unite_delete_backward_path)
         imap <buffer> jk         <Plug>(unite_insert_leave)
-        imap <buffer> <Tab>      <Plug>(unite_complete)
+        " imap <buffer> <Tab>      <Plug>(unite_complete)
         imap <buffer> '          <Plug>(unite_quick_match_default_action)
         nmap <buffer> '          <Plug>(unite_quick_match_default_action)
         nmap <buffer> <C-t>      <Plug>(unite_toggle_transpose_window)
@@ -788,6 +789,7 @@ if g:neobundle#tap('unite.vim') " {{{
       autocmd!
       autocmd CmdwinEnter * nnoremap <buffer> <CR> <CR>
     augroup END
+    autocmd FileType unite NeoCompleteLock
 
     call neobundle#untap()
 
@@ -1103,14 +1105,16 @@ if g:neobundle#tap('syntastic') " {{{
     " let g:syntastic_python_python_exec = '/bin/python2.7'
     let g:syntastic_python_flake8_args='--ignore=E501,E221'
     let g:syntastic_always_populate_loc_list = 1
-    let g:syntastic_auto_loc_list = 1
+    let g:syntastic_auto_loc_list = 0
     let g:syntastic_auto_jump = 2
-    " let g:syntastic_check_on_open = 1
+    let g:syntastic_check_on_open = 1
     let g:syntastic_check_on_wq = 1
     let g:syntastic_java_javac_config_file_enabled = 1
     let g:syntastic_cpp_check_header = 1
     let g:syntastic_cpp_compiler = 'g++'
     let g:syntastic_cpp_compiler_options = ' -std=c++11'
+
+    let g:syntastic_javascript_checkers = ['eslint']
 
     nnoremap <Leader>_ :SyntasticToggleMode<CR>
     " nnoremap <Leader>s :SyntasticCheck<CR>
@@ -1327,11 +1331,12 @@ endif " }}}
 
 if g:neobundle#tap('lexima.vim') " {{{
 
-    let g:lexima_enable_endwise_rules = 1
-    let g:lexima_map_escape = 'jk'
     function! g:neobundle#tapped.hooks.on_post_source(bundle)
         imap <expr> <cr> pumvisible() ? CleverCr() : lexima#expand('<lt>CR>', 'i')
     endfunction
+
+    let g:lexima_enable_endwise_rules = 1
+    let g:lexima_map_escape = 'jk'
 
 endif " }}}
 
@@ -1354,6 +1359,16 @@ if g:neobundle#tap('numbers.vim') " {{{
     " exec ":NumbersOnOff<CR>"
     " exec ":NumbersToggle<CR>"
     nnoremap <Leader>n :NumbersOnOff<CR>:NumbersToggle<CR>
+
+endif " }}}
+
+if g:neobundle#tap('tommcdo/vim-exchange') " {{{
+
+    "   function! neobundle#hooks.on_post_source(bundle)
+    "     " need to remap these after init
+    "     nnoremap L dd
+    "     nnoremap H ^
+    " endfunction
 
 endif " }}}
 

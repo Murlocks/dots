@@ -44,12 +44,12 @@ alias q="exit"
 
 alias sudo="sudo -E "
 alias _="sudo -E "
-alias pacua="yaourt -sync --refresh --sysupgrade --aur"
+alias pacua="yaourt --sync --refresh --sysupgrade --aur"
 
 alias em="emacs -nw"
 alias emd="emacs --daemon"
 alias e="emacsclient -nw -c --alternate-editor vim"
-alias v="vim"
+alias v="nvim"
 
 alias zrc=$EDITOR" ~/.zshrc"
 alias vrc=$EDITOR" ~/.vimrc"
@@ -62,6 +62,10 @@ alias o="xdg-open"
 alias skype="skypetab-ng"
 alias steam="optirun steam"
 
+alias gvd="git_diff"
+# alias man="__man"
+
+
 alias ta="tmux attach"
 
 # pacman mod changes
@@ -71,8 +75,19 @@ alias -g G="| grep -i"
 alias -g ND="*(/om[1])"
 alias -g NF="*(.om[1])"
 
+# save path on cd
+function cd {
+    builtin cd $@
+    pwd >! /tmp/last_dir
+}
+
+# restore last saved path
+if [ -f /tmp/last_dir ]; then 
+  cd `cat /tmp/last_dir`
+fi
+
 # batch moving rocks
-# autoload -U zmv
+autoload -U zmv
 
 # # By default, ^S freezes terminal output and ^Q resumes it. Disable that so
 # # that those keys can be used for other things.

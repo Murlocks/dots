@@ -3,8 +3,8 @@ URxvt.geometry: 80x22
 ! URXVT FONTS
 !------------------------------------------------
 ! URxvt.font:                xft:gohufont:pixelsize=14,xft:DejaVu Sans Mono for Powerline
-URxvt.font:                -*-gohufont-medium-*-*-*-*100-*-*-*-*-iso10646-*,xft:Terminess Powerline,xft:Source Code Pro,xft:Noto sans,xft:unifont:style=Medium:antialias=false
-URxvt.boldFont:                -*-gohufont-medium-*-*-*-*100-*-*-*-*-iso10646-*,xft:Terminess Powerline,xft:Source Code Pro,xft:Noto sans,xft:unifont:style=Medium:antialias=false
+URxvt.font:                -*-gohufont-medium-*-*-*-*100-*-*-*-*-iso10646-*,xft:Terminess Powerline,xft:Source Code Pro
+URxvt.boldFont:                -*-gohufont-medium-*-*-*-*100-*-*-*-*-iso10646-*,xft:Terminess Powerline,xft:Source Code Pro
 !URxvt.boldFont:            xft:Ubuntu mono:pixelsize=17:style=Bold
 rofi.font:                     gohufont 10
 URxvt*termname: urxvt256-color

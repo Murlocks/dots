@@ -42,7 +42,8 @@ values."
      better-defaults
      emacs-lisp
      git
-     markdown
+     (markdown :variables
+               markdown-live-preview-engine 'vmd)
      org
      (shell :variables
             shell-default-height 30
@@ -69,6 +70,7 @@ values."
             scala-auto-start-ensime t)
      javascript
      html
+     react
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -150,14 +152,14 @@ values."
                          spacemacs-dark
                          spacemacs-light)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
-   dotspacemacs-colorize-cursor-according-to-state t
+   dotspacemacs-colorize-cursor-according-to-state nil
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("terminus"
-                               :size 15
+   dotspacemacs-default-font '("Terminus"
+                               :size 16
                                :weight normal
                                :width normal
-                               :powerline-scale 1.2)
+                               :powerline-scale .9)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The leader key accessible in `emacs state' and `insert state'
@@ -171,7 +173,7 @@ values."
    dotspacemacs-major-mode-emacs-leader-key "C-M-m"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
    ;; (default "SPC")
-   dotspacemacs-emacs-command-key ","
+   dotspacemacs-emacs-command-key ";"
    ;; These variables control whether separate commands are bound in the GUI to
    ;; the key pairs C-i, TAB and C-m, RET.
    ;; Setting it to a non-nil value, allows for separate commands under <C-i>
@@ -307,21 +309,23 @@ values."
 It is called immediately after `dotspacemacs/init'.  You are free to put any
 user code."
 
-  (setq x-select-enable-clipboard t)
-  (defun xsel-cut-function (text &optional push)
-    (with-temp-buffer
-      (insert text)
-      (call-process-region (point-min) (point-max) "xsel" nil 0 nil "--clipboard" "--input")))
-  (defun xsel-paste-function()
-    (let ((xsel-output (shell-command-to-string "xsel --clipboard --output")))
-      (unless (string= (car kill-ring) xsel-output)
-        xsel-output )))
-  (setq interprogram-cut-function 'xsel-cut-function)
-  (setq interprogram-paste-function 'xsel-paste-function)
+  ;; (setq x-select-enable-clipboard t)
+  ;; (defun xsel-cut-function (text &optional push)
+  ;;   (with-temp-buffer
+  ;;     (insert text)
+  ;;     (call-process-region (point-min) (point-max) "xsel" nil 0 nil "--clipboard" "--input")))
+  ;; (defun xsel-paste-function()
+  ;;   (let ((xsel-output (shell-command-to-string "xsel --clipboard --output")))
+  ;;     (unless (string= (car kill-ring) xsel-output)
+  ;;       xsel-output )))
+  ;; (setq interprogram-cut-function 'xsel-cut-function)
+  ;; (setq interprogram-paste-function 'xsel-paste-function)
 
   (setq paradox-github-token "6a0f613f0c997b45794569155e9309b423356320")
 
   (setq ispell-dictionary "english")
+
+  (setq undo-tree-auto-save-history t)
 
   (add-to-list 'default-frame-alist '(background-color . "#262626"))
 
@@ -333,12 +337,33 @@ user code."
 
   (setq ycmd-server-command '("python" "/home/murlocks/repos/YouCompleteMe/third_party/ycmd/ycmd"))
   (setq ycmd-force-semantic-completion t)
+
+  (add-hook 'org-mode-hook #'(lambda ()
+    ;; make the lines in the buffer wrap around the edges of the screen.
+    ;; to press C-c q  or fill-paragraph ever again!
+    (visual-line-mode)))
+
   )
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
  This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
+
+  (setq-default
+   ;; js2-mode
+   js2-basic-offset 2
+   ;; web-mode
+   css-indent-offset 2
+   web-mode-markup-indent-offset 2
+   web-mode-css-indent-offset 2
+   web-mode-code-indent-offset 2
+   web-mode-attr-indent-offset 2)
+
+  (with-eval-after-load 'web-mode
+    (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
+    (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
+    (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil)))
 
   (setq ensime-startup-snapshot-notification 'nil)
 
@@ -377,6 +402,12 @@ layers configuration. You are free to put any user code."
     (define-key org-mode-map (kbd "M-<") 'org-shiftmetaleft))
 
   (evil-leader/set-key "SPC" 'evil-avy-goto-char)
+
+  (defun what-face (pos)
+    (interactive "d")
+    (let ((face (or (get-char-property (point) 'read-face-name)
+                    (get-char-property (point) 'face))))
+      (if face (message "Face: %s" face) (message "No face at %d" pos))))
   )
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -384,9 +415,15 @@ layers configuration. You are free to put any user code."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(c-basic-offset 4)
+ '(cursor-type (quote hbar))
+ '(helm-display-header-line nil)
+ '(js-indent-level 2)
  '(org-catch-invisible-edits (quote smart))
  '(org-startup-indented t)
  '(org-support-shift-select t)
+ '(package-selected-packages
+   (quote
+    (pug-mode insert-shebang hide-comnt speed-type ycmd request-deferred deferred vmd-mode zonokai-theme zenburn-theme zen-and-art-theme yapfify xterm-color ws-butler window-numbering which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme stickyfunc-enhance stekene-theme srefactor spacemacs-theme spaceline spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme restart-emacs ranger rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme quelpa pyvenv pytest pyenv-mode py-isort purple-haze-theme professional-theme popwin planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el pastels-on-dark-theme paradox orgit organic-green-theme org-projectile org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noflet noctilux-theme niflheim-theme neotree naquadah-theme mwim mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow macrostep lush-theme lorem-ipsum livid-mode live-py-mode linum-relative link-hint light-soap-theme less-css-mode json-mode js2-refactor js-doc jbeans-theme jazz-theme jade-mode ir-black-theme inkpot-theme info+ indent-guide ido-vertical-mode hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme flyspell-correct-helm flycheck-ycmd flycheck-pos-tip flx-ido flatui-theme flatland-theme fish-mode firebelly-theme fill-column-indicator fasd farmhouse-theme fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-snipe evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-cleverparens evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help ensime emmet-mode elisp-slime-nav dumb-jump dracula-theme django-theme disaster diff-hl define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme company-ycmd company-web company-tern company-statistics company-shell company-emacs-eclim company-c-headers company-anaconda column-enforce-mode colorsarenice-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode coffee-mode cmake-mode clues-theme clean-aindent-mode clang-format cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
  '(scroll-margin 20)
  '(vc-follow-symlinks (quote nil)))
 (custom-set-faces
@@ -395,18 +432,6 @@ layers configuration. You are free to put any user code."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#262626" :foreground "#b2b2b2" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" :family "default"))))
- '(avy-lead-face ((t (:background "#262626" :foreground "#e52b50"))))
- '(avy-lead-face-0 ((t (:background "#262626" :foreground "#e52b50"))))
- '(avy-lead-face-1 ((t (:background "#262626" :foreground "#e52b50"))))
- '(avy-lead-face-2 ((t (:background "#262626" :foreground "#e52b50"))))
- '(evil-search-highlight-persist-highlight-face ((t (:inherit lazy-highlight :background "pink"))))
- '(highlight ((t (:background "#3a3a3a" :foreground "#b2b2b2"))))
- '(hl-line ((t (:background "#3a3a3a" :underline nil))))
- '(hydra-face-blue ((t (:foreground "blue" :weight bold))))
- '(info-command-ref-item ((t (:background "#0a0a0a" :foreground "Blue"))))
- '(info-constant-ref-item ((t (:background "#0a0a0a" :foreground "color-198"))))
- '(info-file ((t (:background "#0a0a0a" :foreground "Blue"))))
- '(info-function-ref-item ((t (:background "#0a0a0a" :foreground "color-43"))))
  '(info-macro-ref-item ((t (:background "#0a0a0a" :foreground "brightmagenta"))))
  '(info-node ((t (:foreground "red" :slant italic :weight bold))))
  '(info-quoted-name ((t (:inherit font-lock-string-face :foreground "color-63"))))
@@ -415,11 +440,12 @@ layers configuration. You are free to put any user code."
  '(info-syntax-class-item ((t (:background "#0a0a0a" :foreground "green"))))
  '(info-user-option-ref-item ((t (:background "#0a0a0a" :foreground "brightwhite"))))
  '(info-variable-ref-item ((t (:background "#0a0a0a" :foreground "color-105"))))
- '(lazy-highlight ((t (:background "color-200" :foreground "#2a2a2a" :inverse-video t :underline nil :slant normal :weight normal))))
+ '(lazy-highlight ((t (:background "#FFFFFF" :foreground "#2a2a2a" :inverse-video t :underline t :slant normal :weight normal))))
  '(magit-section-highlight ((t (:background "#3a3a3a"))))
  '(org-document-title ((t (:foreground "brightcyan" :weight bold))))
  '(region ((t (:background "#b2b2b2" :foreground "#5f5f5f" :inverse-video t :underline nil :slant normal :weight normal))))
  '(semantic-highlight-edits-face ((t (:background "gray90" :foreground "#2b2b2b"))))
+ '(spaceline-evil-normal ((t (:background "#94daa9" :foreground "#121212" :inherit (quote mode-line)))))
  '(spacemacs-insert-face ((t (:background "#db79bf" :foreground "#121212" :box nil :inherit (quote mode-line)))))
  '(spacemacs-micro-state-header-face ((t (:background "red" :foreground "#262626" :box (:line-width -1 :color (plist-get (face-attribute (quote mode-line) :box) :color)) :weight bold))))
  '(spacemacs-normal-face ((t (:background "#94daa9" :foreground "#121212" :box nil :inherit (quote mode-line))))))

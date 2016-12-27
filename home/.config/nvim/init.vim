@@ -11,9 +11,6 @@
 let mapleader = ','
 let localleader = '_'
 
-set term=xterm-256color
-set t_Co=256
-
 " Clear vimrc augroup
 augroup vimrc
     autocmd!
@@ -24,23 +21,13 @@ augroup vimrc
 augroup END
 
 " load bundles
-if filereadable(expand("~/.vimrc.bundles"))
-    source ~/.vimrc.bundles
+if filereadable(expand("~/.config/nvim/bundles.vim"))
+    source ~/.config/nvim/bundles.vim
 endif
 
 let g:netrw_browsex_viewer = "firefox"
 
-" Less lag
-set lazyredraw
-set ttyfast
-
-if has('clipboard')
-    if has('unnamedplus')
-        set clipboard=unnamed,unnamedplus
-    else
-        set clipboard=unnamed
-    endif
-endif
+set clipboard=unnamed
 
 filetype plugin indent on
 syntax on
@@ -155,7 +142,7 @@ set undoreload=10000
 " UI " {{{
 
 set background=dark
-color bubblegum-256-dark
+color bubblegum-256-dark-custom
 
 " color monokai
 " color behelit
@@ -437,6 +424,18 @@ autocmd vimrc FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,
 
 " Keybindings " {{{
 " nnoremap ,, ,
+
+" Copy to clipboard
+vnoremap  <leader>y  "+y
+nnoremap  <leader>Y  "+yg_
+nnoremap  <leader>y  "+y
+nnoremap  <leader>yy  "+yy
+
+" " Paste from clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+vnoremap <leader>p "+p
+vnoremap <leader>P "+P
 
 "make Y consistent with rest of vim!
 nnoremap Y y$
