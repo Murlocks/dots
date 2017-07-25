@@ -17,7 +17,7 @@ call dein#add('~/.config/nvim/repos/github.com/Shougo/dein.vim/')
 "             \         'unix' : 'gmake',
 "             \        },
 "             \ }
-" call dein#add('vim-jp/vital.vim')
+call dein#add('vim-jp/vital.vim')
 call dein#add('xolox/vim-misc')
 " }}}
 
@@ -42,7 +42,7 @@ call dein#add('Shougo/neco-syntax', { 'depends:' : [ 'Shougo/deoplete' ] })
 call dein#add('Shougo/neco-vim', { 'depends:' : [ 'Shougo/deoplete' ] })
 call dein#add('Shougo/neosnippet')
 call dein#add('Shougo/neosnippet-snippets')
-call dein#add('davidhalter/jedi')
+call dein#add('davidhalter/jedi-vim')
 call dein#add('othree/jspc.vim', { 'depends:' : [ 'Shougo/deoplete' ] })
 call dein#add('zchee/deoplete-jedi', { 'depends:' : [ 'Shougo/deoplete' ] })
 call dein#add('carlitux/deoplete-ternjs', { 'depends:' : [ 'Shougo/deoplete' ] })
@@ -86,7 +86,6 @@ call dein#add('airblade/vim-gitgutter')
 " General " {{{
 " call dein#add('szw/vim-ctrlspace')
 call dein#add('Shougo/vimshell.vim', { 'depends:' : [ 'Shougo/vimproc.vim' ] })
-call dein#add('matchit.zip')
 call dein#add('mbbill/undotree')
 call dein#add('mhinz/vim-sayonara')
 call dein#add('airblade/vim-rooter')
@@ -100,7 +99,7 @@ call dein#add('metakirby5/codi.vim')
 call dein#add('junegunn/fzf.vim')
 call dein#add('osyo-manga/vim-anzu')
 " Double cursor issue... nvim
-call dein#add('osyo-manga/vim-over')
+" call dein#add('osyo-manga/vim-over')
 call dein#add('haya14busa/incsearch.vim')
 call dein#add('haya14busa/incsearch-easymotion.vim', { 'depends:' : [ 'haya14busa/incsearch.vim' ] })
 call dein#add('haya14busa/incsearch-fuzzy.vim', { 'depends:' : [ 'haya14busa/incsearch.vim' ] })
@@ -145,7 +144,7 @@ call dein#add('xolox/vim-easytags', { 'depends' : [ 'xolox/vim-misc' ] })
 " }}}
 
 " Text object " {{{
-call dein#add('wellle/targets.vim')
+" call dein#add('wellle/targets.vim')
 call dein#add('kana/vim-textobj-user')
 call dein#add('kana/vim-textobj-entire', { 'depends' : 'kana/vim-textobj-user' })
 call dein#add('kana/vim-textobj-function', { 'depends' : 'kana/vim-textobj-user' })
@@ -163,7 +162,7 @@ call dein#add('Julian/vim-textobj-variable-segment', { 'depends' : 'kana/vim-tex
 call dein#add('kana/vim-operator-user')
 call dein#add('kana/vim-operator-replace', { 'depends' : 'kana/vim-operator-user' })
 " call dein#add('rhysd/vim-operator-surround', { 'depends' : 'kana/vim-operator-user' })
-call dein#add('tyru/operator-html-escape.vim', { 'depends' : 'kana/vim-operator-user' })
+" call dein#add('tyru/operator-html-escape.vim', { 'depends' : 'kana/vim-operator-user' })
 call dein#add('osyo-manga/vim-operator-blockwise', { 'depends' : 'kana/vim-operator-user' })
 " }}}
 
@@ -186,15 +185,6 @@ if dein#tap('vim-airline') " {{{
     let g:airline#extensions#whitespace#enabled = 0
     let g:airline_section_y = {}
 
-    let g:airline_theme_patch_func = 'AirlineThemePatch'
-    function! AirlineThemePatch(palette)
-        if g:airline_theme == 'bubblegum'
-            " for colors in values(a:palette.inactive)
-            "     let colors[3] = 245
-            " endfor
-        endif
-    endfunction
-
     let g:airline_mode_map = {
                 \ '__' : '-',
                 \ 'n'  : 'N',
@@ -213,6 +203,8 @@ endif " }}}
 
 if dein#tap('vim-bufferline') " {{{
 
+    let g:bufferline_rotate = 1
+    let g:bufferline_fixed_index =  1 "always second
     " let g:bufferline_echo = 0
     " autocmd VimEnter *
     "   \ let &statusline='%{bufferline#refresh_status()}'
@@ -223,20 +215,20 @@ endif " }}}
 
 if dein#tap('vital.vim') " {{{
 
-    let g:V = vital#of('vital')
-    let g:S = g:V.import("Web.HTTP")
-    let g:L = g:V.import("Data.List")
-
-    function! DecodeURI(uri)
-        return g:S.decodeURI(a:uri)
-    endfunction
-
-    function! EncodeURI(uri)
-        return g:S.encodeURI(a:uri)
-    endfunction
-
-    command -nargs=1 DecodeURI echo DecodeURI(<args>)
-    command -nargs=1 EncodeURI echo EncodeURI(<args>)
+    " let g:V = vital#of('vital')
+    " let g:S = g:V.import("Web.HTTP")
+    " let g:L = g:V.import("Data.List")
+    "
+    " function! DecodeURI(uri) abort
+    "     return g:S.decodeURI(a:uri)
+    " endfunction
+    "
+    " function! EncodeURI(uri) abort
+    "     return g:S.encodeURI(a:uri)
+    " endfunction
+    "
+    " command -nargs=1 DecodeURI echo DecodeURI(<args>)
+    " command -nargs=1 EncodeURI echo EncodeURI(<args>)
 
 endif " }}}
 
@@ -266,17 +258,22 @@ if dein#tap('deoplete.nvim') " {{{
                 \ 'jedi'
                 \]
 
+
+    autocmd vimrc CursorMovedI *.py,*.js if pumvisible() == 0|silent! pclose|endif
+    autocmd vimrc InsertLeave *.py,*.js if pumvisible() == 0|silent! pclose|endif
+
     smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
                 \ deoplete#mappings#close_popup() .
                 \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
-    function! s:check_back_space() "{{{
+    function! s:check_back_space() abort "{{{
         let col = col('.') - 1
         return !col || getline('.')[col - 1]    =~ '\s'
     endfunction"}}}
 
-    imap <expr> <Tab> CleverTab()
-    function! CleverTab()
+    inoremap <S-Tab> <C-p>
+    inoremap <expr> <Tab> CleverTab()
+    function! CleverTab() abort
         if <SID>check_back_space()
             " nothing to match on empty string
             return "\<Tab>"
@@ -378,7 +375,7 @@ if dein#tap('unite.vim') " {{{
         let g:unite_source_grep_recursive_opt = ''
     endif
 
-    function! s:unite_menu_map_func(key, value)
+    function! s:unite_menu_map_func(key, value) abort
         let [word, value] = a:value
         if isdirectory(value)
             return {
@@ -417,7 +414,7 @@ if dein#tap('unite.vim') " {{{
     " Use buffer name instead of file path for buffer / buffer_tab source
     let s:filter = { 'name' : 'converter_buffer_word' }
 
-    function! s:filter.filter(candidates, context)
+    function! s:filter.filter(candidates, context) abort
         for candidate in a:candidates
             let candidate.word = bufname(candidate.action__buffer_nr)
             if candidate.word == ''
@@ -533,7 +530,7 @@ if dein#tap('unite.vim') " {{{
     nnoremap <silent> <Space>r     :<C-u>Unite resume<CR>
 
     nnoremap <silent> <Space>m :<C-u>call Unite_filetype_menu('-buffer-name=menu -start-insert')<CR>
-    function! Unite_filetype_menu(options)
+    function! Unite_filetype_menu(options) abort
         let filetypes = split(&ft, '\.')
         let candidate_sets = map(
                     \     add(filter(filetypes, 'has_key(g:unite_source_menu_filetype_candidates, v:val)'), '_'),
@@ -554,7 +551,7 @@ if dein#tap('unite.vim') " {{{
         nnoremap <silent> <Space>h    :<C-u>Unite -start-insert help<CR>
     endif
 
-    function! s:unite_my_settings() " {{{
+    function! s:unite_my_settings() abort " {{{
         " Directory partial match.
         call unite#custom#alias('file', 'h', 'left')
         call unite#custom#default_action('directory', 'narrow')
@@ -755,7 +752,7 @@ endif " }}}
 
 if dein#tap('emmet-vim') " {{{
 
-    function! s:zen_html_tab()
+    function! s:zen_html_tab() abort
         let line = getline('.')
         if match(line, '<.*>') < 0
             return "\<c-y>,"
@@ -770,7 +767,7 @@ endif " }}}
 
 if dein#tap('vim-easymotion') " {{{
 
-    function! Post_source_easymotion()
+    function! Post_source_easymotion() abort
         hi EasyMotionTarget ctermfg=79 ctermbg=235
         hi EasyMotionTarget2First ctermfg=79 ctermbg=235
         hi EasyMotionTarget2Second ctermfg=79 ctermbg=235
@@ -799,8 +796,8 @@ endif " }}}
 
 if dein#tap('vim-sneak') " {{{
 
-    hi link SneakPluginTarget ErrorMsg
-    hi link SneakPluginScope Comment
+    hi link Sneak IncSearch
+    hi link SneakScope Comment
 
     "default is ,
     nmap ,, <Plug>SneakPrevious
@@ -844,14 +841,14 @@ if dein#tap('vim-multiple-cursors') " {{{
 
     if dein#is_sourced('neocomplete')
         " Called once right before you start selecting multiple cursors
-        function! Multiple_cursors_before()
+        function! Multiple_cursors_before() abort
             if exists(':NeoCompleteLock')==2
                 exe 'NeoCompleteLock'
             endif
         endfunction
 
         " Called once only when the multiple selection is canceled (default <Esc>)
-        function! Multiple_cursors_after()
+        function! Multiple_cursors_after() abort
             if exists(':NeoCompleteUnlock')==2
                 exe 'NeoCompleteUnlock'
             endif
@@ -895,10 +892,10 @@ endif " }}}
 
 if dein#tap('vim-smartinput-endwise') " {{{
 
-    function! dein#tapped.hooks.on_post_source(bundle)
+    " function! dein#tapped.hooks.on_post_source(bundle)
         " neosnippet and neocomplete compatible
         call smartinput#map_to_trigger('i', '<Plug>(my_cr)', '<Enter>', '<Enter>')
-    endfunction
+    " endfunction
 
 endif " }}}
 
@@ -1038,7 +1035,7 @@ endif " }}}
 
 if dein#tap('goyo.vim') " {{{
 
-    function! s:goyo_enter()
+    function! s:goyo_enter() abort
         augroup linenumbers
             autocmd InsertLeave * :set norelativenumber
         augroup END
@@ -1058,7 +1055,7 @@ if dein#tap('goyo.vim') " {{{
         cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
     endfunction
 
-    function! s:goyo_leave()
+    function! s:goyo_leave() abort
         augroup linenumbers
             autocmd!
         augroup END
@@ -1148,7 +1145,7 @@ endif " }}}
 
 if dein#tap('lexima.vim') " {{{
 
-    function! Post_source_lexima()
+    function! Post_source_lexima() abort
         imap <expr> <cr> pumvisible() ? CleverCr() : lexima#expand('<lt>CR>', 'i')
     endfunction
     
@@ -1341,11 +1338,18 @@ if dein#tap('vim-test') " {{{
 
 endif " }}}
 
+if dein#tap('vim-test') " {{{
+
+    let g:sayonara_confirm_quit = 1
+    nnoremap <space>c :Sayonara<CR>
+
+endif " }}}
+
 if dein#tap('fzf.vim') " {{{
 
     " function! dein#tapped.hooks.on_source(bundle)
 
-    function! s:tags_sink(line)
+    function! s:tags_sink(line) abort
         let parts = split(a:line, '\t\zs')
         let excmd = matchstr(parts[2:], '^.*\ze;"\t')
         execute 'silent e' parts[1][:-2]
@@ -1354,7 +1358,7 @@ if dein#tap('fzf.vim') " {{{
         let &magic = magic
     endfunction
 
-    function! s:tags()
+    function! s:tags() abort
         if empty(tagfiles())
             echohl WarningMsg
             echom 'Preparing tags'
@@ -1381,7 +1385,7 @@ endif " }}}
 
 " ('pyclewn') " {{{
 
-let g:pyclewn_args = "-w bottom"
+    let g:pyclewn_args = "-w bottom"
 
 " }}}
 

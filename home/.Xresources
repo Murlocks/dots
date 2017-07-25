@@ -3,8 +3,11 @@ URxvt.geometry: 80x22
 ! URXVT FONTS
 !------------------------------------------------
 ! URxvt.font:                xft:gohufont:pixelsize=14,xft:DejaVu Sans Mono for Powerline
-URxvt.font:                -*-gohufont-medium-*-*-*-*100-*-*-*-*-iso10646-*,xft:Terminess Powerline,xft:Source Code Pro
-URxvt.boldFont:                -*-gohufont-medium-*-*-*-*100-*-*-*-*-iso10646-*,xft:Terminess Powerline,xft:Source Code Pro
+URxvt.font:                -*-gohufont-medium-*-*-*-*100-*-*-*-*-iso10646-*,xft:xos4 Terminess Powerline,xft:Ubuntu Mono
+URxvt.boldFont:                -*-gohufont-medium-*-*-*-*100-*-*-*-*-iso10646-*,xft:xos4 Terminess Powerline,xft:Ubuntu Mono
+!URxvt.boldFont:            xft:Ubuntu mono:pixelsize=17:style=Bold
+! URxvt.font:                xft:xos4 Terminess Powerline
+! URxvt.boldFont:            xft:xos4 Terminess Powerline
 !URxvt.boldFont:            xft:Ubuntu mono:pixelsize=17:style=Bold
 rofi.font:                     gohufont 10
 URxvt*termname: urxvt256-color
@@ -47,8 +50,8 @@ URxvt*cursorUnderline: true
 
 URxvt.internalBorder: 15
 
-rofi.kb-row-up: Alt+k,Up
-rofi.kb-row-down: Alt+j,Down
+rofi.kb-row-up: Control+k,Up
+rofi.kb-row-down: Control+j,Down
 
 Xcursor.size: 16
 
@@ -100,12 +103,12 @@ Xcursor.size: 16
 ! Use extended color scheme
 rofi.color-enabled:                  true
 ! Color scheme for normal row
-rofi.color-normal:                   argb:00000000, #1aa, argb:11FFFFFF, #1aa,#333
+rofi.color-normal:                   argb:00000000, #b2b2b2, argb:11FFFFFF, #b2b2b2,#262626
 ! Color scheme for urgent row
-rofi.color-urgent:                   argb:00000000, #f99, argb:11FFFFFF, #f99,#333
+rofi.color-urgent:                   argb:00000000, #f99, argb:11FFFFFF, #f99,#262626
 ! Color scheme for active row
-rofi.color-active:                   argb:00000000, #aa1, argb:11FFFFFF, #aa1,#333
+rofi.color-active:                   argb:00000000, #afd787, argb:11FFFFFF, #afd787,#262626
 ! Color scheme window
-rofi.color-window:                   argb:ee333333, #1aa,#1aa
+rofi.color-window:                   argb:ee333333, #b2b2b2,#b2b2b2
 ! Separator style (none, dash, solid)
 rofi.separator-style:                solid

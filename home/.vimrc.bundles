@@ -44,7 +44,8 @@ NeoBundle 'Shougo/neco-vim', { 'depends:' : [ 'Shougo/neocomplete' ] }
 NeoBundle 'osyo-manga/vim-marching'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'davidhalter/jedi'
+NeoBundle 'davidhalter/jedi-vim'
+NeoBundle 'ternjs/tern_for_vim'
 " NeoBundle 'SirVer/ultisnips'
 " NeoBundle 'honza/vim-snippets'
 " NeoBundle 'Valloric/YouCompleteMe'
@@ -250,8 +251,8 @@ if g:neobundle#tap('neocomplete') " {{{
         " Use fuzzy completion.
         let g:neocomplete#enable_fuzzy_completion = 1
 
-        autocmd vimrc CursorMovedI *.py  if pumvisible() == 0|silent! pclose|endif
-        autocmd vimrc InsertLeave *.py if pumvisible() == 0|silent! pclose|endif
+        autocmd vimrc CursorMovedI *.py,*.js if pumvisible() == 0|silent! pclose|endif
+        autocmd vimrc InsertLeave *.py,*.js if pumvisible() == 0|silent! pclose|endif
 
         " Set auto completion length.
         let g:neocomplete#auto_completion_start_length = 3
@@ -341,6 +342,7 @@ if g:neobundle#tap('neocomplete') " {{{
                     \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
         " smap <TAB> <Right><Plug>(neosnippet_jump_or_expand)
 
+        inoremap <S-Tab> <C-p>
         imap <expr> <Tab> CleverTab()
         function! CleverTab()
             if <SID>check_back_space()
@@ -978,8 +980,7 @@ endif " }}}
 
 if g:neobundle#tap('vim-sneak') " {{{
 
-    hi link SneakPluginTarget ErrorMsg
-    hi link SneakPluginScope Comment
+    autocmd ColorScheme * hi Sneak guifg=black guibg=red ctermfg=black ctermbg=red
 
     "default is ,
     nmap ,, <Plug>SneakPrevious

@@ -34,6 +34,9 @@ syntax on
 set mousehide
 scriptencoding utf-8
 
+" interactive substitute
+set inccommand=split
+
 " autocmd vimrc BufNewFile,BufRead * :let &cms = ' ' . &cms
 set shortmess+=filmnrxoOtT
 set viewoptions=folds,options,cursor,unix,slash
@@ -576,7 +579,7 @@ nnoremap <space>; *``cgn
 nnoremap <space>, #``cgN
 
 " better buffer/tab closing!
-nnoremap <space>c :bd<CR>
+" nnoremap <space>c :bd<CR>
 nnoremap <space>C :tabclose<CR>
 
 " "Focus" the current line.  Basically:

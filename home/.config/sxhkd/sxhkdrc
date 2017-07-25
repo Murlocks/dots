@@ -157,6 +157,9 @@ alt + {_,shift} + semicolon
 #
 
 alt + o
+    qutebrowser
+
+alt + ctrl + o
     firefox
 
 # alt + e
@@ -165,7 +168,7 @@ alt + o
 alt + e
   urxvt -e zsh -c "emacsclient -nw -c --alternate-editor vim; zsh"
 
-super + Return
+alt + ctrl + Return
     urxvt -hold -e zsh -i ~/bin/tsm
 
 alt + Return

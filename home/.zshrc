@@ -49,7 +49,7 @@ alias pacua="yaourt --sync --refresh --sysupgrade --aur"
 alias em="emacs -nw"
 alias emd="emacs --daemon"
 alias e="emacsclient -nw -c --alternate-editor vim"
-alias v="nvim"
+alias v="vim"
 
 alias zrc=$EDITOR" ~/.zshrc"
 alias vrc=$EDITOR" ~/.vimrc"
@@ -59,12 +59,10 @@ alias rm="__rm"
 alias p2="python2"
 alias p="python"
 alias o="xdg-open"
-alias skype="skypetab-ng"
 alias steam="optirun steam"
 
 alias gvd="git_diff"
 # alias man="__man"
-
 
 alias ta="tmux attach"
 
